@@ -1,0 +1,2 @@
+In: [and_test] val: 1 fails definition: 'def1 lambda?' (Definition::Types::Lambda)
+In: [and_test] val: 1 fails definition: 'def2 lambda?' (Definition::Types::Lambda)

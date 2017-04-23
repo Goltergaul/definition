@@ -1,5 +1,5 @@
 require "definition/version"
+require "definition/types"
 
 module Definition
-  # Your code goes here...
 end
