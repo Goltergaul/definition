@@ -1,0 +1,6 @@
+require: 
+  - rubocop-rspec
+  - rt_rubocop_defaults
+
+AllCops:
+  TargetRubyVersion: 2.3

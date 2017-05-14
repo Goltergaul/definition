@@ -1,38 +1,53 @@
 # frozen_string_literal: true
 
 # frozen_string_literal: true
+
 require "definition/types/base"
 require "definition/errors/invalid"
 
 module Definition
   module Types
     class Include < Base
+      attr_accessor :required_items
+
       def initialize(name, *args)
         self.required_items = *args
         super(name)
       end
 
       def conform(value)
-        errors = []
-        required_items.each do |item|
-          unless value.include?(item)
-            errors.push(Errors::Invalid.new(value,
-                                            name: name,
-                                            description: "include? #{item.inspect}",
-                                            definition: self))
+        Conformer.new(self).conform(value)
+      end
+
+      class Conformer
+        def initialize(definition)
+          self.definition = definition
+        end
+
+        def conform(value)
+          errors = gather_errors(value)
+
+          if errors.empty?
+            [:ok, value]
+          else
+            [:error, errors]
           end
         end
 
-        if errors.size == 0
-          [:ok, value]
-        else
-          [:error, errors]
+        private
+
+        def gather_errors(value)
+          definition.required_items.map do |item|
+            next if value.include?(item)
+            Errors::Invalid.new(value,
+                                name:        definition.name,
+                                description: "include? #{item.inspect}",
+                                definition:  definition)
+          end.compact
         end
+
+        attr_accessor :definition
       end
-
-      private
-
-      attr_accessor :required_items
     end
   end
 end

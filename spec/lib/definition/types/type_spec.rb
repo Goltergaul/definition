@@ -23,13 +23,13 @@ describe Definition::Types::Type do
       let(:value) { "2" }
       let(:expected_errors) do
         [
-            {
-              value: value,
-              name: :type_test,
-              description: "is_a? Integer",
-              definition: definition,
-              children: []
-            }
+          {
+            value:       value,
+            name:        :type_test,
+            description: "is_a? Integer",
+            definition:  definition,
+            children:    []
+          }
         ]
       end
 
@@ -40,7 +40,13 @@ describe Definition::Types::Type do
 
     context "with coercion lambda" do
       let(:coerce) do
-        lambda { |v| Integer(v) rescue v }
+        lambda do |v|
+          begin
+                       Integer(v)
+                     rescue
+                       v
+                     end
+        end
       end
 
       context "with coercable value" do
@@ -52,13 +58,13 @@ describe Definition::Types::Type do
         let(:value) { "a2" }
         let(:expected_errors) do
           [
-              {
-                value: value,
-                name: :type_test,
-                description: "is_a? Integer",
-                definition: definition,
-                children: []
-              }
+            {
+              value:       value,
+              name:        :type_test,
+              description: "is_a? Integer",
+              definition:  definition,
+              children:    []
+            }
           ]
         end
         it { is_expected.to not_conform_with(expected_errors) }

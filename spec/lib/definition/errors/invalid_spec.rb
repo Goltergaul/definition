@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "spec_helper"
 require "definition/errors/invalid"
 require "ostruct"
@@ -6,13 +7,11 @@ require "ostruct"
 describe Definition::Errors::Invalid do
   subject(:instance) do
     described_class.new(value,
-                        name: name,
+                        name:        name,
                         description: description,
-                        definition: definition,
-                        children: children)
+                        definition:  definition,
+                        children:    children)
   end
-
-
 
   describe ".message" do
     subject(:message) { instance.message }
@@ -35,7 +34,7 @@ describe Definition::Errors::Invalid do
         permissions: {
           access_mainframe: "false"
         },
-        age: "13"
+        age:         "13"
       }
     end
 
@@ -43,22 +42,22 @@ describe Definition::Errors::Invalid do
       let(:children) do
         [
           described_class.new({ access_mainframe: "false" },
-                              name: :permissions,
+                              name:        :permissions,
                               description: "include? access_mainframe",
-                              definition: permissions_definition,
-                              children: [
+                              definition:  permissions_definition,
+                              children:    [
 
                                 described_class.new("false",
-                                                    name: :access_mainframe,
+                                                    name:        :access_mainframe,
                                                     description: "boolean?",
-                                                    definition: boolean_definition,
-                                                    children: [])
+                                                    definition:  boolean_definition,
+                                                    children:    [])
                               ]),
           described_class.new("13",
-                              name: :age,
+                              name:        :age,
                               description: "integer?",
-                              definition: age_definition,
-                              children: [])
+                              definition:  age_definition,
+                              children:    [])
         ]
       end
 

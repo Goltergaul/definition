@@ -14,17 +14,11 @@ module Definition
       end
 
       def message(path: [])
-        if children.empty?
-          message = ""
-          message += "In: [#{path.join("/")}] " unless path.empty?
-          message += "val: #{value.inspect} fails definition: '#{name} #{description}' (#{definition.class})"
-
-          return message
-        end
+        return message_string(path) if children.empty?
 
         result = []
         children.each do |error|
-          result.push(error.message(path: path+[name]))
+          result.push(error.message(path: path + [name]))
         end
 
         result.join("\n")
@@ -32,11 +26,18 @@ module Definition
 
       def to_h
         {
-          value: value,
-          name: name,
+          value:       value,
+          name:        name,
           description: description,
-          children: children.map(&:to_h)
+          children:    children.map(&:to_h)
         }
+      end
+
+      private
+
+      def message_string(path)
+        message = "In: [#{path.join('/')}] " unless path.empty?
+        (message || "") + "val: #{value.inspect} fails definition: '#{name} #{description}' (#{definition.class})"
       end
     end
   end

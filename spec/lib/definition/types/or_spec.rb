@@ -28,29 +28,29 @@ describe Definition::Types::Or do
 
       it "contains correct errors" do
         expect(conform).to not_conform_with([
-            {
-              value: value,
-              name: "or_test",
-              description: "or: [def1 def2]",
-              definition: definition,
-              children: [
-                {
-                  value: value,
-                  name: :def1,
-                  description: "lambda?",
-                  definition: definition1,
-                  children: []
-                },
-                {
-                  value: value,
-                  name: :def2,
-                  description: "lambda?",
-                  definition: definition2,
-                  children: []
-                }
-              ]
-            }
-        ])
+                                              {
+                                                value:       value,
+                                                name:        "or_test",
+                                                description: "or: [def1 def2]",
+                                                definition:  definition,
+                                                children:    [
+                                                  {
+                                                    value:       value,
+                                                    name:        :def1,
+                                                    description: "lambda?",
+                                                    definition:  definition1,
+                                                    children:    []
+                                                  },
+                                                  {
+                                                    value:       value,
+                                                    name:        :def2,
+                                                    description: "lambda?",
+                                                    definition:  definition2,
+                                                    children:    []
+                                                  }
+                                                ]
+                                              }
+                                            ])
       end
     end
 

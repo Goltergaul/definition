@@ -9,7 +9,7 @@ describe Definition::Types::Include do
   end
 
   let(:name) { "fruit" }
-  let(:required_items) { [:name, :color] }
+  let(:required_items) { %i[name color] }
 
   describe ".conform" do
     subject(:conform) { definition.conform(value) }
@@ -18,13 +18,13 @@ describe Definition::Types::Include do
       let(:value) { [:color] }
       let(:expected_errors) do
         [
-            {
-              value: value,
-              name: "fruit",
-              description: "include? :name",
-              definition: definition,
-              children: []
-            }
+          {
+            value:       value,
+            name:        "fruit",
+            description: "include? :name",
+            definition:  definition,
+            children:    []
+          }
         ]
       end
 
@@ -34,7 +34,7 @@ describe Definition::Types::Include do
     end
 
     context "with correct value" do
-      let(:value) { [:name, :color] }
+      let(:value) { %i[name color] }
 
       it "conforms" do
         expect(conform).to conform_with(value)
@@ -42,7 +42,7 @@ describe Definition::Types::Include do
     end
 
     context "with correct value in different order" do
-      let(:value) { [:color, :name] }
+      let(:value) { %i[color name] }
 
       it "conforms" do
         expect(conform).to conform_with(value)
@@ -50,7 +50,7 @@ describe Definition::Types::Include do
     end
 
     context "with one value too much" do
-      let(:value) { [:color, :name, :foobar] }
+      let(:value) { %i[color name foobar] }
 
       it "conforms" do
         expect(conform).to conform_with(value)
@@ -62,20 +62,20 @@ describe Definition::Types::Include do
 
       let(:expected_errors) do
         [
-            {
-              value: value,
-              name: name,
-              description: "include? :name",
-              definition: definition,
-              children: []
-            },
-            {
-              value: value,
-              name: "fruit",
-              description: "include? :color",
-              definition: definition,
-              children: []
-            }
+          {
+            value:       value,
+            name:        name,
+            description: "include? :name",
+            definition:  definition,
+            children:    []
+          },
+          {
+            value:       value,
+            name:        "fruit",
+            description: "include? :color",
+            definition:  definition,
+            children:    []
+          }
         ]
       end
 

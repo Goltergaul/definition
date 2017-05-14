@@ -28,31 +28,31 @@ describe Definition::Types::And do
 
       it "contains correct errors" do
         expect(conform).to not_conform_with([
-            {
-              value: value,
-              name: "and_test",
-              description: "and: [def1 def2]",
-              definition: definition,
-              children: [
-                {
-                  value: value,
-                  name: :def1,
-                  description: "lambda?",
-                  definition: definition1,
-                  children: [
-                  ]
-                },
-                {
-                  value: value,
-                  name: :def2,
-                  description: "lambda?",
-                  definition: definition2,
-                  children: [
-                  ]
-                }
-              ]
-            }
-        ])
+                                              {
+                                                value:       value,
+                                                name:        "and_test",
+                                                description: "and: [def1 def2]",
+                                                definition:  definition,
+                                                children:    [
+                                                  {
+                                                    value:       value,
+                                                    name:        :def1,
+                                                    description: "lambda?",
+                                                    definition:  definition1,
+                                                    children:    [
+                                                    ]
+                                                  },
+                                                  {
+                                                    value:       value,
+                                                    name:        :def2,
+                                                    description: "lambda?",
+                                                    definition:  definition2,
+                                                    children:    [
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ])
       end
 
       it_behaves_like "it explains"
@@ -63,23 +63,23 @@ describe Definition::Types::And do
 
       it "contains correct errors" do
         expect(conform).to not_conform_with([
-            {
-              value: value,
-              name: "and_test",
-              description: "and: [def1 def2]",
-              definition: definition,
-              children: [
-                {
-                  value: value,
-                  name: :def2,
-                  description: "lambda?",
-                  definition: definition2,
-                  children: [
-                  ]
-                }
-              ]
-            }
-        ])
+                                              {
+                                                value:       value,
+                                                name:        "and_test",
+                                                description: "and: [def1 def2]",
+                                                definition:  definition,
+                                                children:    [
+                                                  {
+                                                    value:       value,
+                                                    name:        :def2,
+                                                    description: "lambda?",
+                                                    definition:  definition2,
+                                                    children:    [
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ])
       end
     end
 

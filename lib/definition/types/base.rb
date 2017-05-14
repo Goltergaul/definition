@@ -13,9 +13,7 @@ module Definition
         status, result = conform(value)
         return "value passes definition" if status == :ok
 
-        result.map do |error|
-          error.message
-        end.join("\n")
+        result.map(&:message).join("\n")
       end
     end
   end

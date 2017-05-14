@@ -8,7 +8,7 @@ describe Definition::Types::Lambda do
     described_class.new(:lambda_test,
                         test_lambda)
   end
-  let(:test_lambda) { lambda { |value| value % 2 == 0 } }
+  let(:test_lambda) { ->(value) { value.even? } }
 
   describe ".conform" do
     subject(:conform) { definition.conform(value) }
@@ -22,13 +22,13 @@ describe Definition::Types::Lambda do
       let(:value) { 1 }
       let(:expected_errors) do
         [
-            {
-              value: value,
-              name: :lambda_test,
-              description: "lambda?",
-              definition: definition,
-              children: []
-            }
+          {
+            value:       value,
+            name:        :lambda_test,
+            description: "lambda?",
+            definition:  definition,
+            children:    []
+          }
         ]
       end
 

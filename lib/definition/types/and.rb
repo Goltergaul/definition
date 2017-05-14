@@ -1,39 +1,55 @@
 # frozen_string_literal: true
+
 require "definition/types/base"
 require "definition/errors/invalid"
 
 module Definition
   module Types
     class And < Base
+      attr_accessor :definitions
+
       def initialize(name, *args)
-        self.required_items = *args
+        self.definitions = *args
         super(name)
       end
 
       def conform(value)
-        errors = []
-        required_items.each do |definition|
-          status, result = definition.conform(value)
-          if status == :error
-            errors << result
+        Conformer.new(self).conform(value)
+      end
+
+      class Conformer
+        def initialize(definition)
+          self.definition = definition
+        end
+
+        def conform(value)
+          errors = gather_errors(value)
+
+          if errors.empty?
+            [:ok, value]
+          else
+            [:error, [Errors::Invalid.new(value,
+                                          name:        definition.name,
+                                          description: "and: [#{definition.definitions.map(&:name).join(' ')}]",
+                                          definition:  definition,
+                                          children:    errors)]]
           end
         end
 
-        if errors.size == 0
-          [:ok, value]
-        else
+        private
+
+        attr_accessor :definition
+
+        def gather_errors(value)
+          errors = []
+          definition.definitions.each do |definition|
+            status, result = definition.conform(value)
+            errors.push(result) if status == :error
+          end
           errors.flatten!
-          [:error, [Errors::Invalid.new(value,
-                                      name: name,
-                                      description: "and: [#{required_items.map(&:name).join(" ")}]",
-                                      definition: self,
-                                      children: errors)]]
+          errors
         end
       end
-
-      private
-
-      attr_accessor :required_items
     end
   end
 end

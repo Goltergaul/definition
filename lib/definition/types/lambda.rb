@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "definition/types/base"
 require "definition/errors/invalid"
 
