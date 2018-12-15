@@ -3,7 +3,6 @@
 # frozen_string_literal: true
 
 require "definition/types/base"
-require "definition/errors/invalid"
 
 module Definition
   module Types
@@ -28,9 +27,9 @@ module Definition
           errors = gather_errors(value)
 
           if errors.empty?
-            [:ok, value]
+            ConformResult.new(value)
           else
-            [:error, errors]
+            ConformResult.new(value, errors: errors)
           end
         end
 
@@ -39,10 +38,7 @@ module Definition
         def gather_errors(value)
           definition.required_items.map do |item|
             next if value.include?(item)
-            Errors::Invalid.new(value,
-                                name:        definition.name,
-                                description: "include? #{item.inspect}",
-                                definition:  definition)
+            ConformError.new(definition, "#{definition.name} does not include #{item}")
           end.compact
         end
 

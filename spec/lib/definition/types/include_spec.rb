@@ -8,7 +8,7 @@ describe Definition::Types::Include do
     described_class.new(name, *required_items)
   end
 
-  let(:name) { "fruit" }
+  let(:name) { "include_test" }
   let(:required_items) { %i[name color] }
 
   describe ".conform" do
@@ -16,20 +16,9 @@ describe Definition::Types::Include do
 
     context "with one missing value" do
       let(:value) { [:color] }
-      let(:expected_errors) do
-        [
-          {
-            value:       value,
-            name:        "fruit",
-            description: "include? :name",
-            definition:  definition,
-            children:    []
-          }
-        ]
-      end
 
-      it "generates correct errors" do
-        expect(conform).to not_conform_with(expected_errors)
+      it "does not conform" do
+        expect(conform).to not_conform_with("include_test does not include name")
       end
     end
 
@@ -60,30 +49,11 @@ describe Definition::Types::Include do
     context "with empty array value" do
       let(:value) { [] }
 
-      let(:expected_errors) do
-        [
-          {
-            value:       value,
-            name:        name,
-            description: "include? :name",
-            definition:  definition,
-            children:    []
-          },
-          {
-            value:       value,
-            name:        "fruit",
-            description: "include? :color",
-            definition:  definition,
-            children:    []
-          }
-        ]
+      it "does not conform" do
+        expect(conform).to not_conform_with(
+          "include_test does not include name, include_test does not include color"
+        )
       end
-
-      it "generates correct errors" do
-        expect(conform).to not_conform_with(expected_errors)
-      end
-
-      it_behaves_like "it explains"
     end
   end
 end

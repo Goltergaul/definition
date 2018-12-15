@@ -39,5 +39,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "approvals", "~> 0.0"
   spec.add_development_dependency "benchmark-ips"
   spec.add_development_dependency "rubocop", "0.47.1"
+  spec.add_development_dependency "guard"
+  spec.add_development_dependency "guard-rspec"
   spec.add_development_dependency "rt_rubocop_defaults", "~> 1.0"
 end

@@ -26,60 +26,20 @@ describe Definition::Types::And do
     context "with value that fails all definitions" do
       let(:value) { 1 }
 
-      it "contains correct errors" do
-        expect(conform).to not_conform_with([
-                                              {
-                                                value:       value,
-                                                name:        "and_test",
-                                                description: "and: [def1 def2]",
-                                                definition:  definition,
-                                                children:    [
-                                                  {
-                                                    value:       value,
-                                                    name:        :def1,
-                                                    description: "lambda?",
-                                                    definition:  definition1,
-                                                    children:    [
-                                                    ]
-                                                  },
-                                                  {
-                                                    value:       value,
-                                                    name:        :def2,
-                                                    description: "lambda?",
-                                                    definition:  definition2,
-                                                    children:    [
-                                                    ]
-                                                  }
-                                                ]
-                                              }
-                                            ])
+      it "does not conform" do
+        expect(conform).to not_conform_with(
+          "Not all children are valid for and_test: { Did not pass test for def1, Did not pass test for def2 }"
+        )
       end
-
-      it_behaves_like "it explains"
     end
 
     context "with value that fails one definition" do
       let(:value) { 6 }
 
-      it "contains correct errors" do
-        expect(conform).to not_conform_with([
-                                              {
-                                                value:       value,
-                                                name:        "and_test",
-                                                description: "and: [def1 def2]",
-                                                definition:  definition,
-                                                children:    [
-                                                  {
-                                                    value:       value,
-                                                    name:        :def2,
-                                                    description: "lambda?",
-                                                    definition:  definition2,
-                                                    children:    [
-                                                    ]
-                                                  }
-                                                ]
-                                              }
-                                            ])
+      it "does not conform" do
+        expect(conform).to not_conform_with(
+          "Not all children are valid for and_test: { Did not pass test for def2 }"
+        )
       end
     end
 

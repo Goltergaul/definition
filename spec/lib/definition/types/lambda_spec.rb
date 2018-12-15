@@ -15,28 +15,20 @@ describe Definition::Types::Lambda do
 
     context "with even value" do
       let(:value) { 2 }
-      it { is_expected.to conform_with(value) }
+
+      it "conforms" do
+        expect(conform).to conform_with(value)
+      end
     end
 
     context "with odd value" do
       let(:value) { 1 }
-      let(:expected_errors) do
-        [
-          {
-            value:       value,
-            name:        :lambda_test,
-            description: "lambda?",
-            definition:  definition,
-            children:    []
-          }
-        ]
-      end
 
-      it "generates correct errors" do
-        expect(conform).to not_conform_with(expected_errors)
+      it "does not conform" do
+        expect(conform).to not_conform_with(
+          "Did not pass test for lambda_test"
+        )
       end
-
-      it_behaves_like "it explains"
     end
   end
 end

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "definition/types/base"
-require "definition/errors/invalid"
 
 module Definition
   module Types
@@ -23,31 +22,33 @@ module Definition
         end
 
         def conform(value)
-          status, result = first_successful_conform(value)
-          if status == :ok
-            [status, result]
+          result = first_successful_conform_or_errors(value)
+          if result.is_a?(ConformResult)
+            result
           else
-            [:error, [Errors::Invalid.new(value,
-                                          name:        definition.name,
-                                          description: "or: [#{definition.definitions.map(&:name).join(' ')}]",
-                                          definition:  definition,
-                                          children:    result)]]
+            ConformResult.new(value, errors: [
+              ConformError.new(definition, "None of the children are valid for #{definition.name}",
+                sub_errors: result
+              )
+            ])
           end
         end
 
         private
 
-        def first_successful_conform(value)
+        def first_successful_conform_or_errors(value)
           errors = []
-          success_result = definition.definitions.detect do |definition|
-            status, result = definition.conform(value)
-            errors.push(result) if status == :error
-            break result if status == :ok
+          success_result = definition.definitions.find do |definition|
+            result = definition.conform(value)
+            if result.passed?
+              return result
+            else
+              errors.push(result.errors)
+              nil
+            end
           end
 
-          errors.flatten!
-          return [:error, errors] if success_result.nil?
-          [:ok, success_result]
+          errors.flatten
         end
 
         attr_accessor :definition

@@ -41,108 +41,32 @@ describe Definition::Types::Keys do
       context "with missing req and missing opt field" do
         let(:value) { {} }
 
-        it "has correct errors" do
-          expect(conform).to not_conform_with([
-                                                {
-                                                  value:       value,
-                                                  name:        "address",
-                                                  description: "keys? req: [street city] opt: [appartment_number]",
-                                                  definition:  definition,
-                                                  children:    [
-                                                    {
-                                                      value:       value,
-                                                      name:        "address",
-                                                      description: "include? :street",
-                                                      definition:  include_def,
-                                                      children:    []
-                                                    },
-                                                    {
-                                                      value:       value,
-                                                      name:        "address",
-                                                      description: "include? :city",
-                                                      definition:  include_def,
-                                                      children:    []
-                                                    }
-                                                  ]
-                                                }
-                                              ])
+        it "does not conform" do
+          expect(conform).to not_conform_with(
+            "address does not include street, address does not include city"
+          )
         end
       end
 
       context "with missing req and invalid opt field" do
         let(:value) { { appartment_number: "12" } }
 
-        it "has correct errors" do
-          expect(conform).to not_conform_with([
-                                                {
-                                                  value:       value,
-                                                  name:        "address",
-                                                  description: "keys? req: [street city] opt: [appartment_number]",
-                                                  definition:  definition,
-                                                  children:    [
-                                                    {
-                                                      value:       value,
-                                                      name:        "address",
-                                                      description: "include? :street",
-                                                      definition:  include_def,
-                                                      children:    []
-                                                    },
-                                                    {
-                                                      value:       value,
-                                                      name:        "address",
-                                                      description: "include? :city",
-                                                      definition:  include_def,
-                                                      children:    []
-                                                    },
-                                                    {
-                                                      value:       value,
-                                                      name:        "appartment_number",
-                                                      description: "key appartment_number",
-                                                      definition:  definition,
-                                                      children:    [
-                                                        {
-                                                          value:       "12",
-                                                          name:        "integer",
-                                                          description: "is_a? Integer",
-                                                          definition:  int_def,
-                                                          children:    []
-                                                        }
-                                                      ]
-                                                    }
-                                                  ]
-                                                }
-                                              ])
+        it "does not conform" do
+          expect(conform).to not_conform_with(
+            "address does not include street, "\
+            "address does not include city, "\
+            "address fails validation for key appartment_number: { Is of type String instead of Integer for integer }"
+          )
         end
       end
 
       context "with missing req and valid opt field" do
         let(:value) { { appartment_number: 12 } }
 
-        it "has correct errors" do
-          expect(conform).to not_conform_with([
-                                                {
-                                                  value:       value,
-                                                  name:        "address",
-                                                  description: "keys? req: [street city] opt: [appartment_number]",
-                                                  definition:  definition,
-                                                  children:    [
-                                                    {
-                                                      value:       value,
-                                                      name:        "address",
-                                                      description: "include? :street",
-                                                      definition:  include_def,
-                                                      children:    []
-                                                    },
-                                                    {
-                                                      value:       value,
-                                                      name:        "address",
-                                                      description: "include? :city",
-                                                      definition:  include_def,
-                                                      children:    []
-                                                    }
-                                                  ]
-                                                }
-                                              ])
+        it "does not conform" do
+          expect(conform).to not_conform_with(
+            "address does not include street, address does not include city"
+          )
         end
       end
 
@@ -170,24 +94,10 @@ describe Definition::Types::Keys do
           }
         end
 
-        it "fails with correct error" do
-          expect(conform).to not_conform_with([
-                                                {
-                                                  value:       value,
-                                                  name:        "address",
-                                                  description: "keys? req: [street city] opt: [appartment_number]",
-                                                  definition:  definition,
-                                                  children:    [
-                                                    {
-                                                      value:       value,
-                                                      name:        "address",
-                                                      description: "unexpected keys: [foo]",
-                                                      definition:  definition,
-                                                      children:    []
-                                                    }
-                                                  ]
-                                                }
-                                              ])
+        it "does not conform" do
+          expect(conform).to not_conform_with(
+            "address has extra keys: foo"
+          )
         end
       end
     end

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "definition/types/base"
-require "definition/errors/invalid"
 
 module Definition
   module Types
@@ -26,13 +25,13 @@ module Definition
           errors = gather_errors(value)
 
           if errors.empty?
-            [:ok, value]
+            ConformResult.new(value)
           else
-            [:error, [Errors::Invalid.new(value,
-                                          name:        definition.name,
-                                          description: "and: [#{definition.definitions.map(&:name).join(' ')}]",
-                                          definition:  definition,
-                                          children:    errors)]]
+            ConformResult.new(value, errors: [
+              ConformError.new(definition, "Not all children are valid for #{definition.name}",
+                sub_errors: errors
+              )
+            ])
           end
         end
 
@@ -43,8 +42,8 @@ module Definition
         def gather_errors(value)
           errors = []
           definition.definitions.each do |definition|
-            status, result = definition.conform(value)
-            errors.push(result) if status == :error
+            result = definition.conform(value)
+            errors.push(result.errors) unless result.passed?
           end
           errors.flatten!
           errors

@@ -1,2 +1,0 @@
-In: [person/permissions] val: "false" fails definition: 'access_mainframe boolean?' (OpenStruct)
-In: [person] val: "13" fails definition: 'age integer?' (OpenStruct)

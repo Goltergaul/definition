@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "definition/types/base"
-require "definition/errors/invalid"
 
 module Definition
   module Types
@@ -29,9 +28,11 @@ module Definition
 
       def try_conform(value)
         if valid?(value)
-          [:ok, value]
+          ConformResult.new(value)
         else
-          [:error, [Errors::Invalid.new(value, name: name, definition: self, description: "is_a? #{klass}")]]
+          ConformResult.new(value, errors: [
+            ConformError.new(self, "Is of type #{value.class.name} instead of #{klass.name} for #{name}")
+          ])
         end
       end
 

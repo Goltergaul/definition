@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "definition/types/base"
-require "definition/errors/invalid"
 
 module Definition
   module Types
@@ -13,9 +12,11 @@ module Definition
 
       def conform(value)
         if test_lambda.call(value)
-          [:ok, value]
+          ConformResult.new(value)
         else
-          [:error, [Errors::Invalid.new(value, name: name, definition: self, description: "lambda?")]]
+          ConformResult.new(value, errors: [
+            ConformError.new(self, "Did not pass test for #{name}")
+          ])
         end
       end
 

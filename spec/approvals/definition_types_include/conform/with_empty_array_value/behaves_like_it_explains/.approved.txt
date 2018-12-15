@@ -1,2 +1,0 @@
-val: [] fails definition: 'fruit include? :name' (Definition::Types::Include)
-val: [] fails definition: 'fruit include? :color' (Definition::Types::Include)

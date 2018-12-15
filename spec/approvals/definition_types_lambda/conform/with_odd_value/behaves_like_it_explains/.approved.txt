@@ -1,1 +1,0 @@
-val: 1 fails definition: 'lambda_test lambda?' (Definition::Types::Lambda)

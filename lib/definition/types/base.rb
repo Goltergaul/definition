@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require "definition/conform_result"
+require "definition/conform_error"
 
 module Definition
   module Types
@@ -10,10 +12,10 @@ module Definition
       end
 
       def explain(value)
-        status, result = conform(value)
-        return "value passes definition" if status == :ok
+        result = conform(value)
+        return "value passes definition" if result.passed?
 
-        result.map(&:message).join("\n")
+        result.error_message
       end
     end
   end

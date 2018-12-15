@@ -4,7 +4,6 @@
 
 require "definition/types/base"
 require "definition/types/include"
-require "definition/errors/invalid"
 
 module Definition
   module Types
@@ -21,6 +20,14 @@ module Definition
         Conformer.new(self, value).conform
       end
 
+      def required(key, definition)
+        self.required_definitions[key] = definition
+      end
+
+      def optional(key, definition)
+        self.optional_definitions[key] = definition
+      end
+
       class Conformer
         def initialize(definition, value)
           self.definition = definition
@@ -33,31 +40,20 @@ module Definition
           add_missing_key_errors
           values = conform_all_keys
 
-          return [:error, [error]] unless errors.empty?
-
-          [:ok, values]
+          return ConformResult.new(value, errors: errors)
         end
 
         private
 
         attr_accessor :errors
 
-        def error
-          description = "keys? req: [#{required_keys.join(' ')}] opt: [#{optional_keys.join(' ')}]"
-          Errors::Invalid.new(value,
-                              name:        definition.name,
-                              description: description,
-                              definition:  definition,
-                              children:    errors)
-        end
-
         def add_extra_key_errors
           extra_keys = value.keys - all_keys
           return if extra_keys.empty?
-          errors.push(Errors::Invalid.new(value,
-                                          name:        definition.name,
-                                          description: "unexpected keys: [#{extra_keys.join(' ')}]",
-                                          definition:  definition))
+          errors.push(ConformError.new(
+            definition,
+            "#{definition.name} has extra keys: #{extra_keys.join(', ')}")
+          )
         end
 
         def conform_all_keys
@@ -88,15 +84,16 @@ module Definition
         end
 
         def conform_definitions(keys)
-          keys.each_with_object({}) do |(key, key_definition), result|
+          keys.each_with_object({}) do |(key, key_definition), result_value|
             next unless value.key?(key)
-            status, result_value = key_definition.conform(value[key])
-            result[key] = result_value if status == :ok
-            next unless status == :error
-            errors.push(Errors::Invalid.new(value, name:        key.to_s,
-                                                   description: "key #{key}",
-                                                   definition:  definition,
-                                                   children:    result_value))
+            result = key_definition.conform(value[key])
+            result_value[key] = result.result
+            next if result.passed?
+            errors.push(ConformError.new(
+              key_definition,
+              "#{definition.name} fails validation for key #{key}",
+              sub_errors: result.errors
+            ))
           end
         end
 
@@ -106,9 +103,9 @@ module Definition
             *required_keys
           )
 
-          status, result = required_definition.conform(value)
-          return if status == :ok
-          errors.concat(result)
+          result = required_definition.conform(value)
+          return if result.passed?
+          errors.concat(result.errors)
         end
 
         attr_accessor :definition, :value

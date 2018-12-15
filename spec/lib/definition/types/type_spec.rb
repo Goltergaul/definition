@@ -16,25 +16,19 @@ describe Definition::Types::Type do
 
     context "with int value" do
       let(:value) { 2 }
-      it { is_expected.to conform_with(value) }
+
+      it "conforms" do
+        expect(conform).to conform_with(value)
+      end
     end
 
     context "with string value" do
       let(:value) { "2" }
-      let(:expected_errors) do
-        [
-          {
-            value:       value,
-            name:        :type_test,
-            description: "is_a? Integer",
-            definition:  definition,
-            children:    []
-          }
-        ]
-      end
 
-      it "generates correct errors" do
-        expect(conform).to not_conform_with(expected_errors)
+      it "does not conform" do
+        expect(conform).to not_conform_with(
+          "Is of type String instead of Integer for type_test"
+        )
       end
     end
 
@@ -42,32 +36,29 @@ describe Definition::Types::Type do
       let(:coerce) do
         lambda do |v|
           begin
-                       Integer(v)
-                     rescue
-                       v
-                     end
+           Integer(v)
+          rescue
+            v
+          end
         end
       end
 
       context "with coercable value" do
         let(:value) { "2" }
-        it { is_expected.to conform_with(2) }
+
+        it "conforms" do
+          expect(conform).to conform_with(2)
+        end
       end
 
       context "with uncoercable value" do
         let(:value) { "a2" }
-        let(:expected_errors) do
-          [
-            {
-              value:       value,
-              name:        :type_test,
-              description: "is_a? Integer",
-              definition:  definition,
-              children:    []
-            }
-          ]
+
+        it "does not conform" do
+          expect(conform).to not_conform_with(
+            "Is of type String instead of Integer for type_test"
+          )
         end
-        it { is_expected.to not_conform_with(expected_errors) }
       end
     end
   end

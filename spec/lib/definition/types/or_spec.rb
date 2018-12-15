@@ -14,7 +14,7 @@ describe Definition::Types::Or do
     end
     let(:definition1) do
       Definition::Types::Lambda.new(:def1, lambda do |v|
-        v > 5
+        v > 5 || v.even?
       end)
     end
     let(:definition2) do
@@ -26,36 +26,23 @@ describe Definition::Types::Or do
     context "with value that fails all definitions" do
       let(:value) { 1 }
 
-      it "contains correct errors" do
-        expect(conform).to not_conform_with([
-                                              {
-                                                value:       value,
-                                                name:        "or_test",
-                                                description: "or: [def1 def2]",
-                                                definition:  definition,
-                                                children:    [
-                                                  {
-                                                    value:       value,
-                                                    name:        :def1,
-                                                    description: "lambda?",
-                                                    definition:  definition1,
-                                                    children:    []
-                                                  },
-                                                  {
-                                                    value:       value,
-                                                    name:        :def2,
-                                                    description: "lambda?",
-                                                    definition:  definition2,
-                                                    children:    []
-                                                  }
-                                                ]
-                                              }
-                                            ])
+      it "does not conform" do
+        expect(conform).to not_conform_with(
+          "None of the children are valid for or_test: { Did not pass test for def1, Did not pass test for def2 }"
+        )
       end
     end
 
-    context "with value that fails one definition" do
+    context "with value that fails only def2 definition" do
       let(:value) { 6 }
+
+      it "conforms" do
+        expect(conform).to conform_with(value)
+      end
+    end
+
+    context "with value that fails only def1 definition" do
+      let(:value) { 11 }
 
       it "conforms" do
         expect(conform).to conform_with(value)
