@@ -1,6 +1,77 @@
 require: 
   - rubocop-rspec
-  - rt_rubocop_defaults
 
 AllCops:
   TargetRubyVersion: 2.3
+    
+Metrics/LineLength:
+  Max: 119
+  Exclude:
+    - Guardfile
+    - Gemfile
+  IgnoreCopDirectives: true
+
+Metrics/BlockLength:
+  Exclude:
+    - '*.gemspec'
+    - '**/*.rake'
+    - 'spec/**/*'
+
+Metrics/MethodLength:
+  Max: 11
+
+
+Style/Documentation:
+  Enabled: false
+
+Style/AlignHash:
+  EnforcedColonStyle: table
+  EnforcedHashRocketStyle: table
+
+Layout/AlignHash:
+  EnforcedColonStyle: table
+  EnforcedHashRocketStyle: table
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19_no_mixed_keys
+
+Style/MultilineOperationIndentation:
+  Description: Checks indentation of binary operations that span more than one line.
+  EnforcedStyle: indented
+
+Layout/MultilineOperationIndentation:
+  Description: Checks indentation of binary operations that span more than one line.
+  EnforcedStyle: indented
+
+Style/RaiseArgs:
+  EnforcedStyle: compact
+
+Style/SignalException:
+  EnforcedStyle: only_raise
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+
+
+RSpec/DescribeClass:
+  Exclude:
+    - spec/integration/**/*
+
+RSpec/MessageSpies:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/MessageExpectation:
+  Enabled: false

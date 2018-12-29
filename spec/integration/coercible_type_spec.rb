@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe "Definition.CoercibleType" do
@@ -9,8 +11,8 @@ describe "Definition.CoercibleType" do
   it_behaves_like "it conforms via coersion", input: "9.99", output: 9.99
 
   context "with incoercible string" do
-   let(:value) { "abc" }
+    let(:value) { "abc" }
 
-   it_behaves_like "it does not conform"
+    it_behaves_like "it does not conform"
   end
 end

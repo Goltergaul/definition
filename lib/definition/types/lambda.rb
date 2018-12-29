@@ -22,8 +22,8 @@ module Definition
         return lambda_result if lambda_result.is_a?(ConformResult)
 
         ConformResult.new(value, errors: [
-          ConformError.new(self, "Did not pass test for #{name}")
-        ])
+                            ConformError.new(self, "Did not pass test for #{name}")
+                          ])
       end
 
       private

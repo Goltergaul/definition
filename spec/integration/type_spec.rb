@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe "Definition.Type" do
@@ -8,8 +10,8 @@ describe "Definition.Type" do
   it_behaves_like "it conforms", 9.99
 
   context "with string" do
-   let(:value) { "9.99" }
+    let(:value) { "9.99" }
 
-   it_behaves_like "it does not conform"
+    it_behaves_like "it does not conform"
   end
 end

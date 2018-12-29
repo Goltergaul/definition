@@ -5,7 +5,7 @@ require "json"
 
 RSpec::Matchers.define :not_conform_with do |expected_message|
   match do |actual|
-    expect(actual.passed?).to be_falsy
+    expect(actual).not_to be_passed
     expect(actual.error_message).to eql(expected_message)
   end
 
@@ -22,7 +22,7 @@ end
 
 RSpec::Matchers.define :conform_with do |expected_value|
   match do |actual|
-    expect(actual.passed?).to be_truthy
+    expect(actual).to be_passed
     expect(actual.result).to eql(expected_value)
   end
 

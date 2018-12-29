@@ -36,7 +36,7 @@ describe Definition::Types::Lambda do
 
   describe "when definition does coerce" do
     let(:test_lambda) do
-      ->(value) do
+      lambda do |value|
         begin
           conform_with(Float(value))
         rescue ArgumentError

@@ -7,5 +7,6 @@
 /pkg/
 /spec/reports/
 /tmp/
-/bin/*
-.swp
+/bin/
+*.swp
+spec/examples.txt

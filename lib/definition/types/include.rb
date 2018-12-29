@@ -38,7 +38,8 @@ module Definition
         def gather_errors(value)
           definition.required_items.map do |item|
             next if value.include?(item)
-            ConformError.new(definition, "#{definition.name} does not include #{item}")
+
+            ConformError.new(definition, "#{definition.name} does not include #{item.inspect}")
           end.compact
         end
 

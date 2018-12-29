@@ -23,17 +23,15 @@ module Definition
 
         def conform(value)
           return non_array_error(value) unless value.is_a?(Array)
+
           results = conform_all(value)
 
           if results.all? { |r| r.errors.empty? }
             ConformResult.new(results.map(&:result))
           else
-            ConformResult.new(value, errors: [
-              ConformError.new(definition,
-                              "Not all items conform with #{definition.name}",
-                               sub_errors: errors(results)
-              )
-            ])
+            ConformResult.new(value, errors: [ConformError.new(definition,
+                                                               "Not all items conform with #{definition.name}",
+                                                               sub_errors: errors(results))])
           end
         end
 
@@ -42,7 +40,7 @@ module Definition
         attr_accessor :definition
 
         def errors(results)
-          results.reject { |r| r.passed? }.map do |r|
+          results.reject(&:passed?).map do |r|
             ConformError.new(
               definition,
               "Item #{r.result.inspect} did not conform to #{definition.name}",
@@ -59,10 +57,9 @@ module Definition
 
         def non_array_error(value)
           ConformResult.new(value, errors: [
-            ConformError.new(definition,
-                            "Non-Array value does not conform with #{definition.name}"
-            )
-          ])
+                              ConformError.new(definition,
+                                               "Non-Array value does not conform with #{definition.name}")
+                            ])
         end
       end
     end

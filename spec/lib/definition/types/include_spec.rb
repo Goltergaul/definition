@@ -17,7 +17,7 @@ describe Definition::Types::Include do
       let(:value) { [:color] }
 
       it "does not conform" do
-        expect(conform).to not_conform_with("include_test does not include name")
+        expect(conform).to not_conform_with("include_test does not include :name")
       end
     end
 
@@ -50,7 +50,7 @@ describe Definition::Types::Include do
 
       it "does not conform" do
         expect(conform).to not_conform_with(
-          "include_test does not include name, include_test does not include color"
+          "include_test does not include :name, include_test does not include :color"
         )
       end
     end

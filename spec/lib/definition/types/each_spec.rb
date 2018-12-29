@@ -7,12 +7,15 @@ describe Definition::Types::Each do
     describe "without coersion" do
       context "with three values where the first and last one are not valid" do
         it "does not conform" do
-          definition = double(:definition)
+          definition = instance_double(Definition::Types::Base)
           expect(definition).to receive(:conform)
             .with("b")
-            .and_return(Definition::ConformResult.new("b", errors: [
-              double(:conform_error, message: "Is not of type Integer")
-            ]))
+            .and_return(Definition::ConformResult.new(
+                          "b",
+                          errors: [
+                            instance_double(Definition::ConformError, message: "Is not of type Integer")
+                          ]
+                        ))
             .ordered
           expect(definition).to receive(:conform)
             .with(1)
@@ -20,36 +23,39 @@ describe Definition::Types::Each do
             .ordered
           expect(definition).to receive(:conform)
             .with("4")
-            .and_return(Definition::ConformResult.new("4", errors: [
-              double(:conform_error, message: "Is not of type Integer")
-            ]))
+            .and_return(Definition::ConformResult.new(
+                          "4",
+                          errors: [
+                            instance_double(Definition::ConformError, message: "Is not of type Integer")
+                          ]
+                        ))
             .ordered
 
           result = described_class.new("each_test", definition: definition).conform(["b", 1, "4"])
           expect(result).to not_conform_with('Not all items conform with each_test: { Item "b" '\
-                                             'did not conform to each_test: { Is not of type Integer '\
+                                             "did not conform to each_test: { Is not of type Integer "\
                                              '}, Item "4" did not conform to each_test: { Is not '\
-                                             'of type Integer } }')
+                                             "of type Integer } }")
         end
       end
 
       context "with two values that are valid" do
         it "conforms" do
-          definition = double(:definition)
+          definition = instance_double(Definition::Types::Base)
           expect(definition).to receive(:conform)
             .and_return(Definition::ConformResult.new(1),
                         Definition::ConformResult.new(2))
 
           result = described_class.new("each_test", definition: definition).conform([1, 2])
-          expect(result).to conform_with([1,2])
+          expect(result).to conform_with([1, 2])
         end
       end
 
       context "with a non-array value" do
         it "does not conform" do
-          definition = double(:definition)
+          definition = instance_double(Definition::Types::Base)
           result = described_class.new("each_test", definition: definition).conform(1)
-          expect(result).to not_conform_with('Non-Array value does not conform with each_test')
+          expect(result).to not_conform_with("Non-Array value does not conform with each_test")
         end
       end
     end
@@ -57,13 +63,13 @@ describe Definition::Types::Each do
     describe "with coersion" do
       context "with two values that are valid and coerced" do
         it "conforms" do
-          definition = double(:definition)
+          definition = instance_double(Definition::Types::Base)
           expect(definition).to receive(:conform)
             .and_return(Definition::ConformResult.new(1),
                         Definition::ConformResult.new(2))
 
-          result = described_class.new("each_test", definition: definition).conform(["1", "2"])
-          expect(result).to conform_with([1,2])
+          result = described_class.new("each_test", definition: definition).conform(%w[1 2])
+          expect(result).to conform_with([1, 2])
         end
       end
     end

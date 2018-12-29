@@ -59,17 +59,17 @@ describe Definition::Types::And do
     end
 
     describe "with coersion" do
-      let(:definition_int) do
-        double(:definition_to_int, conform: Definition::ConformResult.new(1))
-      end
-      let(:definition_float) do
-        double(:definition_to_float, conform: Definition::ConformResult.new(1.0))
-      end
-
       subject(:definition) do
         described_class.new("and_test",
                             definition_int,
                             definition_float).conform("1.3")
+      end
+
+      let(:definition_int) do
+        conforming_definition(1)
+      end
+      let(:definition_float) do
+        conforming_definition(1.0)
       end
 
       it "conforms" do

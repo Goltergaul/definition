@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples "it conforms" do |value|
   it "passes validation for #{value}" do
     result = definition.conform(value)
@@ -23,10 +25,10 @@ end
 
 shared_examples "it does not conform" do
   it "does not passes validation" do
-    expect(definition.conform(value).passed?).to be_falsy
+    expect(definition.conform(value)).not_to be_passed
   end
 
   it "has correct error message" do
-    verify(format: :text) { definition.conform(value).error_message }
+    verify { definition.conform(value).error_message }
   end
 end

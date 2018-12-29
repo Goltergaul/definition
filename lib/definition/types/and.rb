@@ -7,7 +7,7 @@ module Definition
     class And < Base
       module Dsl
         def validate(definition)
-          self.definitions << definition
+          definitions << definition
         end
       end
 
@@ -35,10 +35,9 @@ module Definition
             ConformResult.new(results.last.result)
           else
             ConformResult.new(value, errors: [
-              ConformError.new(definition, "Not all children are valid for #{definition.name}",
-                               sub_errors: results.map { |r| r.errors }.flatten
-              )
-            ])
+                                ConformError.new(definition, "Not all children are valid for #{definition.name}",
+                                                 sub_errors: results.map(&:errors).flatten)
+                              ])
           end
         end
 

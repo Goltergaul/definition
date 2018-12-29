@@ -41,7 +41,7 @@ describe Definition::Types::Keys do
 
         it "does not conform" do
           expect(conform).to not_conform_with(
-            "address does not include street, address does not include city"
+            "address does not include :street, address does not include :city"
           )
         end
       end
@@ -51,8 +51,8 @@ describe Definition::Types::Keys do
 
         it "does not conform" do
           expect(conform).to not_conform_with(
-            "address does not include street, "\
-            "address does not include city, "\
+            "address does not include :street, "\
+            "address does not include :city, "\
             "address fails validation for key appartment_number: { Is of type String instead of Integer }"
           )
         end
@@ -63,7 +63,7 @@ describe Definition::Types::Keys do
 
         it "does not conform" do
           expect(conform).to not_conform_with(
-            "address does not include street, address does not include city"
+            "address does not include :street, address does not include :city"
           )
         end
       end
@@ -94,7 +94,7 @@ describe Definition::Types::Keys do
 
         it "does not conform" do
           expect(conform).to not_conform_with(
-            "address has extra keys: foo"
+            "address has extra keys: :foo"
           )
         end
       end

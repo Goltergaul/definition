@@ -1,7 +1,6 @@
-# coding: utf-8
 # frozen_string_literal: true
 
-lib = File.expand_path("../lib", __FILE__)
+lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "definition/version"
 
@@ -30,17 +29,19 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.13"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "pry"
-  spec.add_development_dependency "awesome_print"
-  spec.add_development_dependency "rspec-its", "~> 1.2"
   spec.add_development_dependency "approvals", "~> 0.0"
+  spec.add_development_dependency "awesome_print"
   spec.add_development_dependency "benchmark-ips"
-  spec.add_development_dependency "rubocop", "0.47.1"
+  spec.add_development_dependency "bundler", "~> 1.13"
+  spec.add_development_dependency "fuubar"
   spec.add_development_dependency "guard"
   spec.add_development_dependency "guard-rspec"
+  spec.add_development_dependency "pry"
+  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "rspec-its", "~> 1.2"
+  spec.add_development_dependency "rubocop"
+  spec.add_development_dependency "rubocop-rspec"
+  spec.add_development_dependency "rubocop_runner"
   spec.add_development_dependency "timecop"
-  spec.add_development_dependency "rt_rubocop_defaults", "~> 1.0"
 end

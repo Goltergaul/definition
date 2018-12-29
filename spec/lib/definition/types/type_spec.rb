@@ -34,8 +34,8 @@ describe Definition::Types::Type do
       let(:definition) do
         described_class.new(:type_test, ::Integer) do |v|
           begin
-           Integer(v)
-          rescue
+            Integer(v)
+          rescue StandardError
             v
           end
         end

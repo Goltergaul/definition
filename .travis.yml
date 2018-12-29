@@ -1,5 +1,14 @@
-sudo: false
 language: ruby
 rvm:
-  - 2.3.3
-before_install: gem install bundler -v 1.13.6
+  - jruby-9.1.17.0 # ruby 2.3
+  - jruby-9.2.0.0 # ruby 2.5
+  - jruby-head
+  - 2.3.0
+  - 2.4.0
+  - 2.5.0
+  - ruby-head
+jobs:
+  include:
+    - stage: linting
+      rvm: ruby-head
+      script: bundle exec rake rubocop

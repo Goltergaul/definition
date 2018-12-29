@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe "Definition.Enum" do
@@ -10,8 +12,8 @@ describe "Definition.Enum" do
   it_behaves_like "it conforms", "yellow"
 
   context "with other value" do
-   let(:value) { "pink" }
+    let(:value) { "pink" }
 
-   it_behaves_like "it does not conform"
+    it_behaves_like "it does not conform"
   end
 end

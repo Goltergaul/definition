@@ -7,7 +7,7 @@ module Definition
     class Or < Base
       module Dsl
         def validate(definition)
-          self.definitions << definition
+          definitions << definition
         end
       end
 
@@ -34,10 +34,9 @@ module Definition
             result
           else
             ConformResult.new(value, errors: [
-              ConformError.new(definition, "None of the children are valid for #{definition.name}",
-                sub_errors: result
-              )
-            ])
+                                ConformError.new(definition, "None of the children are valid for #{definition.name}",
+                                                 sub_errors: result)
+                              ])
           end
         end
 
@@ -45,14 +44,11 @@ module Definition
 
         def first_successful_conform_or_errors(value)
           errors = []
-          success_result = definition.definitions.find do |definition|
+          definition.definitions.each do |definition|
             result = definition.conform(value)
-            if result.passed?
-              return result
-            else
-              errors.push(result.errors)
-              nil
-            end
+            return result if result.passed?
+
+            errors.push(result.errors)
           end
 
           errors.flatten

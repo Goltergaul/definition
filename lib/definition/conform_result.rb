@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 module Definition
   class ConformResult
     def initialize(result, errors: [])
-      self.result, self.errors = result, errors
+      self.result = result
+      self.errors = errors
     end
 
     attr_accessor :result, :errors

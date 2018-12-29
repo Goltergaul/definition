@@ -10,11 +10,11 @@ module Definition
     class Keys < Base
       module Dsl
         def required(key, definition)
-          self.required_definitions[key] = definition
+          required_definitions[key] = definition
         end
 
         def optional(key, definition)
-          self.optional_definitions[key] = definition
+          optional_definitions[key] = definition
         end
       end
 
@@ -43,7 +43,7 @@ module Definition
           add_missing_key_errors
           values = conform_all_keys
 
-          return ConformResult.new(values, errors: errors)
+          ConformResult.new(values, errors: errors)
         end
 
         private
@@ -53,10 +53,11 @@ module Definition
         def add_extra_key_errors
           extra_keys = value.keys - all_keys
           return if extra_keys.empty?
+
           errors.push(ConformError.new(
-            definition,
-            "#{definition.name} has extra keys: #{extra_keys.join(', ')}")
-          )
+                        definition,
+                        "#{definition.name} has extra keys: #{extra_keys.map(&:inspect).join(', ')}"
+                      ))
         end
 
         def conform_all_keys
@@ -89,14 +90,14 @@ module Definition
         def conform_definitions(keys)
           keys.each_with_object({}) do |(key, key_definition), result_value|
             next unless value.key?(key)
+
             result = key_definition.conform(value[key])
             result_value[key] = result.result
             next if result.passed?
-            errors.push(ConformError.new(
-              key_definition,
-              "#{definition.name} fails validation for key #{key}",
-              sub_errors: result.errors
-            ))
+
+            errors.push(ConformError.new(key_definition,
+                                         "#{definition.name} fails validation for key #{key}",
+                                         sub_errors: result.errors))
           end
         end
 
@@ -108,6 +109,7 @@ module Definition
 
           result = required_definition.conform(value)
           return if result.passed?
+
           errors.concat(result.errors)
         end
 

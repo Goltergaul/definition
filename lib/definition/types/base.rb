@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "definition/conform_result"
 require "definition/conform_error"
 
@@ -16,6 +17,10 @@ module Definition
         return "value passes definition" if result.passed?
 
         result.error_message
+      end
+
+      def conform(_value)
+        raise NotImplementedError
       end
     end
   end
