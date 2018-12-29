@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "definition/types/type"
 
 describe Definition::Types::Type do
   describe ".conform" do
@@ -9,8 +8,7 @@ describe Definition::Types::Type do
 
     let(:definition) do
       described_class.new(:type_test,
-                          ::Integer,
-                          coerce: coerce)
+                          ::Integer)
     end
     let(:coerce) { false }
 
@@ -27,14 +25,14 @@ describe Definition::Types::Type do
 
       it "does not conform" do
         expect(conform).to not_conform_with(
-          "Is of type String instead of Integer for type_test"
+          "Is of type String instead of Integer"
         )
       end
     end
 
     context "with coercion lambda" do
-      let(:coerce) do
-        lambda do |v|
+      let(:definition) do
+        described_class.new(:type_test, ::Integer) do |v|
           begin
            Integer(v)
           rescue
@@ -56,7 +54,7 @@ describe Definition::Types::Type do
 
         it "does not conform" do
           expect(conform).to not_conform_with(
-            "Is of type String instead of Integer for type_test"
+            "Is of type String instead of Integer"
           )
         end
       end

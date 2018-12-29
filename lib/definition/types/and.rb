@@ -5,6 +5,13 @@ require "definition/types/base"
 module Definition
   module Types
     class And < Base
+      module Dsl
+        def validate(definition)
+          self.definitions << definition
+        end
+      end
+
+      include Dsl
       attr_accessor :definitions
 
       def initialize(name, *args)
@@ -22,14 +29,14 @@ module Definition
         end
 
         def conform(value)
-          errors = gather_errors(value)
+          results = conform_all(value)
 
-          if errors.empty?
-            ConformResult.new(value)
+          if results.all? { |r| r.errors.empty? }
+            ConformResult.new(results.last.result)
           else
             ConformResult.new(value, errors: [
               ConformError.new(definition, "Not all children are valid for #{definition.name}",
-                sub_errors: errors
+                               sub_errors: results.map { |r| r.errors }.flatten
               )
             ])
           end
@@ -39,14 +46,14 @@ module Definition
 
         attr_accessor :definition
 
-        def gather_errors(value)
-          errors = []
+        def conform_all(value)
+          results = []
           definition.definitions.each do |definition|
             result = definition.conform(value)
-            errors.push(result.errors) unless result.passed?
+            value = result.result
+            results << result
           end
-          errors.flatten!
-          errors
+          results
         end
       end
     end

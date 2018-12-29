@@ -8,6 +8,17 @@ require "definition/types/include"
 module Definition
   module Types
     class Keys < Base
+      module Dsl
+        def required(key, definition)
+          self.required_definitions[key] = definition
+        end
+
+        def optional(key, definition)
+          self.optional_definitions[key] = definition
+        end
+      end
+
+      include Dsl
       attr_accessor :required_definitions, :optional_definitions
 
       def initialize(name, req: {}, opt: {})
@@ -18,14 +29,6 @@ module Definition
 
       def conform(value)
         Conformer.new(self, value).conform
-      end
-
-      def required(key, definition)
-        self.required_definitions[key] = definition
-      end
-
-      def optional(key, definition)
-        self.optional_definitions[key] = definition
       end
 
       class Conformer
@@ -40,7 +43,7 @@ module Definition
           add_missing_key_errors
           values = conform_all_keys
 
-          return ConformResult.new(value, errors: errors)
+          return ConformResult.new(values, errors: errors)
         end
 
         private

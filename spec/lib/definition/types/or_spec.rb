@@ -1,29 +1,24 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "definition/types/or"
-require "definition/types/lambda"
 
 describe Definition::Types::Or do
   describe ".conform" do
     subject(:conform) { definition.conform(value) }
+
     let(:definition) do
       described_class.new("or_test",
                           definition1,
                           definition2)
     end
-    let(:definition1) do
-      Definition::Types::Lambda.new(:def1, lambda do |v|
-        v > 5 || v.even?
-      end)
-    end
-    let(:definition2) do
-      Definition::Types::Lambda.new(:def2, lambda do |v|
-        v > 10
-      end)
-    end
 
     context "with value that fails all definitions" do
+      let(:definition1) do
+        failing_definition(value, "Did not pass test for def1")
+      end
+      let(:definition2) do
+        failing_definition(value, "Did not pass test for def2")
+      end
       let(:value) { 1 }
 
       it "does not conform" do
@@ -34,6 +29,12 @@ describe Definition::Types::Or do
     end
 
     context "with value that fails only def2 definition" do
+      let(:definition1) do
+        conforming_definition(value)
+      end
+      let(:definition2) do
+        failing_definition(value, "Did not pass test for def2")
+      end
       let(:value) { 6 }
 
       it "conforms" do
@@ -42,6 +43,12 @@ describe Definition::Types::Or do
     end
 
     context "with value that fails only def1 definition" do
+      let(:definition1) do
+        failing_definition(value, "Did not pass test for def1")
+      end
+      let(:definition2) do
+        conforming_definition(value)
+      end
       let(:value) { 11 }
 
       it "conforms" do
@@ -49,11 +56,48 @@ describe Definition::Types::Or do
       end
     end
 
+    context "with value that fails def1 definition and def2 coerces" do
+      let(:definition1) do
+        failing_definition(value, "Did not pass test for def1")
+      end
+      let(:definition2) do
+        conforming_definition(coerced_value)
+      end
+      let(:value) { 11 }
+      let(:coerced_value) { 22 }
+
+      it "conforms" do
+        expect(conform).to conform_with(coerced_value)
+      end
+    end
+
     context "with value that fails no definition" do
+      let(:definition1) do
+        conforming_definition(value)
+      end
+      let(:definition2) do
+        conforming_definition(value)
+      end
       let(:value) { 12 }
 
       it "conforms" do
         expect(conform).to conform_with(value)
+      end
+    end
+
+    context "with value that fails no definition but both coerce differently" do
+      let(:definition1) do
+        conforming_definition(coerced_value1)
+      end
+      let(:definition2) do
+        conforming_definition(coerced_value2)
+      end
+      let(:value) { 12 }
+      let(:coerced_value1) { 1 }
+      let(:coerced_value2) { 2 }
+
+      it "conforms with the result of the first definition that conforms" do
+        expect(conform).to conform_with(coerced_value1)
       end
     end
   end

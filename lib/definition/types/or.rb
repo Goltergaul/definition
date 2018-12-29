@@ -5,6 +5,13 @@ require "definition/types/base"
 module Definition
   module Types
     class Or < Base
+      module Dsl
+        def validate(definition)
+          self.definitions << definition
+        end
+      end
+
+      include Dsl
       attr_accessor :definitions
 
       def initialize(name, *args)

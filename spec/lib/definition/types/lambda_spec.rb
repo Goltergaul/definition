@@ -1,33 +1,69 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "definition/types/lambda"
 
 describe Definition::Types::Lambda do
   let(:definition) do
     described_class.new(:lambda_test,
-                        test_lambda)
+                        &test_lambda)
   end
-  let(:test_lambda) { ->(value) { value.even? } }
 
-  describe ".conform" do
-    subject(:conform) { definition.conform(value) }
+  describe "when definition does not coerce" do
+    let(:test_lambda) { ->(value) { conform_with(value) if value.even? } }
 
-    context "with even value" do
-      let(:value) { 2 }
+    describe ".conform" do
+      subject(:conform) { definition.conform(value) }
 
-      it "conforms" do
-        expect(conform).to conform_with(value)
+      context "with even value" do
+        let(:value) { 2 }
+
+        it "conforms" do
+          expect(conform).to conform_with(value)
+        end
+      end
+
+      context "with odd value" do
+        let(:value) { 1 }
+
+        it "does not conform" do
+          expect(conform).to not_conform_with(
+            "Did not pass test for lambda_test"
+          )
+        end
+      end
+    end
+  end
+
+  describe "when definition does coerce" do
+    let(:test_lambda) do
+      ->(value) do
+        begin
+          conform_with(Float(value))
+        rescue ArgumentError
+          value
+        end
       end
     end
 
-    context "with odd value" do
-      let(:value) { 1 }
+    describe ".conform" do
+      subject(:conform) { definition.conform(value) }
 
-      it "does not conform" do
-        expect(conform).to not_conform_with(
-          "Did not pass test for lambda_test"
-        )
+      context "with coercable value" do
+        let(:value) { "2.3" }
+
+        it "conforms" do
+          expect(conform).to conform_with(2.3)
+        end
+      end
+
+      context "with uncoercable value" do
+        let(:value) { "foobar" }
+
+        it "does not conform" do
+          expect(conform).to not_conform_with(
+            "Did not pass test for lambda_test"
+          )
+        end
       end
     end
   end

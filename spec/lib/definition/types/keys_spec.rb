@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "definition/types/keys"
-require "definition/types/lambda"
 
 describe Definition::Types::Keys do
   describe ".conform" do
@@ -55,7 +53,7 @@ describe Definition::Types::Keys do
           expect(conform).to not_conform_with(
             "address does not include street, "\
             "address does not include city, "\
-            "address fails validation for key appartment_number: { Is of type String instead of Integer for integer }"
+            "address fails validation for key appartment_number: { Is of type String instead of Integer }"
           )
         end
       end

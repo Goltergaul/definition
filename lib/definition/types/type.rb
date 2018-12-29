@@ -5,16 +5,15 @@ require "definition/types/base"
 module Definition
   module Types
     class Type < Base
-      def initialize(name, klass, coerce: false)
+      def initialize(name = nil, klass, &coerce)
         self.klass = klass
         self.coerce = coerce
         super(name)
       end
 
       def conform(value)
-        unless valid?(value)
-          coerced_value = coerced(value)
-          return try_conform(coerced_value)
+        if coerce && !valid?(value)
+          value = coerce.call(value)
         end
 
         try_conform(value)
@@ -31,14 +30,9 @@ module Definition
           ConformResult.new(value)
         else
           ConformResult.new(value, errors: [
-            ConformError.new(self, "Is of type #{value.class.name} instead of #{klass.name} for #{name}")
+            ConformError.new(self, "Is of type #{value.class.name} instead of #{klass.name}")
           ])
         end
-      end
-
-      def coerced(value)
-        return value unless coerce
-        coerce.call(value)
       end
 
       attr_accessor :test, :klass, :coerce

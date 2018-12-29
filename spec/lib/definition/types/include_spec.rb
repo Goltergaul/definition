@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "definition/types/include"
 
 describe Definition::Types::Include do
   subject(:definition) do
