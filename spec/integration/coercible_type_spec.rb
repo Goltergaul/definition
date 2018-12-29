@@ -1,0 +1,16 @@
+require "spec_helper"
+
+describe "Definition.CoercibleType" do
+  subject(:definition) do
+    Definition.CoercibleType(Float)
+  end
+
+  it_behaves_like "it conforms", 9.99
+  it_behaves_like "it conforms via coersion", input: "9.99", output: 9.99
+
+  context "with incoercible string" do
+   let(:value) { "abc" }
+
+   it_behaves_like "it does not conform"
+  end
+end
