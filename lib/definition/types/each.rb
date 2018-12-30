@@ -27,7 +27,7 @@ module Definition
           results = conform_all(value)
 
           if results.all? { |r| r.errors.empty? }
-            ConformResult.new(results.map(&:result))
+            ConformResult.new(results.map(&:value))
           else
             ConformResult.new(value, errors: [ConformError.new(definition,
                                                                "Not all items conform with #{definition.name}",
@@ -43,7 +43,7 @@ module Definition
           results.reject(&:passed?).map do |r|
             ConformError.new(
               definition,
-              "Item #{r.result.inspect} did not conform to #{definition.name}",
+              "Item #{r.value.inspect} did not conform to #{definition.name}",
               sub_errors: r.errors
             )
           end

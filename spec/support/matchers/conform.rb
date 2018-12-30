@@ -23,7 +23,7 @@ end
 RSpec::Matchers.define :conform_with do |expected_value|
   match do |actual|
     expect(actual).to be_passed
-    expect(actual.result).to eql(expected_value)
+    expect(actual.value).to eql(expected_value)
   end
 
   failure_message do |actual|
@@ -32,7 +32,7 @@ RSpec::Matchers.define :conform_with do |expected_value|
     else
       "expected the following result:\n
       Expected:\n #{expected_value}
-      Actual:\n #{actual.result}"
+      Actual:\n #{actual.value}"
     end
   end
 end

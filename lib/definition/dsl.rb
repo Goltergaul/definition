@@ -38,7 +38,7 @@ module Definition
     def CoercibleType(klass) # rubocop:disable Naming/MethodName
       unless Kernel.respond_to?(klass.name)
         raise ArgumentError.new("#{klass} can't be used as CoercibleType because its not "\
-                                "a primitive that has a coersion function defined")
+                                "a primitive that has a coercion function defined")
       end
       Types::Type.new(:type, klass) do |value|
         begin

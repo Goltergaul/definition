@@ -92,7 +92,7 @@ module Definition
             next unless value.key?(key)
 
             result = key_definition.conform(value[key])
-            result_value[key] = result.result
+            result_value[key] = result.value
             next if result.passed?
 
             errors.push(ConformError.new(key_definition,

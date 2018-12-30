@@ -7,7 +7,7 @@ shared_examples "it conforms" do |value|
   end
 
   it "returns #{value}" do
-    expect(definition.conform(value).result).to eql(value)
+    expect(definition.conform(value).value).to eql(value)
   end
 end
 
@@ -19,7 +19,7 @@ shared_examples "it conforms via coersion" do |input:, output:|
 
   it "coerces #{input} to #{output}" do
     result = definition.conform(input)
-    expect(result.result).to eql(output), result.error_message
+    expect(result.value).to eql(output), result.error_message
   end
 end
 

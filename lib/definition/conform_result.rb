@@ -2,12 +2,12 @@
 
 module Definition
   class ConformResult
-    def initialize(result, errors: [])
-      self.result = result
+    def initialize(value, errors: [])
+      self.value = value
       self.errors = errors
     end
 
-    attr_accessor :result, :errors
+    attr_accessor :value, :errors
 
     def passed?
       errors.empty?

@@ -32,7 +32,7 @@ module Definition
           results = conform_all(value)
 
           if results.all? { |r| r.errors.empty? }
-            ConformResult.new(results.last.result)
+            ConformResult.new(results.last.value)
           else
             ConformResult.new(value, errors: [
                                 ConformError.new(definition, "Not all children are valid for #{definition.name}",
@@ -49,7 +49,7 @@ module Definition
           results = []
           definition.definitions.each do |definition|
             result = definition.conform(value)
-            value = result.result
+            value = result.value
             results << result
           end
           results
