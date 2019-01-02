@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/Goltergaul/definition.svg?branch=master)][travis]
 [![Gem Version](https://badge.fury.io/rb/definition.svg)][rubygems]
 
-Simple and composable validation and coercion of data structures. It also includes a ValueObject for convinience.
+Simple and composable validation and coercion of data structures. It also includes a ValueObject for convenience.
 
 ## Installation
 
