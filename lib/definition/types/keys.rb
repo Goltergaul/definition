@@ -31,6 +31,10 @@ module Definition
         Conformer.new(self, value).conform
       end
 
+      def keys
+        required_definitions.keys + optional_definitions.keys
+      end
+
       class Conformer
         def initialize(definition, value)
           self.definition = definition

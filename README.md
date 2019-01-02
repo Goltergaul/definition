@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/Goltergaul/definition.svg?branch=master)][travis]
 [![Gem Version](https://badge.fury.io/rb/definition.svg)][rubygems]
 
-Simple and composable validation and coercion of data structures
+Simple and composable validation and coercion of data structures. It also includes a ValueObject for convinience.
 
 ## Installation
 
@@ -62,6 +62,44 @@ conform_result.value # => {title: "My first blog post", body: "Shortest one ever
 
 Because definitions do not only validate input but also transform input, we use
 the term `conform` which stands for validation and coercion.
+
+### Value Objects
+
+```ruby
+class User < Definition::ValueObject
+  definition(Definition.Keys do
+    required :username, Definition.Type(String)
+    required :password, Definition.Type(String)
+  end)
+end
+
+user = User.new(username: "johndoe", password: "zg(2ds8x2/")
+user.username # => "johndoe"
+user[:username] # => "johndoe"
+user.username = "Alice" # => NoMethodError (ValueObjects are immutable)
+user[:username] = "Alice" # => FrozenError (ValueObjects are immutable)
+
+User.new(username: "johndoe") # => Definition::InvalidValueObjectError: hash does not include :last_name
+```
+
+Value objects delegate all calls to the output value of the defined definition,
+so in this example you can use all methods that are defined on `Hash` also on the
+user object. If you use a `Keys` definition, the value object additionally defines
+convenient accessor methods for all attributes.
+
+Value Objects can also be used for all other data structures that can be validated
+by a definition, for example arrays:
+
+```ruby
+class IntegerArray < Definition::ValueObject
+  definition(Definition.Each(Definition.Type(Integer)))
+end
+
+array = IntegerArray.new([1,2,3])
+array.first # => 1
+
+IntegerArray.new([1,2,"3"]) # => Definition::InvalidValueObjectError: Not all items conform with each: { Item "3" did not conform to each: { Is of type String instead of Integer } }
+```
 
 ### Conforming Hashes
 

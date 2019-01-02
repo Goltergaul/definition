@@ -75,3 +75,6 @@ RSpec/MultipleExpectations:
 
 RSpec/MessageExpectation:
   Enabled: false
+
+RSpec/RepeatedExample:
+  Enabled: false
