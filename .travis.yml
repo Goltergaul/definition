@@ -12,3 +12,10 @@ jobs:
     - stage: linting
       rvm: ruby-head
       script: bundle exec rake rubocop
+    - stage: benchmark
+      script: bundle exec ruby benchmark/complex_example.rb
+      rvm: ruby-head
+    - script: bundle exec ruby benchmark/coercion.rb
+      rvm: ruby-head
+    - script: bundle exec ruby benchmark/validation_only.rb
+      rvm: ruby-head
