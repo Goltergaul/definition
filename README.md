@@ -79,7 +79,7 @@ user[:username] # => "johndoe"
 user.username = "Alice" # => NoMethodError (ValueObjects are immutable)
 user[:username] = "Alice" # => FrozenError (ValueObjects are immutable)
 
-User.new(username: "johndoe") # => Definition::InvalidValueObjectError: hash does not include :last_name
+User.new(username: "johndoe") # => Definition::InvalidValueObjectError: hash does not include :password
 ```
 
 Value objects delegate all calls to the output value of the defined definition,
