@@ -1,1 +1,1 @@
-Not all children are valid for and: { Is of type BigDecimal instead of Float }
+Not all definitions are valid for and: { Is of type BigDecimal instead of Float }
