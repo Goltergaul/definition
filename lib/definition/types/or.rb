@@ -33,10 +33,10 @@ module Definition
           if result.is_a?(ConformResult)
             result
           else
-            ConformResult.new(value, errors: [
-                                ConformError.new(definition, "None of the children are valid for #{definition.name}",
-                                                 sub_errors: result)
-                              ])
+            error = ConformError.new(definition,
+                                     "None of the definitions are valid for #{definition.name}",
+                                     sub_errors: result)
+            ConformResult.new(value, errors: [error])
           end
         end
 

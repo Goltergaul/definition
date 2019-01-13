@@ -225,6 +225,66 @@ order = Definition.Keys do
 end
 ```
 
+### Predefined Definitions
+
+#### Strings and Arrays
+
+```ruby
+Definition.MaxSize(5).conform("house") # => pass
+Definition.MaxSize(5).conform([1,2,3,4,5]) # => pass
+```
+
+```ruby
+Definition.MinSize(5).conform("house") # => pass
+Definition.MinSize(5).conform([1,2,3,4,5]) # => pass
+```
+
+#### Strings
+
+```ruby
+Definition.NonEmptyString.conform("house") # => pass
+```
+
+```ruby
+Definition.Regex(/^\d*$/).conform("123") # => pass
+```
+
+#### Numerics
+
+```ruby
+Definition.GreaterThen(5).conform(5.1) # => pass
+Definition.GreaterThenEqual(5).conform(5) # => pass
+Definition.LessThen(5).conform(4) # => pass
+Definition.LessThenEqual(5).conform(5) # => pass
+```
+
+#### Strings, Array, Hashes
+
+```ruby
+Definition.Empty.conform("") # => pass
+Definition.Empty.conform([]) # => pass
+Definition.Empty.conform({}) # => pass
+```
+
+```ruby
+Definition.NonEmpty.conform("Joe") # => pass
+Definition.NonEmpty.conform([1]) # => pass
+Definition.NonEmpty.conform({ a: 1 }) # => pass
+```
+
+#### Nil
+
+```ruby
+Definition.Nil.conform(nil) # => pass
+```
+
+#### All types
+
+```ruby
+Definition.Equal(5).conform(5) # => pass
+Definition.Equal("foo").conform("foo") # => pass
+```
+
 ### Examples
 
 Check out the [integration specs](./spec/integration) for more usage examples.

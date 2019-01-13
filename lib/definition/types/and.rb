@@ -35,7 +35,7 @@ module Definition
             ConformResult.new(results.last.value)
           else
             ConformResult.new(value, errors: [
-                                ConformError.new(definition, "Not all children are valid for #{definition.name}",
+                                ConformError.new(definition, "Not all definitions are valid for #{definition.name}",
                                                  sub_errors: results.map(&:errors).flatten)
                               ])
           end
