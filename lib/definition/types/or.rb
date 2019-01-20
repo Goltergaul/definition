@@ -48,7 +48,7 @@ module Definition
             result = definition.conform(value)
             return result if result.passed?
 
-            errors.push(result.errors)
+            errors.push(result.error_tree)
           end
 
           errors.flatten

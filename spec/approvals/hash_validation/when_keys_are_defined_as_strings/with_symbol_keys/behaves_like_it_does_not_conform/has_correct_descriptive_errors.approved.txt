@@ -1,0 +1,2 @@
+[0] {:description=>"hash has extra key: :first_name", :pointer=>"/first_name"}
+[1] {:description=>"hash is missing key \"first_name\"", :pointer=>"/first_name"}

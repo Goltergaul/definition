@@ -10,11 +10,11 @@ module Definition
           ConformResult.new(value)
         end
       end
-
       include Dsl
-      def initialize(name, &test_lambda)
+
+      def initialize(name, context: {}, &test_lambda)
         self.test_lambda = test_lambda
-        super(name)
+        super(name, context: context)
       end
 
       def conform(value)

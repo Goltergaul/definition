@@ -13,7 +13,9 @@ describe Definition::Types::Each do
             .and_return(Definition::ConformResult.new(
                           "b",
                           errors: [
-                            instance_double(Definition::ConformError, message: "Is not of type Integer")
+                            instance_double(Definition::ConformError,
+                                            message:   "Is not of type Integer",
+                                            "parent=": nil)
                           ]
                         ))
             .ordered
@@ -26,7 +28,9 @@ describe Definition::Types::Each do
             .and_return(Definition::ConformResult.new(
                           "4",
                           errors: [
-                            instance_double(Definition::ConformError, message: "Is not of type Integer")
+                            instance_double(Definition::ConformError,
+                                            message:   "Is not of type Integer",
+                                            "parent=": nil)
                           ]
                         ))
             .ordered

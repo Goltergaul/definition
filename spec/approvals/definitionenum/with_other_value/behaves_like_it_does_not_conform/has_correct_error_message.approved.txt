@@ -1,1 +1,1 @@
-Did not pass test for enum ["blue", "red", "yellow"]
+Did not pass test for enum

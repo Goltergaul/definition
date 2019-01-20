@@ -1,27 +1,21 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "i18n"
 
 describe "JSONAPI body validation" do
   class JsonApiRequestHandler
-    MAX_LENGTH = Definition.Lambda(:max_length) do |value|
-      conform_with(value) if value.size <= 1000
-    end
-    MAX_STRING_LENGTH = Definition.And(
-      Definition.Type(String),
-      MAX_LENGTH
-    )
     MILLISECONDS_TIME = Definition.Lambda(:milliseconds_time) do |v|
       conform_with(Time.at(v / 1000.0).utc) if v.is_a?(Integer)
     end
 
     BODY_SCHEMA = Definition.Keys do
       required(:data, Definition.Keys do
-        required :type, Definition.Enum("article")
+        required :type, Definition.Equal("article")
         required :id, Definition.Type(String)
         required(:attributes, Definition.Keys do
-          required :title, MAX_STRING_LENGTH
-          required :body, MAX_STRING_LENGTH
+          required :title, Definition.MaxSize(1000)
+          required :body, Definition.MaxSize(1000)
           required :publish_date, MILLISECONDS_TIME
         end)
 
@@ -29,19 +23,30 @@ describe "JSONAPI body validation" do
           required(:author, Definition.Keys do
             required(:data, Definition.Keys do
               required :id, Definition.Type(String)
-              required :type, Definition.Enum("people")
+              required :type, Definition.Equal("people")
             end)
           end)
           optional(:comments, Definition.Keys do
             required(:data, Definition.Each(
                               Definition.Keys do
                                 required :id, Definition.Type(String)
-                                required :type, Definition.Enum("comment")
+                                required :type, Definition.Equal("comment")
                               end
                             ))
           end)
         end)
       end)
+    end
+
+    def self.errors(request_body)
+      result = BODY_SCHEMA.conform(request_body)
+      result.errors.map do |e|
+        {
+          title:       "Validation error",
+          description: e.translated_error,
+          pointer:     e.json_pointer
+        }
+      end
     end
   end
 
@@ -153,5 +158,12 @@ describe "JSONAPI body validation" do
     end
 
     it_behaves_like "it does not conform"
+
+    describe "translated errors" do
+      it "renders errors" do
+        errors = JsonApiRequestHandler.errors(value)
+        verify(format: :json) { errors }
+      end
+    end
   end
 end

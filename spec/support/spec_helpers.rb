@@ -2,9 +2,12 @@
 
 module SpecHelpers
   def failing_definition(value, error_message)
+    error = instance_double(Definition::ConformError,
+                            message:   error_message,
+                            "parent=": nil)
     instance_double(Definition::Types::Base,
                     conform: Definition::ConformResult.new(
-                      value, errors: [instance_double(Definition::ConformError, message: error_message)]
+                      value, errors: [error]
                     ))
   end
 

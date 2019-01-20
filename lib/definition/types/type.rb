@@ -8,7 +8,7 @@ module Definition
       def initialize(name, klass, &coerce)
         self.klass = klass
         self.coerce = coerce
-        super(name)
+        super(name, context: { class: klass })
       end
 
       def conform(value)

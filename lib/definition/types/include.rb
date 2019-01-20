@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-# frozen_string_literal: true
-
 require "definition/types/base"
+require "definition/key_conform_error"
 
 module Definition
   module Types
@@ -39,7 +38,7 @@ module Definition
           definition.required_items.map do |item|
             next if value.include?(item)
 
-            ConformError.new(definition, "#{definition.name} does not include #{item.inspect}")
+            KeyConformError.new(definition, "#{definition.name} does not include #{item.inspect}", key: item)
           end.compact
         end
 

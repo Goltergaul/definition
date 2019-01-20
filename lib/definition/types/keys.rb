@@ -4,6 +4,7 @@
 
 require "definition/types/base"
 require "definition/types/include"
+require "definition/key_conform_error"
 
 module Definition
   module Types
@@ -58,10 +59,14 @@ module Definition
           extra_keys = value.keys - all_keys
           return if extra_keys.empty?
 
-          errors.push(ConformError.new(
-                        definition,
-                        "#{definition.name} has extra keys: #{extra_keys.map(&:inspect).join(', ')}"
-                      ))
+          extra_keys.each do |key|
+            errors.push(KeyConformError.new(
+                          definition,
+                          "#{definition.name} has extra key: #{key.inspect}",
+                          key:      key,
+                          i18n_key: "keys.has_extra_key"
+                        ))
+          end
         end
 
         def conform_all_keys
@@ -99,9 +104,10 @@ module Definition
             result_value[key] = result.value
             next if result.passed?
 
-            errors.push(ConformError.new(key_definition,
-                                         "#{definition.name} fails validation for key #{key}",
-                                         sub_errors: result.errors))
+            errors.push(KeyConformError.new(key_definition,
+                                            "#{definition.name} fails validation for key #{key}",
+                                            key:        key,
+                                            sub_errors: result.error_tree))
           end
         end
 
@@ -114,7 +120,16 @@ module Definition
           result = required_definition.conform(value)
           return if result.passed?
 
-          errors.concat(result.errors)
+          result.errors.each do |error|
+            errors.push(missing_key_error(error.key))
+          end
+        end
+
+        def missing_key_error(key)
+          KeyConformError.new(definition,
+                              "#{definition.name} is missing key #{key.inspect}",
+                              key:      key,
+                              i18n_key: "keys.has_missing_key")
         end
 
         attr_accessor :definition, :value

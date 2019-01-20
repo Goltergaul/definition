@@ -38,6 +38,12 @@ conform_result.passed? # => true
 conform_result = schema.conform({first_name: "John", last_name: "Doe", birthday: "2018/02/09"})
 conform_result.passed? # => false
 conform_result.error_message # => hash fails validation for key birthday: { Is of type String instead of Date }
+conform_result.error_hash # =>
+# {
+#     :birthday => [
+#         [0] "Value is of wrong type, needs to be a Date"
+#     ]
+# }
 ```
 
 But it can also transform those data structures at the same time. The following
@@ -288,6 +294,34 @@ Definition.Equal("foo").conform("foo") # => pass
 ### Examples
 
 Check out the [integration specs](./spec/integration) for more usage examples.
+
+### I18n translations
+
+Every error object has a method `translated_error` that will give you a translated
+version of the error message. You can load the default English translations shipped
+with the gem by adding them to your I18n load path.
+
+If you use the `error_hash` method on a `ConformResult` you also get the translated
+error messages
+
+```ruby
+chema = Definition.Keys do
+  required :title, Definition.Type(String)
+  required :body, Definition.Type(String)
+  required(:author, Definition.Keys do
+    required :name, Definition.Type(String)
+    required :email, Definition.Type(String)
+  end)
+end
+result.error_hash # =>
+# {
+#     :author => {
+#         :email => [
+#             [0] "Value is of wrong type, needs to be a String"
+#         ]
+#     }
+# }
+```
 
 ## Development
 

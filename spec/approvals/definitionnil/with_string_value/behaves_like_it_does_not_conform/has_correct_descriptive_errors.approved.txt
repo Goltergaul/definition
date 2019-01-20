@@ -1,0 +1,1 @@
+[0] {:description=>"Did not pass test for nil", :pointer=>"/"}
