@@ -26,7 +26,7 @@ module Definition
 
           results = conform_all(value)
 
-          if results.all? { |r| r.errors.empty? }
+          if results.all?(&:conformed?)
             ConformResult.new(results.map(&:value))
           else
             ConformResult.new(value, errors: [ConformError.new(definition,
@@ -40,13 +40,18 @@ module Definition
         attr_accessor :definition
 
         def errors(results)
-          results.reject(&:passed?).map do |r|
-            ConformError.new(
+          errors = []
+          results.each_with_index do |result, index|
+            next if result.passed?
+
+            errors << KeyConformError.new(
               definition,
-              "Item #{r.value.inspect} did not conform to #{definition.name}",
-              sub_errors: r.errors
+              "Item #{result.value.inspect} did not conform to #{definition.name}",
+              key:        index,
+              sub_errors: result.error_tree
             )
           end
+          errors
         end
 
         def conform_all(values)

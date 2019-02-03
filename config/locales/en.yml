@@ -1,0 +1,22 @@
+en:
+  definition:
+    max_size: "Value is bigger then %{max_size}"
+    min_size: "Value is smaller then %{min_size}"
+    greater_then: "Value must be greater then %{min_value}"
+    greater_then_equal: "Value must be greater or eqaul to %{min_value}"
+    less_then: "Value must be less then %{max_value}"
+    less_then_equal: "Value must be less or eqaul to %{max_value}"
+    equal: "Value must be equal to '%{expected_value}'"
+    empty: "Value must be empty"
+    non_empty: "Value must not be empty"
+    nil: "Value must be nil"
+    type: "Value is of wrong type, needs to be a %{class}"
+    enum: "Value is not one of: %{allowed_values}"
+    each: "Not all values are valid"
+    and: "Not all definitions conform"
+    or: "None of the definitions conform"
+    non_empty_string: "Value must be a non empty string"
+    regex: "Value dos not match regex %{regex}"
+    keys:
+      has_extra_key: "Hash has unexpected key %{key}"
+      has_missing_key: "Hash is missing key %{key}"

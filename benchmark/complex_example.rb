@@ -4,11 +4,11 @@ require "bundler/inline"
 
 gemfile do
   source "https://rubygems.org"
-  gem "definition"
   gem "dry-validation"
   gem "awesome_print"
   gem "benchmark-ips"
   gem "pry"
+  gem "definition", path: File.expand_path("../.", __dir__)
 end
 
 DryTimeCoercionType = Dry::Types["strict.string"].constructor do |value|
@@ -56,7 +56,7 @@ MAX_LENGTH = Definition.Lambda(:max_length) do |value|
 end
 MAX_STRING_LENGTH = Definition.And(
   Definition.Type(String),
-  MAX_LENGTH
+  Definition.MaxSize(1000)
 )
 MILLISECONDS_TIME = Definition.Lambda(:milliseconds_time) do |v|
   conform_with(Time.at(v / 1000.0).utc) if v.is_a?(Integer)

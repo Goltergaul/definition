@@ -1,0 +1,1 @@
+[0] {:description=>"Is of type BigDecimal instead of Float", :pointer=>"/"}

@@ -1,0 +1,2 @@
+Value is of wrong type, needs to be a Float
+translation missing: en.definition.foo

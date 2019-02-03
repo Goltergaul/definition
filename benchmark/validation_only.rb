@@ -4,10 +4,10 @@ require "bundler/inline"
 
 gemfile do
   source "https://rubygems.org"
-  gem "definition"
   gem "dry-validation"
   gem "awesome_print"
   gem "benchmark-ips"
+  gem "definition", path: File.expand_path("../.", __dir__)
 end
 
 DrySchema = Dry::Validation.Params do

@@ -8,6 +8,15 @@ describe Definition::Types::Lambda do
                         &test_lambda)
   end
 
+  describe "Initialization" do
+    it "takes a context" do
+      definition = described_class.new(:testname, context: { foo: :bar })
+
+      expect(definition.context).to eql(foo: :bar)
+      expect(definition.name).to be(:testname)
+    end
+  end
+
   describe "when definition does not coerce" do
     let(:test_lambda) { ->(value) { conform_with(value) if value.even? } }
 

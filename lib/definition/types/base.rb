@@ -6,10 +6,11 @@ require "definition/conform_error"
 module Definition
   module Types
     class Base
-      attr_accessor :name
+      attr_accessor :name, :context
 
-      def initialize(name)
+      def initialize(name, context: {})
         self.name = name
+        self.context = context
       end
 
       def explain(value)

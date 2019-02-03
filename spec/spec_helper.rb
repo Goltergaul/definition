@@ -36,4 +36,10 @@ RSpec.configure do |config|
 
   config.order = :random
   Kernel.srand config.seed
+
+  config.before(:suite) do
+    I18n.load_path = [Dir[File.expand_path("config/locales") + "/*.yml"]]
+    I18n.config.available_locales = :en
+    I18n.default_locale = :en
+  end
 end

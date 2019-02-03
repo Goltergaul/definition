@@ -53,14 +53,14 @@ module Definition
     # Lambda(:even) do |value|
     #   value.even?
     # end
-    def Lambda(name, &block) # rubocop:disable Naming/MethodName
-      Types::Lambda.new(name, &block)
+    def Lambda(name, context: {}, &block) # rubocop:disable Naming/MethodName
+      Types::Lambda.new(name, context: context, &block)
     end
 
     # Example:
     # Enum("allowed_value1", "allowed_value2")
     def Enum(*allowed_values) # rubocop:disable Naming/MethodName
-      Lambda("enum #{allowed_values.inspect}") do |value|
+      Lambda("enum", context: { allowed_values: allowed_values }) do |value|
         conform_with(value) if allowed_values.include?(value)
       end
     end

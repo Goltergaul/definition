@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Validation error",
+    "description": "Value is bigger then 1000",
+    "pointer": "/data/attributes/body"
+  },
+  {
+    "title": "Validation error",
+    "description": "translation missing: en.definition.milliseconds_time",
+    "pointer": "/data/attributes/publish_date"
+  },
+  {
+    "title": "Validation error",
+    "description": "Value must be equal to 'comment'",
+    "pointer": "/data/relationships/comments/data/0/type"
+  }
+]

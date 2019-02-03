@@ -1,0 +1,2 @@
+[0] {:description=>"Is of type Float instead of Integer", :pointer=>"/2"}
+[1] {:description=>"Is of type String instead of Integer", :pointer=>"/3"}

@@ -1,0 +1,23 @@
+{
+  "data": {
+    "attributes": {
+      "body": [
+        "Value is bigger then 1000"
+      ],
+      "publish_date": [
+        "translation missing: en.definition.milliseconds_time"
+      ]
+    },
+    "relationships": {
+      "comments": {
+        "data": {
+          "0": {
+            "type": [
+              "Value must be equal to 'comment'"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

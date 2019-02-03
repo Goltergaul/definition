@@ -4,11 +4,11 @@ require "bundler/inline"
 
 gemfile do
   source "https://rubygems.org"
-  gem "definition"
   gem "dry-validation"
   gem "awesome_print"
   gem "benchmark-ips"
   gem "pry"
+  gem "definition", path: File.expand_path("../.", __dir__)
 end
 
 DryTimeCoercionType = Dry::Types["strict.string"].constructor do |value|
