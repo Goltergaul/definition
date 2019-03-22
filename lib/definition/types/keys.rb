@@ -71,7 +71,7 @@ module Definition
                           "#{definition.name} has extra key: #{key.inspect}",
                           key:      key,
                           i18n_key: "keys.has_extra_key"
-            ))
+                        ))
           end
         end
 

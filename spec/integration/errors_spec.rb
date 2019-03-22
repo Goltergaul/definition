@@ -1,5 +1,5 @@
-
 # frozen_string_literal: true
+
 require "spec_helper"
 
 describe "Definition.Keys" do
@@ -15,7 +15,7 @@ describe "Definition.Keys" do
                               Definition.Type(String),
                               Definition.NonEmpty
                             )
-        ))
+                          ))
       end)
       required :someBoolean,
                Definition.Or(

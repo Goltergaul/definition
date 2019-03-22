@@ -55,6 +55,7 @@ module Definition
       current = error
       loop do
         return current if current.is_a?(KeyConformError)
+
         current = current.parent
         break unless current
       end

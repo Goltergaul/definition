@@ -17,7 +17,7 @@ describe Definition::Types::Each do
                                             message:   "Is not of type Integer",
                                             "parent=": nil)
                           ]
-            ))
+                        ))
             .ordered
           expect(definition).to receive(:conform)
             .with(1)
@@ -32,7 +32,7 @@ describe Definition::Types::Each do
                                             message:   "Is not of type Integer",
                                             "parent=": nil)
                           ]
-            ))
+                        ))
             .ordered
 
           result = described_class.new("each_test", definition: definition).conform(["b", 1, "4"])
@@ -72,7 +72,7 @@ describe Definition::Types::Each do
             .and_return(Definition::ConformResult.new(1),
                         Definition::ConformResult.new(2))
 
-          result = described_class.new("each_test", definition: definition).conform(%w(1 2))
+          result = described_class.new("each_test", definition: definition).conform(%w[1 2])
           expect(result).to conform_with([1, 2])
         end
       end

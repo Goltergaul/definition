@@ -32,7 +32,7 @@ describe "JSONAPI body validation" do
                                 required :id, Definition.Type(String)
                                 required :type, Definition.Equal("comment")
                               end
-            ))
+                            ))
           end)
         end)
       end)

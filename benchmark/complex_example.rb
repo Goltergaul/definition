@@ -84,7 +84,7 @@ DefinitionSchema = Definition.Keys do
                             required :id, Definition.Type(String)
                             required :type, Definition.Enum("comment")
                           end
-        ))
+                        ))
       end)
     end)
   end)

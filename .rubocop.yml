@@ -24,14 +24,14 @@ Metrics/MethodLength:
 Style/Documentation:
   Enabled: false
 
-Style/AlignHash:
+Layout/AlignHash:
   EnforcedColonStyle: table
   EnforcedHashRocketStyle: table
 
 Style/HashSyntax:
   EnforcedStyle: ruby19_no_mixed_keys
 
-Style/MultilineOperationIndentation:
+Layout/MultilineOperationIndentation:
   Description: Checks indentation of binary operations that span more than one line.
   EnforcedStyle: indented
 
