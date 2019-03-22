@@ -4,7 +4,7 @@
 # More info at https://github.com/guard/guard#readme
 
 ## Uncomment and set this to only include directories you want to watch
-directories(%w[lib spec])
+directories(%w(lib spec))
   .select { |d| Dir.exist?(d) ? d : UI.warning("Directory #{d} does not exist") }
 
 ## Note: if you are using the `directories` clause above and you are not
@@ -43,7 +43,7 @@ guard :rspec, cmd: "bundle exec rspec" do # rubocop:disable Metrics/BlockLength
   dsl.watch_spec_files_for(ruby.lib_files)
 
   # Rails files
-  rails = dsl.rails(view_extensions: %w[erb haml slim])
+  rails = dsl.rails(view_extensions: %w(erb haml slim))
   dsl.watch_spec_files_for(rails.app_files)
   dsl.watch_spec_files_for(rails.views)
 

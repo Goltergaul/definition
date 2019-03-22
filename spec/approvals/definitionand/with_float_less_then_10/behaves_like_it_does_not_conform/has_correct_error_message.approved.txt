@@ -1,1 +1,1 @@
-Not all definitions are valid for and: { Did not pass test for foo }
+Not all definitions are valid for 'and': { Did not pass test for foo }

@@ -1,2 +1,0 @@
-Value is of wrong type, needs to be a Integer
-Value is of wrong type, needs to be a Integer

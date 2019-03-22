@@ -1,1 +1,1 @@
-None of the definitions are valid for or: { Is of type BigDecimal instead of Float, Did not pass test for foo }
+None of the definitions are valid for 'or': { Is of type BigDecimal instead of Float, Did not pass test for foo }

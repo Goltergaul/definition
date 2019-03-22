@@ -8,7 +8,7 @@ describe Definition::Types::Include do
   end
 
   let(:name) { "include_test" }
-  let(:required_items) { %i[name color] }
+  let(:required_items) { %i(name color) }
 
   describe ".conform" do
     subject(:conform) { definition.conform(value) }
@@ -22,7 +22,7 @@ describe Definition::Types::Include do
     end
 
     context "with correct value" do
-      let(:value) { %i[name color] }
+      let(:value) { %i(name color) }
 
       it "conforms" do
         expect(conform).to conform_with(value)
@@ -30,7 +30,7 @@ describe Definition::Types::Include do
     end
 
     context "with correct value in different order" do
-      let(:value) { %i[color name] }
+      let(:value) { %i(color name) }
 
       it "conforms" do
         expect(conform).to conform_with(value)
@@ -38,7 +38,7 @@ describe Definition::Types::Include do
     end
 
     context "with one value too much" do
-      let(:value) { %i[color name foobar] }
+      let(:value) { %i(color name foobar) }
 
       it "conforms" do
         expect(conform).to conform_with(value)

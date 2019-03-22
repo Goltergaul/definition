@@ -1,0 +1,3 @@
+[0] <Definition::ConformError 
+	 desciption: "Is of type String instead of Float", 
+	 json_pointer: "/">

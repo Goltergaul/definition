@@ -1,1 +1,0 @@
-[0] {:description=>"Is of type String instead of Float", :pointer=>"/"}

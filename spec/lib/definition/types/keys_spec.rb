@@ -9,9 +9,9 @@ describe Definition::Types::Keys do
     context "with default values" do
       let(:definition) do
         described_class.new("address",
-                            opt: {
+                            opt:      {
                               favorite_color: Definition.Type(String),
-                              favorite_food: Definition.Type(String)
+                              favorite_food:  Definition.Type(String)
                             },
                             defaults: {
                               favorite_color: "red",
@@ -33,10 +33,9 @@ describe Definition::Types::Keys do
         it "does conform" do
           expect(conform).to conform_with(favorite_color: "blue",
                                           favorite_drink: "cola",
-                                          favorite_food: "apple")
+                                          favorite_food:  "apple")
         end
       end
-
     end
 
     context "with required params" do

@@ -1,1 +1,0 @@
-[0] {:description=>"Is of type Array instead of String", :pointer=>"/"}

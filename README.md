@@ -41,7 +41,9 @@ conform_result.error_message # => hash fails validation for key birthday: { Is o
 conform_result.error_hash # =>
 # {
 #     :birthday => [
-#         [0] "Value is of wrong type, needs to be a Date"
+#         [0] <Definition::ConformError
+#               desciption: "hash fails validation for key birthday: { Is of type String instead of Date }",
+#               json_pointer: "/birthday">
 #     ]
 # }
 ```
@@ -106,6 +108,8 @@ array.first # => 1
 
 IntegerArray.new([1,2,"3"]) # => Definition::InvalidValueObjectError: Not all items conform with each: { Item "3" did not conform to each: { Is of type String instead of Integer } }
 ```
+
+You can access the conform result object via `InvalidValueObjectError#conform_result`
 
 ### Conforming Hashes
 
@@ -304,11 +308,9 @@ Every error object has a method `translated_error` that will give you a translat
 version of the error message. You can load the default English translations shipped
 with the gem by adding them to your I18n load path.
 
-If you use the `error_hash` method on a `ConformResult` you also get the translated
-error messages
 
 ```ruby
-chema = Definition.Keys do
+schema = Definition.Keys do
   required :title, Definition.Type(String)
   required :body, Definition.Type(String)
   required(:author, Definition.Keys do
@@ -316,14 +318,7 @@ chema = Definition.Keys do
     required :email, Definition.Type(String)
   end)
 end
-result.error_hash # =>
-# {
-#     :author => {
-#         :email => [
-#             [0] "Value is of wrong type, needs to be a String"
-#         ]
-#     }
-# }
+schema.conform(input_hash).errors.first.translated_error # => Value is of wrong type, needs to be a String"
 ```
 
 ## Development
