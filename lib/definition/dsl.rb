@@ -70,5 +70,11 @@ module Definition
     def Each(definition) # rubocop:disable Naming/MethodName
       Types::Each.new(:each, definition: definition)
     end
+
+    # Example:
+    # Boolean
+    def Boolean # rubocop:disable Naming/MethodName
+      Types::Or.new(:boolean, Type(TrueClass), Type(FalseClass))
+    end
   end
 end

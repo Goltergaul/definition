@@ -14,14 +14,26 @@ describe "Definition.Keys" do
         end)
       end)
       optional :age, Definition.CoercibleType(Integer)
+      optional :receive_newsletter, Definition.Or(Definition.Type(TrueClass), Definition.Type(FalseClass)), default: false #FIXME bool
     end
   end
 
-  it_behaves_like "it conforms",
-                  first_name: "Jon",
-                  last_name:  "Doe",
-                  address:    {
-                    street:   "123 Fakestreet",
-                    zip_code: 12_345
+  it_behaves_like "it conforms via coersion",
+                  input: {
+                    first_name: "Jon",
+                    last_name:  "Doe",
+                    address:    {
+                      street:   "123 Fakestreet",
+                      zip_code: 12_345
+                    }
+                  },
+                  output: {
+                    first_name: "Jon",
+                    last_name:  "Doe",
+                    address:    {
+                      street:   "123 Fakestreet",
+                      zip_code: 12_345
+                    },
+                    receive_newsletter: false
                   }
 end

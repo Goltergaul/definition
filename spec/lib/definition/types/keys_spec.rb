@@ -6,6 +6,39 @@ describe Definition::Types::Keys do
   describe ".conform" do
     subject(:conform) { definition.conform(value) }
 
+    context "with default values" do
+      let(:definition) do
+        described_class.new("address",
+                            opt: {
+                              favorite_color: Definition.Type(String),
+                              favorite_food: Definition.Type(String)
+                            },
+                            defaults: {
+                              favorite_color: "red",
+                              favorite_drink: "cola"
+                            })
+      end
+
+      context "with empty hash input" do
+        let(:value) { {} }
+
+        it "does conform" do
+          expect(conform).to conform_with(favorite_color: "red", favorite_drink: "cola")
+        end
+      end
+
+      context "with favorite color and food" do
+        let(:value) { { favorite_color: "blue", favorite_food: "apple" } }
+
+        it "does conform" do
+          expect(conform).to conform_with(favorite_color: "blue",
+                                          favorite_drink: "cola",
+                                          favorite_food: "apple")
+        end
+      end
+
+    end
+
     context "with required params" do
       let(:definition) do
         described_class.new("address",

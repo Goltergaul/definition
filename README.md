@@ -116,10 +116,13 @@ needs to have a Symbol key with that name, otherwise a string key.
 
 The key definition will also fail if the input value contains extra keys.
 
+You can configure default values for optional keys, see the following example.
+
 ```ruby
 Definition.Keys do
-  required :title, Definition.Type(String)
+  required :title, Definition.NonEmptyString
   optional :publication_date, Definition.Type(Date)
+  optional :is_draft, Definition.Boolean, default: true
 end
 ```
 
