@@ -4,7 +4,9 @@ require "bundler/inline"
 
 gemfile do
   source "https://rubygems.org"
-  gem "dry-validation"
+  # FIXME: benchmark needs to be updated to work with dry-validation 1.0.0"
+  gem "dry-validation", "< 1.0.0"
+  gem "dry-types", "< 0.15"
   gem "awesome_print"
   gem "benchmark-ips"
   gem "definition", path: File.expand_path("../.", __dir__)
