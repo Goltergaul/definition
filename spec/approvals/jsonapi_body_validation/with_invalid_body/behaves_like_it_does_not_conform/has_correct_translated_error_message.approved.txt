@@ -1,3 +1,0 @@
-Value is bigger then 1000
-translation missing: en.definition.milliseconds_time
-Value must be equal to 'comment'

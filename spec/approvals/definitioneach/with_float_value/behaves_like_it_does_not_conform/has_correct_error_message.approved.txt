@@ -1,1 +1,1 @@
-Not all items conform with each: { Item 1.0 did not conform to each: { Is of type Float instead of Integer }, Item "foo" did not conform to each: { Is of type String instead of Integer } }
+Not all items conform with 'each': { Item 1.0 did not conform to each: { Is of type Float instead of Integer }, Item "foo" did not conform to each: { Is of type String instead of Integer } }

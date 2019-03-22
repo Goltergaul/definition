@@ -23,6 +23,12 @@ module Definition
       end
     end
 
+    def to_s
+      "<Definition::ConformError \n\t desciption: \"#{message}\", \n\t json_pointer: \"#{json_pointer}\">"
+    end
+
+    alias inspect to_s
+
     def error_path
       current = self
       path = current.is_a?(KeyConformError) ? [key] : []

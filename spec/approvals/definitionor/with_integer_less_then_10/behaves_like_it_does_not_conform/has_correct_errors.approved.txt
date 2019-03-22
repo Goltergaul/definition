@@ -1,0 +1,6 @@
+[0] <Definition::ConformError 
+	 desciption: "Is of type BigDecimal instead of Float", 
+	 json_pointer: "/">
+[1] <Definition::ConformError 
+	 desciption: "Did not pass test for foo", 
+	 json_pointer: "/">

@@ -36,7 +36,7 @@ describe Definition::Types::Each do
             .ordered
 
           result = described_class.new("each_test", definition: definition).conform(["b", 1, "4"])
-          expect(result).to not_conform_with('Not all items conform with each_test: { Item "b" '\
+          expect(result).to not_conform_with('Not all items conform with \'each_test\': { Item "b" '\
                                              "did not conform to each_test: { Is not of type Integer "\
                                              '}, Item "4" did not conform to each_test: { Is not '\
                                              "of type Integer } }")

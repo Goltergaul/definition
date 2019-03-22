@@ -1,0 +1,3 @@
+[0] <Definition::ConformError 
+	 desciption: "Did not pass test for less_then_equal", 
+	 json_pointer: "/">

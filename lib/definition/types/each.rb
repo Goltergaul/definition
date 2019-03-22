@@ -30,7 +30,7 @@ module Definition
             ConformResult.new(results.map(&:value))
           else
             ConformResult.new(value, errors: [ConformError.new(definition,
-                                                               "Not all items conform with #{definition.name}",
+                                                               "Not all items conform with '#{definition.name}'",
                                                                sub_errors: errors(results))])
           end
         end

@@ -1,13 +1,20 @@
 # frozen_string_literal: true
 
 module Definition
-  class InvalidValueObjectError < StandardError; end
+  class InvalidValueObjectError < StandardError
+    attr_accessor :conform_result
+
+    def initialize(conform_result)
+      super(conform_result.error_message)
+      self.conform_result = conform_result
+    end
+  end
   class NotConfiguredError < StandardError; end
 
   class ValueObject < SimpleDelegator
     def initialize(args = nil, **kwargs)
       result = self.class.conform(args || kwargs)
-      raise InvalidValueObjectError.new(result.error_message) unless result.passed?
+      raise InvalidValueObjectError.new(result) unless result.passed?
 
       super(result.value.freeze)
     end

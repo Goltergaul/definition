@@ -14,18 +14,24 @@ module Definition
           required_definitions[key] = definition
         end
 
-        def optional(key, definition)
+        def optional(key, definition, **opts)
           optional_definitions[key] = definition
+          default(key, opts[:default]) if opts.key?(:default)
+        end
+
+        def default(key, value)
+          defaults[key] = value
         end
       end
 
       include Dsl
-      attr_accessor :required_definitions, :optional_definitions
+      attr_accessor :required_definitions, :optional_definitions, :defaults
 
-      def initialize(name, req: {}, opt: {})
+      def initialize(name, req: {}, opt: {}, defaults: {})
         super(name)
         self.required_definitions = req
         self.optional_definitions = opt
+        self.defaults = defaults
       end
 
       def conform(value)
@@ -73,7 +79,7 @@ module Definition
           required_keys_values = conform_definitions(required_definitions)
           optional_keys_values = conform_definitions(optional_definitions)
 
-          required_keys_values.merge!(optional_keys_values)
+          definition.defaults.merge(required_keys_values.merge!(optional_keys_values))
         end
 
         def all_keys

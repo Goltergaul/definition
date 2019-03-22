@@ -32,15 +32,11 @@ shared_examples "it does not conform" do
     verify { definition.conform(value).error_message }
   end
 
-  it "has correct descriptive errors" do
-    verify { definition.conform(value).descriptive_errors }
+  it "has correct errors" do
+    verify { definition.conform(value).errors }
   end
 
-  it "has correct error_hash" do
+  it "has correct error hash" do
     verify(format: :json) { definition.conform(value).error_hash }
-  end
-
-  it "has correct translated error message" do
-    verify { definition.conform(value).errors.map(&:translated_error).join("\n") }
   end
 end

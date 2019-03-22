@@ -5,7 +5,7 @@ module Definition
     module Comparators
       # Example:
       # MaxSize(5)
-      def MaxSize(max_size) # rubocop:disable Naming/MethodName
+      def MaxSize(max_size) # rubocop:disable Style/MethodName
         Types::Lambda.new(:max_size, context: { max_size: max_size }) do |value|
           case value
           when String, Enumerable
@@ -18,7 +18,7 @@ module Definition
 
       # Example:
       # MinSize(5)
-      def MinSize(min_size) # rubocop:disable Naming/MethodName
+      def MinSize(min_size) # rubocop:disable Style/MethodName
         Types::Lambda.new(:min_size, context: { min_size: min_size }) do |value|
           case value
           when String, Enumerable
@@ -31,13 +31,13 @@ module Definition
 
       # Example:
       # NonEmptyString
-      def NonEmptyString # rubocop:disable Naming/MethodName
+      def NonEmptyString # rubocop:disable Style/MethodName
         Types::And.new(:non_empty_string, Type(String), MinSize(1))
       end
 
       # Example:
       # GreaterThen(5)
-      def GreaterThen(min_value) # rubocop:disable Naming/MethodName
+      def GreaterThen(min_value) # rubocop:disable Style/MethodName
         Types::Lambda.new("greater_then", context: { min_value: min_value }) do |value|
           conform_with(value) if value.is_a?(Numeric) && value > min_value
         end
@@ -45,7 +45,7 @@ module Definition
 
       # Example:
       # GreaterThenEqual(5)
-      def GreaterThenEqual(min_value) # rubocop:disable Naming/MethodName
+      def GreaterThenEqual(min_value) # rubocop:disable Style/MethodName
         Types::Lambda.new("greater_then_equal", context: { min_value: min_value }) do |value|
           conform_with(value) if value.is_a?(Numeric) && value >= min_value
         end
@@ -53,7 +53,7 @@ module Definition
 
       # Example:
       # LessThen(5)
-      def LessThen(max_value) # rubocop:disable Naming/MethodName
+      def LessThen(max_value) # rubocop:disable Style/MethodName
         Types::Lambda.new("less_then", context: { max_value: max_value }) do |value|
           conform_with(value) if value.is_a?(Numeric) && value < max_value
         end
@@ -61,7 +61,7 @@ module Definition
 
       # Example:
       # LessThenEqual(5)
-      def LessThenEqual(max_value) # rubocop:disable Naming/MethodName
+      def LessThenEqual(max_value) # rubocop:disable Style/MethodName
         Types::Lambda.new("less_then_equal", context: { max_value: max_value }) do |value|
           conform_with(value) if value.is_a?(Numeric) && value <= max_value
         end
@@ -69,7 +69,7 @@ module Definition
 
       # Example:
       # Equal("value")
-      def Equal(expected_value) # rubocop:disable Naming/MethodName
+      def Equal(expected_value) # rubocop:disable Style/MethodName
         Types::Lambda.new(:equal, context: { expected_value: expected_value }) do |value|
           conform_with(value) if value == expected_value
         end
@@ -77,7 +77,7 @@ module Definition
 
       # Example:
       # Empty
-      def Empty # rubocop:disable Naming/MethodName
+      def Empty # rubocop:disable Style/MethodName
         Types::Lambda.new(:empty) do |value|
           case value
           when String, Array, Hash
@@ -90,7 +90,7 @@ module Definition
 
       # Example:
       # NonEmpty
-      def NonEmpty # rubocop:disable Naming/MethodName
+      def NonEmpty # rubocop:disable Style/MethodName
         Types::Lambda.new(:non_empty) do |value|
           case value
           when String, Array, Hash
@@ -103,7 +103,7 @@ module Definition
 
       # Example:
       # Regex
-      def Regex(regex, name: :regex) # rubocop:disable Naming/MethodName
+      def Regex(regex, name: :regex) # rubocop:disable Style/MethodName
         Types::Lambda.new(name, context: { regex: regex.inspect }) do |value|
           case value
           when String

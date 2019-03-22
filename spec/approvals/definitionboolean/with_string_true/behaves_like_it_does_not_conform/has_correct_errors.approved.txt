@@ -1,0 +1,6 @@
+[0] <Definition::ConformError 
+	 desciption: "Is of type String instead of TrueClass", 
+	 json_pointer: "/">
+[1] <Definition::ConformError 
+	 desciption: "Is of type String instead of FalseClass", 
+	 json_pointer: "/">

@@ -1,0 +1,3 @@
+[0] <Definition::ConformError 
+	 desciption: "Non-Array value does not conform with each", 
+	 json_pointer: "/">

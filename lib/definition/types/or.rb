@@ -34,7 +34,7 @@ module Definition
             result
           else
             error = ConformError.new(definition,
-                                     "None of the definitions are valid for #{definition.name}",
+                                     "None of the definitions are valid for '#{definition.name}'",
                                      sub_errors: result)
             ConformResult.new(value, errors: [error])
           end

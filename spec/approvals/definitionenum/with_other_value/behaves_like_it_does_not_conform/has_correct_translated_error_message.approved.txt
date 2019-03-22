@@ -1,1 +1,0 @@
-Value is not one of: ["blue", "red", "yellow"]

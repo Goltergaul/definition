@@ -2,10 +2,10 @@
   "data": {
     "attributes": {
       "body": [
-        "Value is bigger then 1000"
+        "<Definition::ConformError \n\t desciption: \"hash fails validation for key body: { Did not pass test for max_size }\", \n\t json_pointer: \"/data/attributes/body\">"
       ],
       "publish_date": [
-        "translation missing: en.definition.milliseconds_time"
+        "<Definition::ConformError \n\t desciption: \"hash fails validation for key publish_date: { Did not pass test for milliseconds_time }\", \n\t json_pointer: \"/data/attributes/publish_date\">"
       ]
     },
     "relationships": {
@@ -13,7 +13,7 @@
         "data": {
           "0": {
             "type": [
-              "Value must be equal to 'comment'"
+              "<Definition::ConformError \n\t desciption: \"hash fails validation for key type: { Did not pass test for equal }\", \n\t json_pointer: \"/data/relationships/comments/data/0/type\">"
             ]
           }
         }

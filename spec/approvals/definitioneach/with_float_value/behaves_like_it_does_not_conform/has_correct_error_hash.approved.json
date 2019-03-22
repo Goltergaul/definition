@@ -1,8 +1,8 @@
 {
   "2": [
-    "Value is of wrong type, needs to be a Integer"
+    "<Definition::ConformError \n\t desciption: \"Item 1.0 did not conform to each: { Is of type Float instead of Integer }\", \n\t json_pointer: \"/2\">"
   ],
   "3": [
-    "Value is of wrong type, needs to be a Integer"
+    "<Definition::ConformError \n\t desciption: \"Item \"foo\" did not conform to each: { Is of type String instead of Integer }\", \n\t json_pointer: \"/3\">"
   ]
 }

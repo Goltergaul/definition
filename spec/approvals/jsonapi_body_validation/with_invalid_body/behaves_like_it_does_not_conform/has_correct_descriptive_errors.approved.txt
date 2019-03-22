@@ -1,3 +1,0 @@
-[0] {:description=>"Did not pass test for max_size", :pointer=>"/data/attributes/body"}
-[1] {:description=>"Did not pass test for milliseconds_time", :pointer=>"/data/attributes/publish_date"}
-[2] {:description=>"Did not pass test for equal", :pointer=>"/data/relationships/comments/data/0/type"}

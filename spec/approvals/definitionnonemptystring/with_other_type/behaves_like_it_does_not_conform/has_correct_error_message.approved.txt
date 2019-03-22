@@ -1,1 +1,1 @@
-Not all definitions are valid for non_empty_string: { Is of type Array instead of String }
+Not all definitions are valid for 'non_empty_string': { Is of type Array instead of String }
