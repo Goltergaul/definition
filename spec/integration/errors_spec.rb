@@ -11,9 +11,12 @@ describe "Definition.Keys" do
           Definition.Regex(/^\D+$/)
         )
         required(:colors, Definition.Each(
-                            Definition.And(
-                              Definition.Type(String),
-                              Definition.NonEmpty
+                            Definition.Or(
+                              Definition.Equal("red"),
+                              Definition.And(
+                                Definition.Type(String),
+                                Definition.NonEmpty
+                              )
                             )
                           ))
       end)
