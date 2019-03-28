@@ -6,6 +6,8 @@ module Definition
   module Types
     class Type < Base
       def initialize(name, klass, &coerce)
+        raise "#{klass.inspect} is not a class" unless klass.is_a?(Class)
+
         self.klass = klass
         self.coerce = coerce
         super(name, context: { class: klass })

@@ -343,6 +343,9 @@ Definition.Boolean.conform(tru) # => pass
 ```ruby
 Definition.Equal(5).conform(5) # => pass
 Definition.Equal("foo").conform("foo") # => pass
+
+Definition.Nilable(Definition.Type(String)).conform(nil) # => pass
+Definition.Nilable(Definition.Type(String)).conform("foo") # => pass
 ```
 
 ### Examples
