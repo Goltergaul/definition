@@ -33,10 +33,12 @@ module Definition
     def error_hash
       {}.tap do |error_hash|
         errors.each do |error|
-          next if error.error_path.empty?
-
-          path_hash = error.error_path.reverse
-                           .inject([error]) { |errors, key| { key => errors } }
+          path_hash = if error.error_path.empty?
+                        { "" => error }
+                      else
+                        error.error_path.reverse
+                             .inject([error]) { |errors, key| { key => errors } }
+                      end
 
           merge_error_hash(error_hash, path_hash)
         end

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Option for Keys Definition to ignore unexpected keys
 ### Fixed
 - Error hash was missing some errors in a few cases
+- `ConformResult.error_hash` was empty for Definitions without any `Keys` Definition
 ### Changed
 - And Definition stops processing after the first failure
 
