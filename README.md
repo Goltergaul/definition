@@ -111,6 +111,28 @@ IntegerArray.new([1,2,"3"]) # => Definition::InvalidValueObjectError: Not all it
 
 You can access the conform result object via `InvalidValueObjectError#conform_result`
 
+#### Nesting value Objects
+
+Value objects can be nested by either using the value object itself as type definition,
+or by using the `CoercibleValueObject` Definition. The latter would convert input
+hashes that conform with the value objects schema to an instance of the value object.
+
+```ruby
+class IntegerArray < Definition::ValueObject
+  definition(Definition.Each(Definition.Type(Integer)))
+end
+
+class User < Definition::ValueObject
+  definition(Definition.Keys do
+    required :username, Definition.Type(String)
+    required :scores, Definition.CoercibleValueObject(IntegerArray)
+  end)
+end
+
+object = User.new(username: "John", scores: [1,2,3])
+object.scores.class.name # => IntegerArray
+```
+
 ### Conforming Hashes
 
 Hashes can be conformed by using the `Keys` definition. It allows you to configure
@@ -128,6 +150,25 @@ Definition.Keys do
   optional :publication_date, Definition.Type(Date)
   optional :is_draft, Definition.Boolean, default: true
 end
+```
+
+#### Ignoring unexpected keys
+
+By default the `Keys` Definition does not conform with input hashes that contains
+keys that are not defined in the Definition. You can set the `:ignore_extra_keys`
+option to disable this.
+
+```ruby
+schema = Definition.Keys do
+  option :ignore_extra_keys
+
+  required :title, Definition.NonEmptyString
+  optional :publication_date, Definition.Type(Time)
+end
+
+conform_result = schema.conform({title: "My first blog post", body: "Shortest one ever!", publication_date: Time.new})
+conform_result.passed? # => true
+conform_result.value # => {title: "My first blog post", publication_date: 2018-12-30 11:43:00 UTC}
 ```
 
 ### Validating types
@@ -159,17 +200,17 @@ Definition.CoercibleType(Float).conform("0.1").value # => 0.1
 ### Combining multiple definitions with "And"
 
 ```ruby
-Definition.And(definition1, definition2)
+Definition.And(definition1, definition2, ...)
 ```
 
 This definition will only conform if all definitions conform. The definitions will
 be processed from left to right and the output of the previous will be the input
-of the next.
+of the next. Processing of the And-Definition stops as soon as one definition does not conform.
 
 ### Combining multiple definitions with "Or"
 
 ```ruby
-Definition.Or(definition1, definition2)
+Definition.Or(definition1, definition2, ...)
 ```
 
 This definition will conform if at least one definition conforms. The definitions will
@@ -291,11 +332,20 @@ Definition.NonEmpty.conform({ a: 1 }) # => pass
 Definition.Nil.conform(nil) # => pass
 ```
 
+#### Boolean
+
+```ruby
+Definition.Boolean.conform(tru) # => pass
+```
+
 #### All types
 
 ```ruby
 Definition.Equal(5).conform(5) # => pass
 Definition.Equal("foo").conform("foo") # => pass
+
+Definition.Nilable(Definition.Type(String)).conform(nil) # => pass
+Definition.Nilable(Definition.Type(String)).conform("foo") # => pass
 ```
 
 ### Examples

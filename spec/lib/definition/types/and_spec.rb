@@ -22,7 +22,7 @@ describe Definition::Types::And do
 
         it "does not conform" do
           expect(conform).to not_conform_with(
-            "Not all definitions are valid for 'and_test': { Did not pass test for def1, Did not pass test for def2 }"
+            "Not all definitions are valid for 'and_test': { Did not pass test for def1 }"
           )
         end
       end

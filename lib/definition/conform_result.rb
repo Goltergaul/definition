@@ -33,14 +33,14 @@ module Definition
     def error_hash
       {}.tap do |error_hash|
         errors.each do |error|
-          next if error.error_path.empty?
+          path_hash = if error.error_path.empty?
+                        { "" => error }
+                      else
+                        error.error_path.reverse
+                             .inject([error]) { |errors, key| { key => errors } }
+                      end
 
-          path_hash = error.error_path.reverse
-                           .inject([error]) { |errors, key| { key => errors } }
-
-          error_hash.deep_merge!(path_hash) do |_key, old, new|
-            old + new if old.is_a?(Array) && new.is_a?(Array) # concat arrays during deep_merge
-          end
+          merge_error_hash(error_hash, path_hash)
         end
       end
     end
@@ -50,6 +50,16 @@ module Definition
     end
 
     private
+
+    def merge_error_hash(hash, new_hash)
+      hash.deep_merge!(new_hash) do |_key, old, new|
+        if old.is_a?(Array) && new.is_a?(Hash) # Dont replace Hashes with arrays
+          new
+        elsif old.is_a?(Array) && new.is_a?(Array) # concat arrays during deep_merge
+          old + new
+        end
+      end
+    end
 
     def find_next_parent_key_error(error)
       current = error

@@ -6,6 +6,26 @@ describe Definition::Types::Keys do
   describe ".conform" do
     subject(:conform) { definition.conform(value) }
 
+    context "with option ignore_extra_keys" do
+      let(:definition) do
+        described_class.new("address",
+                            opt:     {
+                              favorite_color: Definition.Type(String)
+                            },
+                            options: {
+                              ignore_extra_keys: true
+                            })
+      end
+
+      context "with extra key in input hash" do
+        let(:value) { { favorite_color: "blue", foobar: 1 } }
+
+        it "does conform" do
+          expect(conform).to conform_with(favorite_color: "blue")
+        end
+      end
+    end
+
     context "with default values" do
       let(:definition) do
         described_class.new("address",

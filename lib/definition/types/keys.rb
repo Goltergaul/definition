@@ -22,16 +22,26 @@ module Definition
         def default(key, value)
           defaults[key] = value
         end
+
+        def option(option_name)
+          case option_name
+          when :ignore_extra_keys
+            self.ignore_extra_keys = true
+          else
+            raise "Option #{option_name} is not defined"
+          end
+        end
       end
 
       include Dsl
-      attr_accessor :required_definitions, :optional_definitions, :defaults
+      attr_accessor :required_definitions, :optional_definitions, :defaults, :ignore_extra_keys
 
-      def initialize(name, req: {}, opt: {}, defaults: {})
+      def initialize(name, req: {}, opt: {}, defaults: {}, options: {})
         super(name)
         self.required_definitions = req
         self.optional_definitions = opt
         self.defaults = defaults
+        self.ignore_extra_keys = options.fetch(:ignore_extra_keys, false)
       end
 
       def conform(value)
@@ -50,7 +60,7 @@ module Definition
         end
 
         def conform
-          add_extra_key_errors
+          add_extra_key_errors unless definition.ignore_extra_keys
           add_missing_key_errors
           values = conform_all_keys
 

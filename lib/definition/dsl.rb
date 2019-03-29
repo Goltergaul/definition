@@ -76,5 +76,24 @@ module Definition
     def Boolean # rubocop:disable Style/MethodName
       Types::Or.new(:boolean, Type(TrueClass), Type(FalseClass))
     end
+
+    # Example:
+    # CoercibleValueObject(ValueObjectClass)
+    def CoercibleValueObject(klass) # rubocop:disable Style/MethodName
+      Types::Or.new(:coercible_value_object,
+                    Definition.Type(klass), # If its of ther correct type already this will let it pass already
+                    And(
+                      klass, # First make sure that the input could be coerced to 'klass'
+                      Lambda("value_object_coercion", context: { value_object_class: klass }) do |value|
+                        conform_with(klass.new(value)) # Actually coerce the input to klass
+                      end
+                    ))
+    end
+
+    # Example:
+    # Nilable(Definition.Type(Integer))
+    def Nilable(definition) # rubocop:disable Style/MethodName
+      Types::Or.new(:nullable, Nil(), definition)
+    end
   end
 end

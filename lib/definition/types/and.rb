@@ -51,6 +51,7 @@ module Definition
             result = definition.conform(value)
             value = result.value
             results << result
+            break unless result.passed?
           end
           results
         end
