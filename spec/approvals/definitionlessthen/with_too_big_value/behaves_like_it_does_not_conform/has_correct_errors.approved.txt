@@ -1,3 +1,3 @@
 [0] <Definition::ConformError 
-	 desciption: "Did not pass test for less_then", 
+	 message: "Did not pass test for less_then", 
 	 json_pointer: "/">

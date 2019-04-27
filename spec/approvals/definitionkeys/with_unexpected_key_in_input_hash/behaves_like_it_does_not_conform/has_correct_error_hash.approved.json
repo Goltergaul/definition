@@ -1,5 +1,5 @@
 {
   "unexpected_key": [
-    "<Definition::ConformError \n\t desciption: \"hash has extra key: :unexpected_key\", \n\t json_pointer: \"/unexpected_key\">"
+    "<Definition::ConformError \n\t message: \"hash has extra key: :unexpected_key\", \n\t json_pointer: \"/unexpected_key\">"
   ]
 }

@@ -24,7 +24,7 @@ module Definition
     end
 
     def to_s
-      "<Definition::ConformError \n\t desciption: \"#{message}\", \n\t json_pointer: \"#{json_pointer}\">"
+      "<Definition::ConformError \n\t message: \"#{message}\", \n\t json_pointer: \"#{json_pointer}\">"
     end
 
     alias inspect to_s
