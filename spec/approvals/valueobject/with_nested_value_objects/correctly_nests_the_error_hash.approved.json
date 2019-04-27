@@ -1,7 +1,7 @@
 {
   "foo": {
     "bar": [
-      "<Definition::ConformError \n\t desciption: \"hash fails validation for key bar: { Is of type Float instead of String }\", \n\t json_pointer: \"/foo/bar\">"
+      "<Definition::ConformError \n\t message: \"hash fails validation for key bar: { Is of type Float instead of String }\", \n\t json_pointer: \"/foo/bar\">"
     ]
   }
 }

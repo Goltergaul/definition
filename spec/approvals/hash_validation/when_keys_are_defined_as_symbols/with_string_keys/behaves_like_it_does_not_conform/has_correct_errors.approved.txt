@@ -1,6 +1,6 @@
 [0] <Definition::ConformError 
-	 desciption: "hash has extra key: "first_name"", 
+	 message: "hash has extra key: "first_name"", 
 	 json_pointer: "/first_name">
 [1] <Definition::ConformError 
-	 desciption: "hash is missing key :first_name", 
+	 message: "hash is missing key :first_name", 
 	 json_pointer: "/first_name">

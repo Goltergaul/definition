@@ -1,12 +1,12 @@
 [0] <Definition::ConformError 
-	 desciption: "hash fails validation for key name: { Not all definitions are valid for 'and': { Did not pass test for regex } }", 
+	 message: "hash fails validation for key name: { Not all definitions are valid for 'and': { Did not pass test for regex } }", 
 	 json_pointer: "/foobar/name">
 [1] <Definition::ConformError 
-	 desciption: "Item "" did not conform to each: { None of the definitions are valid for 'or': { Did not pass test for equal, Not all definitions are valid for 'and': { Did not pass test for non_empty } } }", 
+	 message: "Item "" did not conform to each: { None of the definitions are valid for 'or': { Did not pass test for equal, Not all definitions are valid for 'and': { Did not pass test for non_empty } } }", 
 	 json_pointer: "/foobar/colors/2">
 [2] <Definition::ConformError 
-	 desciption: "Item 2.0 did not conform to each: { None of the definitions are valid for 'or': { Did not pass test for equal, Not all definitions are valid for 'and': { Is of type Float instead of String } } }", 
+	 message: "Item 2.0 did not conform to each: { None of the definitions are valid for 'or': { Did not pass test for equal, Not all definitions are valid for 'and': { Is of type Float instead of String } } }", 
 	 json_pointer: "/foobar/colors/3">
 [3] <Definition::ConformError 
-	 desciption: "hash fails validation for key someBoolean: { None of the definitions are valid for 'or': { Is of type String instead of TrueClass, Is of type String instead of FalseClass } }", 
+	 message: "hash fails validation for key someBoolean: { None of the definitions are valid for 'or': { Is of type String instead of TrueClass, Is of type String instead of FalseClass } }", 
 	 json_pointer: "/someBoolean">

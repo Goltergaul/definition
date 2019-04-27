@@ -1,3 +1,3 @@
 [0] <Definition::ConformError 
-	 desciption: "Is of type Array instead of String", 
+	 message: "Is of type Array instead of String", 
 	 json_pointer: "/">
