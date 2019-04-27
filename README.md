@@ -343,9 +343,22 @@ Definition.Boolean.conform(tru) # => pass
 ```ruby
 Definition.Equal(5).conform(5) # => pass
 Definition.Equal("foo").conform("foo") # => pass
+```
 
+The Nilable Definition allows a value to be nil or to conform
+with the definition you pass it as argument:
+
+```ruby
 Definition.Nilable(Definition.Type(String)).conform(nil) # => pass
 Definition.Nilable(Definition.Type(String)).conform("foo") # => pass
+```
+
+The Enum Definition checks if the input equals one of the values you pass it as argument. You can pass in as many arguments as you like:
+
+```ruby
+Definition.Enum("foo", 1, 2.0).conform("foo") # => pass
+Definition.Enum("foo", 1, 2.0).conform(1) # => pass
+Definition.Enum("foo", 1, 2.0).conform("bar) # => fail
 ```
 
 ### Examples
