@@ -93,7 +93,7 @@ module Definition
     # Example:
     # Nilable(Definition.Type(Integer))
     def Nilable(definition) # rubocop:disable Style/MethodName
-      Types::Or.new(:nullable, Nil(), definition)
+      Types::Or.new(:nilable, Nil(), definition)
     end
   end
 end
