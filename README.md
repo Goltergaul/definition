@@ -279,6 +279,35 @@ order = Definition.Keys do
 end
 ```
 
+### Extending Key definitions with include
+
+Besides composing Definitions, you can also include `Keys` Definitions in each 
+other. This will basically copy all required and optional keys as well as defaults into the other definition.
+
+```ruby
+address_definition = Definition.Keys do
+  required :street, Definition.Type(String)
+  required :postal_code, Definition.Type(String)
+  required :country_code, Definition.Type(String)
+end
+
+user_definition = Definition.Keys do
+  required :user, user_definition
+
+  include address_definition
+end
+```
+Above Definition will equal the following:
+```ruby
+user_definition = Definition.Keys do
+  required :user, user_definition
+
+  required :street, Definition.Type(String)
+  required :postal_code, Definition.Type(String)
+  required :country_code, Definition.Type(String)
+end
+```
+
 ### Predefined Definitions
 
 #### Strings and Arrays
