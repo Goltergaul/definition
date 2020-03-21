@@ -1,21 +1,18 @@
 language: ruby
 rvm:
   - jruby-9.1.17.0 # ruby 2.3
-  - jruby-9.2.0.0 # ruby 2.5
-  - jruby-head
+  - jruby-9.2.11.1 # ruby 2.5.7
   - 2.3.0
-  - 2.4.0
-  - 2.5.0
-  - ruby-head
+  - 2.7.0
 jobs:
   include:
     - stage: linting
-      rvm: ruby-head
+      rvm: 2.7.0
       script: bundle exec rake rubocop
     - stage: benchmark
       script: bundle exec ruby benchmark/complex_example.rb
-      rvm: ruby-head
+      rvm: 2.7.0
     - script: bundle exec ruby benchmark/coercion.rb
-      rvm: ruby-head
+      rvm: 2.7.0
     - script: bundle exec ruby benchmark/validation_only.rb
-      rvm: ruby-head
+      rvm: 2.7.0
