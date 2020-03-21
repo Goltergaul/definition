@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# frozen_string_literal: true
-
 require "definition/types/base"
 require "definition/types/include"
 require "definition/key_conform_error"
@@ -19,10 +17,6 @@ module Definition
           default(key, opts[:default]) if opts.key?(:default)
         end
 
-        def default(key, value)
-          defaults[key] = value
-        end
-
         def option(option_name)
           case option_name
           when :ignore_extra_keys
@@ -30,6 +24,36 @@ module Definition
           else
             raise "Option #{option_name} is not defined"
           end
+        end
+
+        def include(other)
+          raise ArgumentError.new("Included Definition can only be a Keys Definition") unless other.is_a?(Types::Keys)
+
+          ensure_keys_do_not_interfere(other)
+          other.required_definitions.each do |key, definition|
+            required(key, definition)
+          end
+          other.optional_definitions.each do |key, definition|
+            optional(key, definition)
+          end
+          other.defaults.each do |key, default|
+            default(key, default)
+          end
+        end
+
+        private
+
+        def default(key, value)
+          defaults[key] = value
+        end
+
+        def ensure_keys_do_not_interfere(other)
+          overlapping_keys = keys & other.keys
+          return if overlapping_keys.empty?
+
+          raise ArgumentError.new(
+            "Included definition tries to redefine already defined fields: #{overlapping_keys.join(', ')}"
+          )
         end
       end
 
