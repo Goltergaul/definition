@@ -150,6 +150,26 @@ describe Definition::Types::Keys do
           )
         end
       end
+
+      context "when the input value is nil" do
+        let(:value) { nil }
+
+        it "does not conform" do
+          expect(conform).to not_conform_with(
+            "address is not a Hash"
+          )
+        end
+      end
+
+      context "when the input value is an Integer" do
+        let(:value) { 12 }
+
+        it "does not conform" do
+          expect(conform).to not_conform_with(
+            "address is not a Hash"
+          )
+        end
+      end
     end
   end
 end
