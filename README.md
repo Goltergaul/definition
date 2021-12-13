@@ -1,6 +1,6 @@
 # Definition
 
-[![Build Status](https://travis-ci.org/Goltergaul/definition.svg?branch=master)][travis]
+[![Build Status](https://circleci.com/gh/Goltergaul/definition.svg?style=svg)][circleci]
 [![Gem Version](https://badge.fury.io/rb/definition.svg)][rubygems]
 
 Simple and composable validation and coercion of data structures. It also includes a ValueObject for convenience.
@@ -423,5 +423,5 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/Goltergaul/definition.
 
-[travis]: https://travis-ci.org/Goltergaul/definition
+[circleci]: https://circleci.com/gh/Goltergaul/definition
 [rubygems]: https://rubygems.org/gems/definition
