@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rspec-its", "~> 1.2"
+  spec.add_development_dependency "rspec_junit_formatter"
   spec.add_development_dependency "rubocop", "0.66.0"
   spec.add_development_dependency "rubocop-rspec", "1.32.0"
   spec.add_development_dependency "rubocop_runner"
