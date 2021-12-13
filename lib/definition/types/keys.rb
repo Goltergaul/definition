@@ -84,9 +84,15 @@ module Definition
         end
 
         def conform
-          add_extra_key_errors unless definition.ignore_extra_keys
-          add_missing_key_errors
-          values = conform_all_keys
+          if valid_input_type?
+            add_extra_key_errors unless definition.ignore_extra_keys
+            add_missing_key_errors
+            values = conform_all_keys
+          else
+            errors.push(ConformError.new(definition,
+                                         "#{definition.name} is not a Hash",
+                                         i18n_key: "keys.not_a_hash"))
+          end
 
           ConformResult.new(values, errors: errors)
         end
@@ -94,6 +100,10 @@ module Definition
         private
 
         attr_accessor :errors
+
+        def valid_input_type?
+          value.is_a?(Hash)
+        end
 
         def add_extra_key_errors
           extra_keys = value.keys - all_keys

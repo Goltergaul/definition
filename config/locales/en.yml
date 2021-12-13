@@ -20,3 +20,4 @@ en:
     keys:
       has_extra_key: "Hash has unexpected key %{key}"
       has_missing_key: "Hash is missing key %{key}"
+      not_a_hash: "Is not a Hash"
