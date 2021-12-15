@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "definition/v1_deprecator"
+
 module Definition
   module Dsl
     module Comparators
@@ -36,36 +38,44 @@ module Definition
       end
 
       # Example:
-      # GreaterThen(5)
-      def GreaterThen(min_value) # rubocop:disable Style/MethodName
-        Types::Lambda.new("greater_then", context: { min_value: min_value }) do |value|
+      # GreaterThan(5)
+      def GreaterThan(min_value) # rubocop:disable Style/MethodName
+        Types::Lambda.new("greater_than", context: { min_value: min_value }) do |value|
           conform_with(value) if value.is_a?(Numeric) && value > min_value
         end
       end
+      alias GreaterThen GreaterThan
+      deprecate :GreaterThen, deprecator: V1Deprecator
 
       # Example:
-      # GreaterThenEqual(5)
-      def GreaterThenEqual(min_value) # rubocop:disable Style/MethodName
-        Types::Lambda.new("greater_then_equal", context: { min_value: min_value }) do |value|
+      # GreaterThanEqual(5)
+      def GreaterThanEqual(min_value) # rubocop:disable Style/MethodName
+        Types::Lambda.new("greater_than_equal", context: { min_value: min_value }) do |value|
           conform_with(value) if value.is_a?(Numeric) && value >= min_value
         end
       end
+      alias GreaterThenEqual GreaterThanEqual
+      deprecate :GreaterThenEqual, deprecator: V1Deprecator
 
       # Example:
-      # LessThen(5)
-      def LessThen(max_value) # rubocop:disable Style/MethodName
-        Types::Lambda.new("less_then", context: { max_value: max_value }) do |value|
+      # LessThan(5)
+      def LessThan(max_value) # rubocop:disable Style/MethodName
+        Types::Lambda.new("less_than", context: { max_value: max_value }) do |value|
           conform_with(value) if value.is_a?(Numeric) && value < max_value
         end
       end
+      alias LessThen LessThan
+      deprecate :LessThen, deprecator: V1Deprecator
 
       # Example:
-      # LessThenEqual(5)
-      def LessThenEqual(max_value) # rubocop:disable Style/MethodName
-        Types::Lambda.new("less_then_equal", context: { max_value: max_value }) do |value|
+      # LessThanEqual(5)
+      def LessThanEqual(max_value) # rubocop:disable Style/MethodName
+        Types::Lambda.new("less_than_equal", context: { max_value: max_value }) do |value|
           conform_with(value) if value.is_a?(Numeric) && value <= max_value
         end
       end
+      alias LessThenEqual LessThanEqual
+      deprecate :LessThenEqual, deprecator: V1Deprecator
 
       # Example:
       # Equal("value")

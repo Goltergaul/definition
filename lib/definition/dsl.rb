@@ -16,7 +16,7 @@ module Definition
     end
 
     # Example:
-    # And(Types::Type(Float), Types::GreaterThen(10.0))
+    # And(Types::Type(Float), Types::GreaterThan(10.0))
     def And(*definitions) # rubocop:disable Style/MethodName
       Types::And.new(:and, *definitions)
     end

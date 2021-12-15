@@ -2,9 +2,9 @@
 
 require "spec_helper"
 
-describe "Definition.GreaterThen" do
+describe "Definition.GreaterThan" do
   subject(:definition) do
-    Definition.GreaterThen(5)
+    Definition.GreaterThan(5)
   end
 
   it_behaves_like "it conforms", 6
@@ -14,5 +14,13 @@ describe "Definition.GreaterThen" do
     let(:value) { 5 }
 
     it_behaves_like "it does not conform"
+  end
+
+  context "with deprecated interface that had a typo" do
+    subject(:definition) do
+      Definition.GreaterThen(5)
+    end
+
+    it_behaves_like "it conforms", 6
   end
 end

@@ -13,7 +13,7 @@ describe "Definition.And" do
 
   it_behaves_like "it conforms", 9.99
 
-  context "with float less then 1.0" do
+  context "with float less than 1.0" do
     let(:value) { 0.5 }
 
     it_behaves_like "it does not conform"
