@@ -409,10 +409,10 @@ Definition.Regex(/^\d*$/).conform("123") # => pass
 #### Numerics
 
 ```ruby
-Definition.GreaterThen(5).conform(5.1) # => pass
-Definition.GreaterThenEqual(5).conform(5) # => pass
-Definition.LessThen(5).conform(4) # => pass
-Definition.LessThenEqual(5).conform(5) # => pass
+Definition.GreaterThan(5).conform(5.1) # => pass
+Definition.GreaterThanEqual(5).conform(5) # => pass
+Definition.LessThan(5).conform(4) # => pass
+Definition.LessThanEqual(5).conform(5) # => pass
 ```
 
 #### Strings, Array, Hashes

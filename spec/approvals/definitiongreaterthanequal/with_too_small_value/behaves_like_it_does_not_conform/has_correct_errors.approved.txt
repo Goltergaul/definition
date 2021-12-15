@@ -1,0 +1,3 @@
+[0] <Definition::ConformError 
+	 message: "Did not pass test for greater_than_equal (5)", 
+	 json_pointer: "/">

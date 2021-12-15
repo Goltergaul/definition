@@ -45,8 +45,8 @@ Each	lib/definition/types/each.rb	/^    class Each < Base$/;"	c	class:Definition
 Empty	lib/definition/dsl/comparators.rb	/^      def Empty # rubocop:disable Naming\/MethodName$/;"	f
 Enum	lib/definition/dsl.rb	/^    def Enum(*allowed_values) # rubocop:disable Naming\/MethodName$/;"	f	class:Definition.Dsl
 Equal	lib/definition/dsl/comparators.rb	/^      def Equal(expected_value) # rubocop:disable Naming\/MethodName$/;"	f
-GreaterThen	lib/definition/dsl/comparators.rb	/^      def GreaterThen(min_value) # rubocop:disable Naming\/MethodName$/;"	f	class:Definition.Dsl.Comparators
-GreaterThenEqual	lib/definition/dsl/comparators.rb	/^      def GreaterThenEqual(min_value) # rubocop:disable Naming\/MethodName$/;"	f	class:Definition.Dsl
+GreaterThan	lib/definition/dsl/comparators.rb	/^      def GreaterThan(min_value) # rubocop:disable Naming\/MethodName$/;"	f	class:Definition.Dsl.Comparators
+GreaterThanEqual	lib/definition/dsl/comparators.rb	/^      def GreaterThanEqual(min_value) # rubocop:disable Naming\/MethodName$/;"	f	class:Definition.Dsl
 Include	lib/definition/types/include.rb	/^    class Include < Base$/;"	c	class:Definition.Types
 InvalidValueObjectError	lib/definition/value_object.rb	/^  class InvalidValueObjectError < StandardError; end$/;"	c	class:Definition
 JsonApiRequestHandler	spec/integration/usecases/jsonapi_spec.rb	/^  class JsonApiRequestHandler$/;"	c
@@ -55,8 +55,8 @@ Keys	lib/definition/dsl.rb	/^    def Keys(&block) # rubocop:disable Naming\/Meth
 Keys	lib/definition/types/keys.rb	/^    class Keys < Base$/;"	c	class:Definition.Types
 Lambda	lib/definition/dsl.rb	/^    def Lambda(name, &block) # rubocop:disable Naming\/MethodName$/;"	f	class:Definition.Dsl
 Lambda	lib/definition/types/lambda.rb	/^    class Lambda < Base$/;"	c	class:Definition.Types
-LessThen	lib/definition/dsl/comparators.rb	/^      def LessThen(max_value) # rubocop:disable Naming\/MethodName$/;"	f	class:Definition
-LessThenEqual	lib/definition/dsl/comparators.rb	/^      def LessThenEqual(max_value) # rubocop:disable Naming\/MethodName$/;"	f
+LessThan	lib/definition/dsl/comparators.rb	/^      def LessThan(max_value) # rubocop:disable Naming\/MethodName$/;"	f	class:Definition
+LessThanEqual	lib/definition/dsl/comparators.rb	/^      def LessThanEqual(max_value) # rubocop:disable Naming\/MethodName$/;"	f
 MaxSize	lib/definition/dsl/comparators.rb	/^      def MaxSize(max_size) # rubocop:disable Naming\/MethodName$/;"	f	class:Definition.Dsl.Comparators
 MinSize	lib/definition/dsl/comparators.rb	/^      def MinSize(min_size) # rubocop:disable Naming\/MethodName$/;"	f	class:Definition.Dsl.Comparators
 Nil	lib/definition/dsl/nil.rb	/^      def Nil # rubocop:disable Naming\/MethodName$/;"	f	class:Definition.Dsl.Nil

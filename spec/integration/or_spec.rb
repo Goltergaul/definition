@@ -15,7 +15,7 @@ describe "Definition.Or" do
   it_behaves_like "it conforms", 2
   it_behaves_like "it conforms", 0.0
 
-  context "with integer less then 1.0" do
+  context "with integer less than 1.0" do
     let(:value) { BigDecimal("0") }
 
     it_behaves_like "it does not conform"
