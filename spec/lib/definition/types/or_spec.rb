@@ -23,7 +23,8 @@ describe Definition::Types::Or do
 
       it "does not conform" do
         expect(conform).to not_conform_with(
-          "None of the definitions are valid for 'or_test': { Did not pass test for def1, Did not pass test for def2 }"
+          "None of the definitions are valid for 'or_test'. " \
+            "Errors for last tested definition:: { Did not pass test for def2 }"
         )
       end
     end

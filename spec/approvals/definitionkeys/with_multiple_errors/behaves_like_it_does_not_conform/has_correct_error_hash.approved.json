@@ -5,14 +5,14 @@
     ],
     "colors": {
       "2": [
-        "<Definition::ConformError \n\t message: \"Item \"\" did not conform to each: { None of the definitions are valid for 'or': { Did not pass test for equal, Not all definitions are valid for 'and': { Did not pass test for non_empty } } }\", \n\t json_pointer: \"/foobar/colors/2\">"
+        "<Definition::ConformError \n\t message: \"Item \"\" did not conform to each: { None of the definitions are valid for 'or'. Errors for last tested definition:: { Not all definitions are valid for 'and': { Did not pass test for non_empty } } }\", \n\t json_pointer: \"/foobar/colors/2\">"
       ],
       "3": [
-        "<Definition::ConformError \n\t message: \"Item 2.0 did not conform to each: { None of the definitions are valid for 'or': { Did not pass test for equal, Not all definitions are valid for 'and': { Is of type Float instead of String } } }\", \n\t json_pointer: \"/foobar/colors/3\">"
+        "<Definition::ConformError \n\t message: \"Item 2.0 did not conform to each: { None of the definitions are valid for 'or'. Errors for last tested definition:: { Not all definitions are valid for 'and': { Is of type Float instead of String } } }\", \n\t json_pointer: \"/foobar/colors/3\">"
       ]
     }
   },
   "someBoolean": [
-    "<Definition::ConformError \n\t message: \"hash fails validation for key someBoolean: { None of the definitions are valid for 'or': { Is of type String instead of TrueClass, Is of type String instead of FalseClass } }\", \n\t json_pointer: \"/someBoolean\">"
+    "<Definition::ConformError \n\t message: \"hash fails validation for key someBoolean: { None of the definitions are valid for 'or'. Errors for last tested definition:: { Is of type String instead of FalseClass } }\", \n\t json_pointer: \"/someBoolean\">"
   ]
 }

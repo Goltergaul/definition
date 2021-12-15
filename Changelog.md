@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Lambda definitions can now be failed with custom error messages
 - Compatibility with Ruby 3.0
+### Fixed
+- In some cases errors from nested `Keys` definitions inside `Or` definitions got lost when listing the validation errors via the `error_hash` method on the conform result object.
+### Changed
+- When no sub-definition of an `Or` conforms, then only the errors of the last definition of the `Or` are collected. Previously the errors of all sub-definitions were collected.
 
 ## [0.6.1] - 2020-03-21
 ### Fixed

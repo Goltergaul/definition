@@ -1,6 +1,3 @@
 [0] <Definition::ConformError 
-	 message: "Did not pass test for nil", 
-	 json_pointer: "/">
-[1] <Definition::ConformError 
 	 message: "Is of type Float instead of String", 
 	 json_pointer: "/">
