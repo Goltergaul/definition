@@ -1,0 +1,8 @@
+{
+  "person": [
+    "<Definition::ConformError \n\t message: \"hash has extra key: :person\", \n\t json_pointer: \"/person\">"
+  ],
+  "social_security_number": [
+    "<Definition::ConformError \n\t message: \"hash is missing key :social_security_number\", \n\t json_pointer: \"/social_security_number\">"
+  ]
+}

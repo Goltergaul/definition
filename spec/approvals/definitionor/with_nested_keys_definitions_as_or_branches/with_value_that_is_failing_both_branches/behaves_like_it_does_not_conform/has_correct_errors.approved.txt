@@ -1,0 +1,6 @@
+[0] <Definition::ConformError 
+	 message: "hash has extra key: :person", 
+	 json_pointer: "/person">
+[1] <Definition::ConformError 
+	 message: "hash is missing key :social_security_number", 
+	 json_pointer: "/social_security_number">

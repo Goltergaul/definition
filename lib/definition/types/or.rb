@@ -34,7 +34,8 @@ module Definition
             result
           else
             error = ConformError.new(definition,
-                                     "None of the definitions are valid for '#{definition.name}'",
+                                     "None of the definitions are valid for '#{definition.name}'."\
+                                     " Errors for last tested definition:",
                                      sub_errors: result)
             ConformResult.new(value, errors: [error])
           end
@@ -48,7 +49,7 @@ module Definition
             result = definition.conform(value)
             return result if result.passed?
 
-            errors.push(result.error_tree)
+            errors = result.error_tree
           end
 
           errors.flatten

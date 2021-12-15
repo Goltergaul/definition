@@ -20,4 +20,25 @@ describe "Definition.Or" do
 
     it_behaves_like "it does not conform"
   end
+
+  context "with nested keys definitions as or branches" do
+    let(:def1) do
+      Definition.Keys do
+        required(:person, Definition.Keys do
+          required(:first_name, Definition.Type(String))
+        end)
+      end
+    end
+    let(:def2) do
+      Definition.Keys do
+        required(:social_security_number, Definition.Type(String))
+      end
+    end
+
+    context "with value that is failing both branches" do
+      let(:value) { { person: { first_name: 1 } } }
+
+      it_behaves_like "it does not conform"
+    end
+  end
 end

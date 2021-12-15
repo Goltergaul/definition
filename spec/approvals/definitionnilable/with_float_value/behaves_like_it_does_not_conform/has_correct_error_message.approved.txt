@@ -1,1 +1,1 @@
-None of the definitions are valid for 'nilable': { Did not pass test for nil, Is of type Float instead of String }
+None of the definitions are valid for 'nilable'. Errors for last tested definition:: { Is of type Float instead of String }
