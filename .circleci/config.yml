@@ -20,7 +20,7 @@ jobs:
       - checkout
       - ruby/install-deps
       - ruby/rspec-test
-  checking:
+  linting:
     docker:
       - image: 'cimg/ruby:2.7'
     steps:
@@ -39,5 +39,5 @@ workflows:
       - test: 
           matrix:
             parameters:
-              image: ["cimg/ruby:2.5", "cimg/ruby:2.6", "cimg/ruby:2.7", "circleci/jruby:9.3.1-jdk11", "circleci/jruby:9.2.20-jdk11"]
-      - checking
+              image: ["cimg/ruby:2.5", "cimg/ruby:2.6", "cimg/ruby:2.7", "cimg/ruby:3.0", "circleci/jruby:9.3.1-jdk11", "circleci/jruby:9.2.20-jdk11"]
+      - linting
