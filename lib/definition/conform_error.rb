@@ -53,7 +53,7 @@ module Definition
     def translated_error(namespace = "definition", vars: {})
       namespace ||= "definition"
       vars[:key] = key if respond_to?(:key)
-      ::I18n.t("#{namespace}.#{i18n_key}", definition.context.merge!(vars))
+      ::I18n.t("#{namespace}.#{i18n_key}", **definition.context.merge!(vars))
     end
 
     private
