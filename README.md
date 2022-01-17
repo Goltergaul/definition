@@ -255,6 +255,24 @@ either be the original value or any transformed version of it. By not calling
 The first argument of `Definition.Lambda` is a name you can give this definition.
 It will only be used in the error message to make it more readable.
 
+If you want to provide detailed custom error messages you can use `fail_with`:
+
+```ruby
+Definition.Lambda(:password) do |value|
+  if !value.match(/[a-z]+/)
+    fail_with("must contain at least one lower case letter")
+  elsif !value.match(/[A-Z]+/)
+    fail_with("must contain at least one upper case letter") 
+  elsif !value.match(/\d+/)
+    fail_with("must contain at least one digit") 
+  elsif value.size < 6 || value.size > 50
+    fail_with("must be between 6 and 50 characters long") 
+  else
+    conform_with(value)
+  end
+end
+```
+
 ### Composing Definitions
 
 Definitions are reusable and can be easily composed:

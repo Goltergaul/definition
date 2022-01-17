@@ -17,6 +17,40 @@ describe Definition::Types::Lambda do
     end
   end
 
+  describe "when definition defines a custom error message" do
+    let(:test_lambda) do
+      lambda do |value|
+        if value.even?
+          conform_with(value)
+        else
+          fail_with("Value is not even")
+        end
+      end
+    end
+
+    describe ".conform" do
+      subject(:conform) { definition.conform(value) }
+
+      context "with even value" do
+        let(:value) { 2 }
+
+        it "conforms" do
+          expect(conform).to conform_with(value)
+        end
+      end
+
+      context "with odd value" do
+        let(:value) { 1 }
+
+        it "does not conform using custom error message" do
+          expect(conform).to not_conform_with(
+            "Value is not even"
+          )
+        end
+      end
+    end
+  end
+
   describe "when definition does not coerce" do
     let(:test_lambda) { ->(value) { conform_with(value) if value.even? } }
 
