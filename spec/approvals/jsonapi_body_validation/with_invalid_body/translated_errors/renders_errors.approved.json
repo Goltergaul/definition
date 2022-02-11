@@ -1,12 +1,12 @@
 [
   {
     "title": "Validation error",
-    "description": "Value is bigger then 1000",
+    "description": "Value is bigger than 1000",
     "pointer": "/data/attributes/body"
   },
   {
     "title": "Validation error",
-    "description": "translation missing: en.definition.milliseconds_time",
+    "description": "Did not pass test for 'milliseconds_time'",
     "pointer": "/data/attributes/publish_date"
   },
   {

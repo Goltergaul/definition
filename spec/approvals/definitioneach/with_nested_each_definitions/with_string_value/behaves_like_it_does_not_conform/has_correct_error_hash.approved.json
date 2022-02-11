@@ -1,0 +1,5 @@
+{
+  "0": [
+    "<Definition::ConformError \n\t message: \"Item \"a\" did not conform to each: { Non-Array value does not conform with each }\", \n\t json_pointer: \"/0\">"
+  ]
+}

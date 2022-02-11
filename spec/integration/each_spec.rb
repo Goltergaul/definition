@@ -26,4 +26,20 @@ describe "Definition.Each" do
 
     it_behaves_like "it does not conform"
   end
+
+  context "with nested each definitions" do
+    subject(:definition) do
+      Definition.Each(Definition.Each(Definition::Type(Integer)))
+    end
+
+    context "with string value" do
+      let(:value) { ["a"] }
+
+      it_behaves_like "it does not conform"
+
+      it "renders a good translated error message" do
+        expect(definition.conform(value).errors.map(&:translated_error)).to eql(["Is not an Array"])
+      end
+    end
+  end
 end

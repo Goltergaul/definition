@@ -44,7 +44,13 @@ describe Definition::Types::Lambda do
 
         it "does not conform using custom error message" do
           expect(conform).to not_conform_with(
-            "Value is not even"
+            "Did not pass test for lambda_test"
+          )
+        end
+
+        it "produces a good translated error message" do
+          expect(conform.errors.map(&:translated_error)).to eql(
+            ["Value is not even"]
           )
         end
       end
@@ -71,6 +77,12 @@ describe Definition::Types::Lambda do
         it "does not conform" do
           expect(conform).to not_conform_with(
             "Did not pass test for lambda_test"
+          )
+        end
+
+        it "produces a good translated error message" do
+          expect(conform.errors.map(&:translated_error)).to eql(
+            ["Did not pass test for 'lambda_test'"]
           )
         end
       end
@@ -105,6 +117,12 @@ describe Definition::Types::Lambda do
         it "does not conform" do
           expect(conform).to not_conform_with(
             "Did not pass test for lambda_test"
+          )
+        end
+
+        it "produces a good translated error message" do
+          expect(conform.errors.map(&:translated_error)).to eql(
+            ["Did not pass test for 'lambda_test'"]
           )
         end
       end

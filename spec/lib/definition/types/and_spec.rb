@@ -13,10 +13,10 @@ describe Definition::Types::And do
 
       context "with value that fails all definitions" do
         let(:definition1) do
-          failing_definition(value, "Did not pass test for def1")
+          failing_definition(:def1, translated_error_message: "def1 error")
         end
         let(:definition2) do
-          failing_definition(value, "Did not pass test for def2")
+          failing_definition(:def2, translated_error_message: "def2 error")
         end
         let(:value) { 1 }
 
@@ -25,14 +25,20 @@ describe Definition::Types::And do
             "Not all definitions are valid for 'and_test': { Did not pass test for def1 }"
           )
         end
+
+        it "produces a good translated error message" do
+          expect(conform.errors.map(&:translated_error)).to eql(
+            ["def1 error"]
+          )
+        end
       end
 
       context "with value that fails one definition" do
         let(:definition1) do
-          conforming_definition(value)
+          conforming_definition
         end
         let(:definition2) do
-          failing_definition(value, "Did not pass test for def2")
+          failing_definition(:def2, translated_error_message: "def2 error")
         end
         let(:value) { 6 }
 
@@ -41,14 +47,20 @@ describe Definition::Types::And do
             "Not all definitions are valid for 'and_test': { Did not pass test for def2 }"
           )
         end
+
+        it "produces a good translated error message" do
+          expect(conform.errors.map(&:translated_error)).to eql(
+            ["def2 error"]
+          )
+        end
       end
 
       context "with value that fails no definition" do
         let(:definition1) do
-          conforming_definition(value)
+          conforming_definition
         end
         let(:definition2) do
-          conforming_definition(value)
+          conforming_definition
         end
         let(:value) { 12 }
 
@@ -66,10 +78,10 @@ describe Definition::Types::And do
       end
 
       let(:definition_int) do
-        conforming_definition(1)
+        conforming_definition(conform_with: 1)
       end
       let(:definition_float) do
-        conforming_definition(1.0)
+        conforming_definition(conform_with: 1.0)
       end
 
       it "conforms" do

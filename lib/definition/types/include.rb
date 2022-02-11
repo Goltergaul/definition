@@ -38,7 +38,8 @@ module Definition
           definition.required_items.map do |item|
             next if value.include?(item)
 
-            KeyConformError.new(definition, "#{definition.name} does not include #{item.inspect}", key: item)
+            KeyConformError.new(definition, "#{definition.name} does not include #{item.inspect}",
+                                key: item, i18n_context: { value: item.inspect })
           end.compact
         end
 

@@ -4,16 +4,18 @@ require "i18n"
 
 module Definition
   class ConformError
-    def initialize(definition, message, sub_errors: [], i18n_key: definition.name)
+    def initialize(definition, message, sub_errors: [], **options)
       self.definition = definition
       self.message = message
       self.sub_errors = sub_errors
-      self.i18n_key = i18n_key
+      self.i18n_key = options.fetch(:i18n_key, definition.name)
+      self.i18n_context = options.fetch(:i18n_context, {})
+      self.translated_error = options.fetch(:translated_message, nil)
       assign_parents
     end
 
-    attr_accessor :definition, :sub_errors, :parent, :i18n_key
-    attr_writer :message
+    attr_accessor :definition, :sub_errors, :parent, :i18n_key, :i18n_context
+    attr_writer :message, :translated_error
 
     def message
       if sub_errors.empty?
@@ -50,10 +52,8 @@ module Definition
       sub_errors.map(&:leaf_errors).flatten
     end
 
-    def translated_error(namespace = "definition", vars: {})
-      namespace ||= "definition"
-      vars[:key] = key if respond_to?(:key)
-      ::I18n.t("#{namespace}.#{i18n_key}", **definition.context.merge!(vars))
+    def translated_error(namespace = "definition")
+      @translated_error ||= definition.error_renderer.new(self, i18n_namespace: namespace).translated_error
     end
 
     private

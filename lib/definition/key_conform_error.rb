@@ -4,9 +4,9 @@ require "definition/conform_error"
 
 module Definition
   class KeyConformError < ConformError
-    def initialize(definition, message, key:, sub_errors: [], i18n_key: definition.name)
+    def initialize(definition, message, key:, sub_errors: [], **options)
       self.key = key
-      super(definition, message, sub_errors: sub_errors, i18n_key: i18n_key)
+      super(definition, message, sub_errors: sub_errors, **options)
     end
 
     attr_accessor :key

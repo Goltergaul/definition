@@ -7,7 +7,7 @@ describe Definition::Types::Type do
     subject(:conform) { definition.conform(value) }
 
     let(:definition) do
-      described_class.new(:type_test,
+      described_class.new(:type,
                           ::Integer)
     end
     let(:coerce) { false }
@@ -28,11 +28,17 @@ describe Definition::Types::Type do
           "Is of type String instead of Integer"
         )
       end
+
+      it "produces a good translated error message" do
+        expect(conform.errors.map(&:translated_error)).to eql(
+          ["Value is of wrong type, needs to be a Integer"]
+        )
+      end
     end
 
     context "with coercion lambda" do
       let(:definition) do
-        described_class.new(:type_test, ::Integer) do |v|
+        described_class.new(:type, ::Integer) do |v|
           begin
             Integer(v)
           rescue StandardError
@@ -55,6 +61,12 @@ describe Definition::Types::Type do
         it "does not conform" do
           expect(conform).to not_conform_with(
             "Is of type String instead of Integer"
+          )
+        end
+
+        it "produces a good translated error message" do
+          expect(conform.errors.map(&:translated_error)).to eql(
+            ["Value is of wrong type, needs to be a Integer"]
           )
         end
       end

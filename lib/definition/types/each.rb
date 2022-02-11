@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "definition/types/base"
+require "definition/types/error_renderers/leaf"
 
 module Definition
   module Types
@@ -14,6 +15,10 @@ module Definition
 
       def conform(value)
         Conformer.new(self).conform(value)
+      end
+
+      def error_renderer
+        ErrorRenderers::Leaf
       end
 
       class Conformer
