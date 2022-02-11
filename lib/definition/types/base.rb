@@ -2,6 +2,7 @@
 
 require "definition/conform_result"
 require "definition/conform_error"
+require "definition/types/error_renderers/standard"
 
 module Definition
   module Types
@@ -22,6 +23,10 @@ module Definition
 
       def conform(_value)
         raise NotImplementedError
+      end
+
+      def error_renderer
+        ErrorRenderers::Standard
       end
     end
   end

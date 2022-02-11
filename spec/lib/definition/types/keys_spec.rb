@@ -73,19 +73,13 @@ describe Definition::Types::Keys do
         }
       end
       let(:string_def) do
-        Definition::Types::Type.new(:string, String)
+        Definition.Type(String)
       end
       let(:int_def) do
-        Definition::Types::Type.new(:integer, Integer)
+        Definition.Type(Integer)
       end
       let(:include_def) do
-        Definition::Types::Include.new(definition.name, *required_keys.keys)
-      end
-
-      before do
-        allow(Definition::Types::Include).to receive(:new)
-          .with(definition.name, *required_keys.keys)
-          .and_return(include_def)
+        Definition.Enum(*required_keys.keys)
       end
 
       context "with missing req and missing opt field" do
@@ -94,6 +88,12 @@ describe Definition::Types::Keys do
         it "does not conform" do
           expect(conform).to not_conform_with(
             "address is missing key :street, address is missing key :city"
+          )
+        end
+
+        it "produces a good translated error message" do
+          expect(conform.errors.map(&:translated_error)).to eql(
+            ["Is missing", "Is missing"]
           )
         end
       end
@@ -106,6 +106,12 @@ describe Definition::Types::Keys do
             "address is missing key :street, "\
             "address is missing key :city, "\
             "address fails validation for key appartment_number: { Is of type String instead of Integer }"
+          )
+        end
+
+        it "produces a good translated error message" do
+          expect(conform.errors.map(&:translated_error)).to eql(
+            ["Is missing", "Is missing", "Value is of wrong type, needs to be a Integer"]
           )
         end
       end
@@ -149,6 +155,12 @@ describe Definition::Types::Keys do
             "address has extra key: :foo"
           )
         end
+
+        it "produces a good translated error message" do
+          expect(conform.errors.map(&:translated_error)).to eql(
+            ["Is unexpected"]
+          )
+        end
       end
 
       context "when the input value is nil" do
@@ -157,6 +169,12 @@ describe Definition::Types::Keys do
         it "does not conform" do
           expect(conform).to not_conform_with(
             "address is not a Hash"
+          )
+        end
+
+        it "produces a good translated error message" do
+          expect(conform.errors.map(&:translated_error)).to eql(
+            ["Is not a Hash"]
           )
         end
       end
