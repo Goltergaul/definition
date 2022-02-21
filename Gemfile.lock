@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    definition (0.6.1)
+    definition (0.7.0)
       activesupport
       i18n
 
@@ -109,6 +109,7 @@ GEM
     unicode-display_width (1.5.0)
 
 PLATFORMS
+  ruby
   x86_64-linux
 
 DEPENDENCIES

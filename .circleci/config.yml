@@ -12,22 +12,25 @@ orbs:
 jobs:
   test:
     parameters:
-      image:
+      ruby_version:
         type: string
     docker:
-      - image: << parameters.image>>
+      - image: cimg/base:stable
     steps:
+      - ruby/install:
+          version: << parameters.ruby_version >>
       - checkout
       - run: rm Gemfile.lock
-      - run: export GEM=$(which gem); sudo $GEM update --system --no-document
       - run: gem install bundler
       - run: bundle install
       - ruby/rspec-test
   linting:
     docker:
-      - image: 'cimg/ruby:2.7'
+      - image: 'cimg/base:stable'
     steps:
       - checkout
+      - ruby/install:
+          version: "3.0"
       - ruby/install-deps
       - ruby/rubocop-check:
           format: progress
@@ -42,11 +45,9 @@ workflows:
       - test: 
           matrix:
             parameters:
-              image:
-                - "cimg/ruby:2.6"
-                - "cimg/ruby:2.7"
-                - "cimg/ruby:3.0"
-                - "cimg/ruby:3.1"
-                - "circleci/jruby:9.3.3-jdk11"
-                - "circleci/jruby:9.2.20-jdk11"
+              ruby_version:
+                - "2.6"
+                - "2.7"
+                - "3.0"
+                - "jruby-9.3.3.0"
       - linting

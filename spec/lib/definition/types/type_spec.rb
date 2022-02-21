@@ -39,11 +39,9 @@ describe Definition::Types::Type do
     context "with coercion lambda" do
       let(:definition) do
         described_class.new(:type, ::Integer) do |v|
-          begin
-            Integer(v)
-          rescue StandardError
-            v
-          end
+          Integer(v)
+        rescue StandardError
+          v
         end
       end
 

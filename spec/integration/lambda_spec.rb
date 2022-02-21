@@ -5,11 +5,9 @@ require "spec_helper"
 describe "Definition.Lambda" do
   subject(:definition) do
     Definition.Lambda(:email) do |value|
-      begin
-        conform_with(value) if value =~ /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
-      rescue NoMethodError
-        value
-      end
+      conform_with(value) if value =~ /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
+    rescue NoMethodError
+      value
     end
   end
 

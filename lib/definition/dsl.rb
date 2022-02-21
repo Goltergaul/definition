@@ -41,11 +41,9 @@ module Definition
                                 "a primitive that has a coercion function defined")
       end
       Types::Type.new(:type, klass) do |value|
-        begin
-          method(klass.name).call(value)
-        rescue ArgumentError
-          value
-        end
+        method(klass.name).call(value)
+      rescue ArgumentError
+        value
       end
     end
 

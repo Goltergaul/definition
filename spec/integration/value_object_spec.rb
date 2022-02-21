@@ -61,11 +61,9 @@ describe "ValueObject" do
     end
 
     it "correctly nests the error hash" do
-      begin
-        test_value_object.new(foo: { bar: 2.0 })
-      rescue Definition::InvalidValueObjectError => e
-        verify(format: :json) { e.conform_result.error_hash }
-      end
+      test_value_object.new(foo: { bar: 2.0 })
+    rescue Definition::InvalidValueObjectError => e
+      verify(format: :json) { e.conform_result.error_hash }
     end
   end
 end
