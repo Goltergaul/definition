@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+
+## [0.7.0] - 2022-02-25
 ### Added
 - Lambda definitions can now be failed with custom error messages
 - Compatibility with Ruby 3.0
@@ -12,8 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - In some cases errors from nested `Keys` definitions inside `Or` definitions got lost when listing the validation errors via the `error_hash` method on the conform result object.
 ### Changed
 - When no sub-definition of an `Or` conforms, then only the errors of the last definition of the `Or` are collected. Previously the errors of all sub-definitions were collected.
+- Translated error messages have been improved to be more suitable to be used as end user error messages
 
-## [0.6.1] - 2020-03-21
+## [0.6.1] - 2021-12-14
 ### Fixed
 - The `Keys` definition crashed with an error if the input was not a Hash
 
