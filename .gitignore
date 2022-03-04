@@ -8,4 +8,5 @@
 /tmp/
 /bin/
 *.swp
+.approvals
 spec/examples.txt
