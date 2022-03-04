@@ -1,0 +1,3 @@
+[0] <Definition::ConformError 
+	 message: "Is of type NilClass instead of Float", 
+	 json_pointer: "/">
