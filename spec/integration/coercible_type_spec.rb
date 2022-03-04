@@ -15,4 +15,10 @@ describe "Definition.CoercibleType" do
 
     it_behaves_like "it does not conform"
   end
+
+  context "with incoercible nil value" do
+    let(:value) { nil }
+
+    it_behaves_like "it does not conform"
+  end
 end

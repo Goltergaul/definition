@@ -14,7 +14,7 @@ module Definition
       end
 
       def conform(value)
-        value = coerce.call(value) if coerce && !valid?(value)
+        value = coerce.call(value) if value && coerce && !valid?(value)
 
         try_conform(value)
       end
