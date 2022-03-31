@@ -52,10 +52,16 @@ module Definition
           "Did not pass test for #{definition.name}"
         end
 
+        def contextual_error_message
+          return standard_error_message if definition.context.empty?
+
+          "#{standard_error_message} (#{definition.context.values.join(',')})"
+        end
+
         def failure_result_with(value, error_message)
           ConformResult.new(value, errors: [
                               ConformError.new(definition,
-                                               standard_error_message,
+                                               contextual_error_message,
                                                translated_message: error_message)
                             ])
         end

@@ -1,1 +1,1 @@
-Did not pass test for min_size
+Did not pass test for min_size (5)

@@ -1,9 +1,9 @@
 [0] <Definition::ConformError 
-	 message: "hash fails validation for key body: { Did not pass test for max_size }", 
+	 message: "hash fails validation for key body: { Did not pass test for max_size (1000) }", 
 	 json_pointer: "/data/attributes/body">
 [1] <Definition::ConformError 
 	 message: "hash fails validation for key publish_date: { Did not pass test for milliseconds_time }", 
 	 json_pointer: "/data/attributes/publish_date">
 [2] <Definition::ConformError 
-	 message: "hash fails validation for key type: { Did not pass test for equal }", 
+	 message: "hash fails validation for key type: { Did not pass test for equal (comment) }", 
 	 json_pointer: "/data/relationships/comments/data/0/type">
