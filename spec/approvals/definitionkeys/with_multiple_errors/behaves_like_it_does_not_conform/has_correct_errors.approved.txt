@@ -1,5 +1,5 @@
 [0] <Definition::ConformError 
-	 message: "hash fails validation for key name: { Not all definitions are valid for 'and': { Did not pass test for regex } }", 
+	 message: "hash fails validation for key name: { Not all definitions are valid for 'and': { Did not pass test for regex (/^\D+$/) } }", 
 	 json_pointer: "/foobar/name">
 [1] <Definition::ConformError 
 	 message: "Item "" did not conform to each: { None of the definitions are valid for 'or'. Errors for last tested definition:: { Not all definitions are valid for 'and': { Did not pass test for non_empty } } }", 

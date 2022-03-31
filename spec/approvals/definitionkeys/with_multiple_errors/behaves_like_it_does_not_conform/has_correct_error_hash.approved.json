@@ -1,7 +1,7 @@
 {
   "foobar": {
     "name": [
-      "<Definition::ConformError \n\t message: \"hash fails validation for key name: { Not all definitions are valid for 'and': { Did not pass test for regex } }\", \n\t json_pointer: \"/foobar/name\">"
+      "<Definition::ConformError \n\t message: \"hash fails validation for key name: { Not all definitions are valid for 'and': { Did not pass test for regex (/^\\D+$/) } }\", \n\t json_pointer: \"/foobar/name\">"
     ],
     "colors": {
       "2": [

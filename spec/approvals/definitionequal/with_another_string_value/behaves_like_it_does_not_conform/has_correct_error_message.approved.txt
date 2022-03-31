@@ -1,1 +1,1 @@
-Did not pass test for equal
+Did not pass test for equal (foobar)
