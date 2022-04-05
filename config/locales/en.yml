@@ -1,7 +1,7 @@
 en:
   definition:
-    max_size: "Value is bigger than %{max_size}"
-    min_size: "Value is smaller than %{min_size}"
+    max_size: "Value is longer than %{max_size}"
+    min_size: "Value is shorter than %{min_size}"
     greater_then: "Value must be greater than %{min_value}"
     greater_then_equal: "Value must be greater or equal to %{min_value}"
     less_then: "Value must be less than %{max_value}"
