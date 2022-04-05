@@ -42,7 +42,7 @@ conform_result.error_hash # =>
 # {
 #     :birthday => [
 #         [0] <Definition::ConformError
-#               desciption: "hash fails validation for key birthday: { Is of type String instead of Date }",
+#               description: "hash fails validation for key birthday: { Is of type String instead of Date }",
 #               json_pointer: "/birthday">
 #     ]
 # }
@@ -70,6 +70,62 @@ conform_result.value # => {title: "My first blog post", body: "Shortest one ever
 
 Because definitions do not only validate input but also transform input, we use
 the term `conform` which stands for validation and coercion.
+
+### Handling errors
+
+#### I18n translated errors
+For end users you best use the translated errors that you get from definition:
+
+```ruby
+schema = Definition.Keys do
+  required :title, Definition.NonEmptyString
+  required :body, Definition::And(
+                    Definition.Type(String),
+                    Definition.MinSize(100)
+                  )
+end
+
+conform_result = schema.conform({title: "", body: "this is not long enough"})
+conform_result.errors # => returns an array of Definition::ConformError
+conform_result.errors.each do |error|
+  puts "----"
+  puts error.json_pointer # provides a path to the invalid value, also works with nested objects and arrays
+  puts error.translated_error
+end
+# =>
+# ----
+# /title
+# Value is shorter than 1
+# ----
+# /body
+# Value is shorter than 100
+```
+
+The error messages are only translated into English for now, but you can add or change translations by adding a yaml file like [this](./config/locales/en.yml) to your I18n load path.
+
+#### Other ways of accessing errors
+
+To get a quick error summary during debugging, you can also use `conform_result.error_message`
+
+Instead of getting a flat array of all errors via `conform_result.errors`, you can also get a hierarchical representation:
+
+```ruby
+conform_result.error_hash
+# =>
+# {
+#     :title => [
+#         [0] <Definition::ConformError 
+# 	 message: "hash fails validation for key title: { Not all definitions are valid for 'non_empty_string': { Did not pass test for min_size (1) } }", 
+# 	 json_pointer: "/title">
+#     ],
+#      :body => [
+#         [0] <Definition::ConformError 
+# 	 message: "hash fails validation for key body: { Not all definitions are valid for 'and': { Did not pass test for min_size (100) } }", 
+# 	 json_pointer: "/body">
+#     ]
+# }
+
+```
 
 ### Value Objects
 
@@ -382,7 +438,7 @@ Definition.Nil.conform(nil) # => pass
 #### Boolean
 
 ```ruby
-Definition.Boolean.conform(tru) # => pass
+Definition.Boolean.conform(true) # => pass
 ```
 
 #### All types
