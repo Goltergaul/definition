@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Changes
 - Include more information in the internal non-translated error messages. E.g. the max size of a LessThenEqual definition
+- Renamed GreaterThen, GreaterThenEqual, LessThen and LessThenEqual to fix typo (Then VS Than) Backwards compatibility is ensured
 
 ## [0.7.1] - 2022-03-04
 ### Fixed
