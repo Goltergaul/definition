@@ -1,1 +1,0 @@
-None of the definitions are valid for 'or'. Errors for last tested definition:: { hash has extra key: :person, hash is missing key :social_security_number }
