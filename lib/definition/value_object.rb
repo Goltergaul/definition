@@ -19,6 +19,10 @@ module Definition
       super(result.value.freeze)
     end
 
+    def new(args)
+      self.class.new(merge(args))
+    end
+
     class << self
       def conform(value)
         unless @definition

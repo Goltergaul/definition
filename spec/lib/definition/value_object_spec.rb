@@ -66,6 +66,14 @@ describe Definition::ValueObject do
       expect { vo[:first_name] = "Anna" }.to raise_error(frozen_error)
     end
 
+    it "can be recreated with new args" do
+      vo = TestKeysValueObject.new(first_name: "Jon", last_name: "Doe")
+
+      updated_vo = vo.new(last_name: "Wayne")
+      expect(updated_vo.first_name).to eq("Jon")
+      expect(updated_vo.last_name).to eq("Wayne")
+    end
+
     it "raises error when data does not conform to the value object definition" do
       expect do
         TestKeysValueObject.new(first_name: "Jon", last_name: 1)
