@@ -127,66 +127,58 @@ conform_result.error_hash
 
 ```
 
-### Value Objects
+### Value Objects / Models
 
 ```ruby
-class User < Definition::ValueObject
-  definition(Definition.Keys do
-    required :username, Definition.Type(String)
-    required :password, Definition.Type(String)
-  end)
+class User < Definition::Model
+  required :username, Definition.Type(String)
+  required :password, Definition.Type(String)
+  optional :age, Definition.Type(Integer)
 end
 
 user = User.new(username: "johndoe", password: "zg(2ds8x2/")
 user.username # => "johndoe"
-user[:username] # => "johndoe"
-user.username = "Alice" # => NoMethodError (ValueObjects are immutable)
-user[:username] = "Alice" # => FrozenError (ValueObjects are immutable)
+user.age # => nil
+user.to_h # => { username: "johndoe", password: "zg(2ds8x2/" }
+user.new(age: 21) # => new model instance with username and password from before plus the age set to 21
 
-User.new(username: "johndoe") # => Definition::InvalidValueObjectError: hash does not include :password
+user.username = "Alice" # => NoMethodError (Models are immutable)
+
+User.new(username: "johndoe") # => Definition::InvalidModelError: hash is missing :password
+
 ```
 
-Value objects delegate all calls to the output value of the defined definition,
-so in this example you can use all methods that are defined on `Hash` also on the
-user object. If you use a `Keys` definition, the value object additionally defines
-convenient accessor methods for all attributes.
+You can access the conform result object via `InvalidModelError#conform_result`
 
-Value Objects can also be used for all other data structures that can be validated
-by a definition, for example arrays:
+#### Nesting Models
 
-```ruby
-class IntegerArray < Definition::ValueObject
-  definition(Definition.Each(Definition.Type(Integer)))
-end
-
-array = IntegerArray.new([1,2,3])
-array.first # => 1
-
-IntegerArray.new([1,2,"3"]) # => Definition::InvalidValueObjectError: Not all items conform with each: { Item "3" did not conform to each: { Is of type String instead of Integer } }
-```
-
-You can access the conform result object via `InvalidValueObjectError#conform_result`
-
-#### Nesting value Objects
-
-Value objects can be nested by either using the value object itself as type definition,
-or by using the `CoercibleValueObject` Definition. The latter would convert input
-hashes that conform with the value objects schema to an instance of the value object.
+Models can be nested by either using the model object itself as type definition,
+or by using the `CoercibleModel` Definition. The latter is less strict and will 
+convert input hashes that conform with the model schema to an instance of the model.
 
 ```ruby
-class IntegerArray < Definition::ValueObject
-  definition(Definition.Each(Definition.Type(Integer)))
+class Address < Definition::Model
+  required :street, Definition.Type(String)
+  required :postal_code, Definition.Type(String)
 end
 
-class User < Definition::ValueObject
-  definition(Definition.Keys do
-    required :username, Definition.Type(String)
-    required :scores, Definition.CoercibleValueObject(IntegerArray)
-  end)
+class User < Definition::Model
+  required :username, Definition.Type(String)
+  required :address, Definition.CoercibleModel(Address)
 end
 
-object = User.new(username: "John", scores: [1,2,3])
-object.scores.class.name # => IntegerArray
+# Address is converted into an Address model automatically:
+user = User.new(username: "John", address: { street: "123 Fakestreet", postal_code: "2dfx4" })
+user.address.street # => "123 Fakestreet"
+
+class UserNotCoercibleAddress < Definition::Model
+  required :username, Definition.Type(String)
+  required :address, Address
+end
+
+# Address is not converted automatically, instead it needs to be of type Address already:
+UserNotCoercibleAddress.new(username: "John", address: { street: "123 Fakestreet", postal_code: "2dfx4" }) # => Definition::InvalidModelError
+UserNotCoercibleAddress.new(username: "John", address: Address.new(street: "123 Fakestreet", postal_code: "2dfx4")).address.street # => "123 Fakestreet"
 ```
 
 ### Conforming Hashes
