@@ -76,13 +76,13 @@ module Definition
     end
 
     # Example:
-    # CoercibleValueObject(ValueObjectClass)
-    def CoercibleValueObject(klass) # rubocop:disable Style/MethodName
-      Types::Or.new(:coercible_value_object,
+    # CoercibleModel(ModelClass)
+    def CoercibleModel(klass) # rubocop:disable Style/MethodName
+      Types::Or.new(:coercible_model,
                     Definition.Type(klass), # If its of ther correct type already this will let it pass already
                     And(
                       klass, # First make sure that the input could be coerced to 'klass'
-                      Lambda("value_object_coercion", context: { value_object_class: klass }) do |value|
+                      Lambda("value_object_coercion", context: { model_class: klass }) do |value|
                         conform_with(klass.new(value)) # Actually coerce the input to klass
                       end
                     ))

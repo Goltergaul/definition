@@ -5,6 +5,7 @@ require "definition/dsl"
 require "definition/dsl/comparators"
 require "definition/dsl/nil"
 require "definition/value_object"
+require "definition/model"
 require "definition/i18n"
 
 module Definition

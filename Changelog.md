@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Include more information in the internal non-translated error messages. E.g. the max size of a LessThenEqual definition
 - Renamed GreaterThen, GreaterThenEqual, LessThen and LessThenEqual to fix typo (Then VS Than) Backwards compatibility is ensured
 
+### Breaking changes
+- The Definition::ValueObject was removed and replaced by Definition:Model which has a nicer DSL and only works with hash data structures. See [upgrade notes](./UpgradeNotes.md)
+
 ## [0.7.1] - 2022-03-04
 ### Fixed
 - Float coercion: check for nil before coercion
