@@ -9,7 +9,7 @@ module Definition
     #   required :name, Types::Type(String)
     #   optional :age, Types::Type(Integer)
     # end
-    def Keys(&block) # rubocop:disable Style/MethodName
+    def Keys(&block) # rubocop:disable Naming/MethodName
       Types::Keys.new(:hash).tap do |instance|
         instance.instance_exec(&block)
       end
@@ -17,25 +17,25 @@ module Definition
 
     # Example:
     # And(Types::Type(Float), Types::GreaterThan(10.0))
-    def And(*definitions) # rubocop:disable Style/MethodName
+    def And(*definitions) # rubocop:disable Naming/MethodName
       Types::And.new(:and, *definitions)
     end
 
     # Example:
     # Or(Types::Type(Float), Types::Type(Integer))
-    def Or(*definitions) # rubocop:disable Style/MethodName
+    def Or(*definitions) # rubocop:disable Naming/MethodName
       Types::Or.new(:or, *definitions)
     end
 
     # Example:
     # Type(Integer)
-    def Type(klass) # rubocop:disable Style/MethodName
+    def Type(klass) # rubocop:disable Naming/MethodName
       Types::Type.new(:type, klass)
     end
 
     # Example:
     # CoercibleType(Integer)
-    def CoercibleType(klass) # rubocop:disable Style/MethodName
+    def CoercibleType(klass) # rubocop:disable Naming/MethodName
       unless Kernel.respond_to?(klass.name)
         raise ArgumentError.new("#{klass} can't be used as CoercibleType because its not "\
                                 "a primitive that has a coercion function defined")
@@ -51,13 +51,13 @@ module Definition
     # Lambda(:even) do |value|
     #   value.even?
     # end
-    def Lambda(name, context: {}, &block) # rubocop:disable Style/MethodName
+    def Lambda(name, context: {}, &block) # rubocop:disable Naming/MethodName
       Types::Lambda.new(name, context: context, &block)
     end
 
     # Example:
     # Enum("allowed_value1", "allowed_value2")
-    def Enum(*allowed_values) # rubocop:disable Style/MethodName
+    def Enum(*allowed_values) # rubocop:disable Naming/MethodName
       Lambda("enum", context: { allowed_values: allowed_values }) do |value|
         conform_with(value) if allowed_values.include?(value)
       end
@@ -65,19 +65,19 @@ module Definition
 
     # Example:
     # Each(Definition::Type(Integer))
-    def Each(definition) # rubocop:disable Style/MethodName
+    def Each(definition) # rubocop:disable Naming/MethodName
       Types::Each.new(:each, definition: definition)
     end
 
     # Example:
     # Boolean
-    def Boolean # rubocop:disable Style/MethodName
+    def Boolean # rubocop:disable Naming/MethodName
       Types::Or.new(:boolean, Type(TrueClass), Type(FalseClass))
     end
 
     # Example:
     # CoercibleModel(ModelClass)
-    def CoercibleModel(klass) # rubocop:disable Style/MethodName
+    def CoercibleModel(klass) # rubocop:disable Naming/MethodName
       Types::Or.new(:coercible_model,
                     Definition.Type(klass), # If its of ther correct type already this will let it pass already
                     And(
@@ -90,7 +90,7 @@ module Definition
 
     # Example:
     # Nilable(Definition.Type(Integer))
-    def Nilable(definition) # rubocop:disable Style/MethodName
+    def Nilable(definition) # rubocop:disable Naming/MethodName
       Types::Or.new(:nilable, Nil(), definition)
     end
   end
