@@ -78,11 +78,13 @@ Benchmark.ips do |x|
   x.report("definition") do
     DefinitionUseCase.new(**invalid_data)
   rescue Definition::Initializer::InvalidArgumentError
+    nil
   end
 
   x.report("dry-struct") do
     DryUseCase.new(**invalid_data)
   rescue Dry::Types::ConstraintError
+    nil
   end
 
   x.compare!

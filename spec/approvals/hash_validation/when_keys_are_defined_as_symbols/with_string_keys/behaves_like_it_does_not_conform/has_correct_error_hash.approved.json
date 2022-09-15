@@ -1,5 +1,5 @@
 {
   "first_name": [
-    "<Definition::ConformError \n\t message: \"hash is missing key :first_name\", \n\t json_pointer: \"/first_name\">"
+    "<Definition::ConformError \n\t message: \"hash has extra key: \"first_name\"\", \n\t json_pointer: \"/first_name\">"
   ]
 }
