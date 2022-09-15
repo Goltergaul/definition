@@ -4,22 +4,20 @@ require "bundler/inline"
 
 gemfile do
   source "https://rubygems.org"
-  # FIXME: benchmark needs to be updated to work with dry-validation 1.0.0"
-  gem "dry-validation", "< 1.0.0"
-  gem "dry-types", "< 0.15"
+  gem "dry-validation", "~> 1.8"
+  gem "dry-types", "~> 1.5"
   gem "awesome_print"
   gem "benchmark-ips"
   gem "definition", path: File.expand_path("../.", __dir__)
 end
 
-DrySchema = Dry::Validation.Params do
-  configure do
-    config.type_specs = true
+class DryContract < Dry::Validation::Contract
+  params do
+    required(:name).filled(:string)
+    required(:time).filled(:time)
   end
-
-  required(:name, :string).value(type?: String)
-  required(:time, :time).value(type?: String)
 end
+DryContractInstance = DryContract.new
 
 DefinitionSchema = Definition.Keys do
   required(:name, Definition.Type(String))
@@ -29,7 +27,7 @@ end
 puts "Benchmark with valid input data:"
 valid_data = { name: "test", time: Time.now }
 ap DefinitionSchema.conform(valid_data).value
-ap DrySchema.call(valid_data)
+ap DryContractInstance.call(valid_data)
 Benchmark.ips do |x|
   x.config(time: 5, warmup: 2)
 
@@ -38,7 +36,7 @@ Benchmark.ips do |x|
   end
 
   x.report("dry-validation") do
-    DrySchema.call(valid_data)
+    DryContractInstance.call(valid_data)
   end
 
   x.compare!
@@ -47,7 +45,7 @@ end
 puts "Benchmark with invalid input data:"
 invalid_data = { name: 1, time: Time.now.to_s }
 ap DefinitionSchema.conform(invalid_data).error_message
-ap DrySchema.call(invalid_data).errors
+ap DryContractInstance.call(invalid_data).errors
 Benchmark.ips do |x|
   x.config(time: 5, warmup: 2)
 
@@ -56,7 +54,7 @@ Benchmark.ips do |x|
   end
 
   x.report("dry-validation") do
-    DrySchema.call(invalid_data)
+    DryContractInstance.call(invalid_data)
   end
 
   x.compare!

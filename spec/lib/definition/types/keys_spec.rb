@@ -31,7 +31,7 @@ describe Definition::Types::Keys do
         described_class.new("address",
                             opt:      {
                               favorite_color: Definition.Type(String),
-                              favorite_food:  Definition.Type(String)
+                              favorite_drink: Definition.Type(String)
                             },
                             defaults: {
                               favorite_color: "red",
@@ -48,12 +48,11 @@ describe Definition::Types::Keys do
       end
 
       context "with favorite color and food" do
-        let(:value) { { favorite_color: "blue", favorite_food: "apple" } }
+        let(:value) { { favorite_color: "blue", favorite_drink: "juice" } }
 
         it "does conform" do
           expect(conform).to conform_with(favorite_color: "blue",
-                                          favorite_drink: "cola",
-                                          favorite_food:  "apple")
+                                          favorite_drink: "juice")
         end
       end
     end
