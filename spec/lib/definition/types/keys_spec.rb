@@ -31,7 +31,7 @@ describe Definition::Types::Keys do
         described_class.new("address",
                             opt:      {
                               favorite_color: Definition.Type(String),
-                              favorite_drink:  Definition.Type(String)
+                              favorite_drink: Definition.Type(String)
                             },
                             defaults: {
                               favorite_color: "red",

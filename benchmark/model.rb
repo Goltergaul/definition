@@ -32,17 +32,8 @@ class DefinitionModel < Definition::Model
   optional :platform, Definition.Type(String)
 end
 
-
 puts "Benchmark with valid input data:"
 valid_data = { id: 1, app_key: "com.test", app_version: "1.0.0", app_name: "testapp" }
-
-#RubyProf.start
-#10000.times { DefinitionModel.new(**valid_data) }
-#result = RubyProf.stop
-#
-#printer = RubyProf::CallTreePrinter.new(result)
-#printer.print
-#exit
 
 Benchmark.ips do |x|
   x.config(time: 5, warmup: 2)
@@ -64,11 +55,15 @@ Benchmark.ips do |x|
   x.config(time: 5, warmup: 2)
 
   x.report("definition") do
-    DefinitionModel.new(**valid_data) rescue Definition::InvalidModelError
+    DefinitionModel.new(**valid_data)
+  rescue StandardError
+    Definition::InvalidModelError
   end
 
   x.report("dry-struct") do
-    DryStructModel.new(**valid_data) rescue Dry::Struct::Error
+    DryStructModel.new(**valid_data)
+  rescue StandardError
+    Dry::Struct::Error
   end
 
   x.compare!
