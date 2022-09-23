@@ -127,60 +127,6 @@ conform_result.error_hash
 
 ```
 
-### Value Objects / Models
-
-```ruby
-class User < Definition::Model
-  required :username, Definition.Type(String)
-  required :password, Definition.Type(String)
-  optional :age, Definition.Type(Integer)
-end
-
-user = User.new(username: "johndoe", password: "zg(2ds8x2/")
-user.username # => "johndoe"
-user.age # => nil
-user.to_h # => { username: "johndoe", password: "zg(2ds8x2/" }
-user.new(age: 21) # => new model instance with username and password from before plus the age set to 21
-
-user.username = "Alice" # => NoMethodError (Models are immutable)
-
-User.new(username: "johndoe") # => Definition::InvalidModelError: hash is missing :password
-
-```
-
-You can access the conform result object via `InvalidModelError#conform_result`
-
-#### Nesting Models
-
-Models can be nested by either using the model object itself as type definition,
-or by using the `CoercibleModel` Definition. The latter is less strict and will 
-convert input hashes that conform with the model schema to an instance of the model.
-
-```ruby
-class Address < Definition::Model
-  required :street, Definition.Type(String)
-  required :postal_code, Definition.Type(String)
-end
-
-class User < Definition::Model
-  required :username, Definition.Type(String)
-  required :address, Definition.CoercibleModel(Address)
-end
-
-# Address is converted into an Address model automatically:
-user = User.new(username: "John", address: { street: "123 Fakestreet", postal_code: "2dfx4" })
-user.address.street # => "123 Fakestreet"
-
-class UserNotCoercibleAddress < Definition::Model
-  required :username, Definition.Type(String)
-  required :address, Address
-end
-
-# Address is not converted automatically, instead it needs to be of type Address already:
-UserNotCoercibleAddress.new(username: "John", address: { street: "123 Fakestreet", postal_code: "2dfx4" }) # => Definition::InvalidModelError
-UserNotCoercibleAddress.new(username: "John", address: Address.new(street: "123 Fakestreet", postal_code: "2dfx4")).address.street # => "123 Fakestreet"
-```
-
 ### Conforming Hashes
 
 Hashes can be conformed by using the `Keys` definition. It allows you to configure
@@ -477,6 +423,92 @@ schema = Definition.Keys do
   end)
 end
 schema.conform(input_hash).errors.first.translated_error # => Value is of wrong type, needs to be a String"
+```
+
+# Helpers / Usefule tools
+
+### Value Objects / Models
+
+Provides simple immutable objects that can validate and hold your data so that it can be safely passed around in your application.
+
+```ruby
+class User < Definition::Model
+  required :username, Definition.Type(String)
+  required :password, Definition.Type(String)
+  optional :age, Definition.Type(Integer)
+end
+
+user = User.new(username: "johndoe", password: "zg(2ds8x2/")
+user.username # => "johndoe"
+user.age # => nil
+user.to_h # => { username: "johndoe", password: "zg(2ds8x2/" }
+user.new(age: 21) # => new model instance with username and password from before plus the age set to 21
+
+user.username = "Alice" # => raises NoMethodError (Models are immutable)
+
+User.new(username: "johndoe") # => raises a Definition::InvalidModelError: hash is missing :password
+
+```
+
+You can access the conform result of InvalidModel errors via their `conform_result` method.
+
+#### Nesting Models
+
+Models can be nested by either using the model object itself as type definition,
+or by using the `CoercibleModel` Definition. The latter is less strict and will 
+convert input hashes that conform with the model schema to an instance of the model.
+
+```ruby
+class Address < Definition::Model
+  required :street, Definition.Type(String)
+  required :postal_code, Definition.Type(String)
+end
+
+class User < Definition::Model
+  required :username, Definition.Type(String)
+  required :address, Definition.CoercibleModel(Address)
+end
+
+# Address is converted into an Address model automatically:
+user = User.new(username: "John", address: { street: "123 Fakestreet", postal_code: "2dfx4" })
+user.address.street # => "123 Fakestreet"
+
+class UserNotCoercibleAddress < Definition::Model
+  required :username, Definition.Type(String)
+  required :address, Address
+end
+
+# Address is not converted automatically, instead it needs to be of type Address already:
+UserNotCoercibleAddress.new(username: "John", address: { street: "123 Fakestreet", postal_code: "2dfx4" }) # => raises a Definition::InvalidModelError
+UserNotCoercibleAddress.new(username: "John", address: Address.new(street: "123 Fakestreet", postal_code: "2dfx4")).address.street # => "123 Fakestreet"
+```
+
+### Intialization argument validation
+
+Definition provides a mixing that allows you to validate keyword arguments of class initialisation methods. This is meant to be used with classes that provide business logic where as the models are meant to be used to pass data around.
+
+The major differences to a Definition::Model are:
+* The values are not frozen and can be changed 
+* None of the getters for the attributes are public
+
+```ruby
+class User
+  include Definition::Initializer
+
+  required :id, Definition.Type(Integer)
+  required :name, Definition.Type(String)
+  optional :phone, Definition.Type(String), default: nil
+
+  def hello
+    puts "Hello, I'm #{name}"
+  end
+end
+
+user = User.new(id: 1, name: "Joe")
+user.hello # => "Hello, I'm Joe"
+user.name # => raises NoMethodError
+
+User.new(id: "1", name: "Joe") # => raises a Definition::Initializer::InvalidArgumentError
 ```
 
 ## Development
