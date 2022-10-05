@@ -55,7 +55,12 @@ module Definition
     def ==(other)
       return false unless other.is_a?(self.class)
 
-      @_attributes == other.instance_variable_get(:@_attributes)
+      @_attributes.hash == other.instance_variable_get(:@_attributes).hash
+    end
+    alias eql? ==
+
+    def hash
+      @_attributes.hash
     end
 
     def to_h
