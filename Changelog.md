@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+### Added
+- A Definition::Initializer mixin that can be used to validate keyword arguments of a class constructor
+
 ### Changes
 - Include more information in the internal non-translated error messages. E.g. the max size of a LessThenEqual definition
 - Renamed GreaterThen, GreaterThenEqual, LessThen and LessThenEqual to fix typo (Then VS Than) Backwards compatibility is ensured
