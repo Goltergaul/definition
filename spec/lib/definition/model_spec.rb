@@ -196,6 +196,64 @@ describe Definition::Model do
 
       expect(model_a == model_b).to be false
     end
+
+    it "returns false if a model is compared with its hash representation" do
+      model_a = test_model_class.new(name: "John")
+
+      expect(model_a == model_a.to_h).to be false
+    end
+  end
+
+  describe ".eql?" do
+    it "returns true if both models have the same content" do
+      model_a = test_model_class.new(name: "John")
+      model_b = test_model_class.new(name: "John")
+
+      expect(model_a.eql?(model_b)).to be true
+    end
+
+    it "returns false if both models have different content" do
+      model_a = test_model_class.new(name: "John")
+      model_b = test_model_class.new(name: "Marie")
+
+      expect(model_a.eql?(model_b)).to be false
+    end
+
+    it "returns false if a model is compared with its hash representation" do
+      model_a = test_model_class.new(name: "John")
+
+      expect(model_a.eql?(model_a.to_h)).to be false
+    end
+  end
+
+  describe ".hash" do
+    it "returns the same value for two models with the same content" do
+      model_a = test_model_class.new(name: "John")
+      model_b = test_model_class.new(name: "John")
+
+      expect(model_a.hash).to eq(model_b.hash)
+    end
+
+    it "returns a different value for two models with different content" do
+      model_a = test_model_class.new(name: "John")
+      model_b = test_model_class.new(name: "Marie")
+
+      expect(model_a.hash).not_to eq(model_b.hash)
+    end
+
+    it "considers the same model as an identical hash key" do
+      model_a = test_model_class.new(name: "John")
+      model_b = test_model_class.new(name: "John")
+      model_c = test_model_class.new(name: "Marie")
+
+      test_hash = {}
+      test_hash[model_a] = "John"
+      test_hash[model_b] = "John"
+      test_hash[model_c] = "Marie"
+
+      expect(test_hash.keys.size).to be(2)
+      expect(test_hash.keys).to eql([model_b, model_c])
+    end
   end
 
   describe ".new" do
