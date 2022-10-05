@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.8.1] - 2022-10-05
+### Fixed
+- Definition::Model#eql? returns true when comparing two models with the same content
+
 ## [0.8.0] - 2022-10-05
 ### Added
 - A Definition::Initializer mixin that can be used to validate keyword arguments of a class constructor
