@@ -1,6 +1,5 @@
 # Definition
 
-[![Build Status](https://circleci.com/gh/Goltergaul/definition.svg?style=svg)][circleci]
 [![Gem Version](https://badge.fury.io/rb/definition.svg)][rubygems]
 
 Simple and composable validation and coercion of data structures. It also includes a ValueObject for convenience.
