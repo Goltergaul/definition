@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [1.0.0] - 2023-02-14
+### Removed
+- Removed deprecated version of `GreaterThanEqual` definition that had a typo in it (GreaterThenEqual)
+- Removed deprecated version of `GreaterThan` definition that had a typo in it (GreaterThen)
+- Removed deprecated version of `LessThanEqual` definition that had a typo in it (LessThenEqual)
+- Removed deprecated version of `LessThan` definition that had a typo in it (LessThen)
+
 ## [0.8.1] - 2022-10-05
 ### Fixed
 - Definition::Model#eql? returns true when comparing two models with the same content

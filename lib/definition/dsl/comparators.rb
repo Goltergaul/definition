@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "definition/v1_deprecator"
-
 module Definition
   module Dsl
     module Comparators
@@ -44,8 +42,6 @@ module Definition
           conform_with(value) if value.is_a?(Numeric) && value > min_value
         end
       end
-      alias GreaterThen GreaterThan
-      deprecate :GreaterThen, deprecator: V1Deprecator
 
       # Example:
       # GreaterThanEqual(5)
@@ -54,8 +50,6 @@ module Definition
           conform_with(value) if value.is_a?(Numeric) && value >= min_value
         end
       end
-      alias GreaterThenEqual GreaterThanEqual
-      deprecate :GreaterThenEqual, deprecator: V1Deprecator
 
       # Example:
       # LessThan(5)
@@ -64,8 +58,6 @@ module Definition
           conform_with(value) if value.is_a?(Numeric) && value < max_value
         end
       end
-      alias LessThen LessThan
-      deprecate :LessThen, deprecator: V1Deprecator
 
       # Example:
       # LessThanEqual(5)
@@ -74,8 +66,6 @@ module Definition
           conform_with(value) if value.is_a?(Numeric) && value <= max_value
         end
       end
-      alias LessThenEqual LessThanEqual
-      deprecate :LessThenEqual, deprecator: V1Deprecator
 
       # Example:
       # Equal("value")
