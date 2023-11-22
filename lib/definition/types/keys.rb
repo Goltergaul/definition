@@ -9,11 +9,11 @@ module Definition
     class Keys < Base
       module Dsl
         def required(key, definition)
-          required_definitions << { key: key, definition: definition }
+          required_definitions[key] = definition
         end
 
         def optional(key, definition, **opts)
-          optional_definitions << { key: key, definition: definition }
+          optional_definitions[key] = definition
           default(key, opts[:default]) if opts.key?(:default)
         end
 
@@ -31,8 +31,8 @@ module Definition
 
           ensure_keys_do_not_interfere(other)
 
-          self.required_definitions += other.required_definitions
-          self.optional_definitions += other.optional_definitions
+          required_definitions.merge!(other.required_definitions)
+          optional_definitions.merge!(other.optional_definitions)
           defaults.merge!(other.defaults)
         end
 
@@ -57,114 +57,93 @@ module Definition
 
       def initialize(name, req: {}, opt: {}, defaults: {}, options: {})
         super(name)
-        self.required_definitions = req.map { |key, definition| { key: key, definition: definition } }
-        self.optional_definitions = opt.map { |key, definition| { key: key, definition: definition } }
+        self.required_definitions = req
+        self.optional_definitions = opt
         self.defaults = defaults
         self.ignore_extra_keys = options.fetch(:ignore_extra_keys, false)
       end
 
-      def conform(value)
-        Conformer.new(self, value).conform
+      def conform(input_value) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+        # input_value is duplicated because we don't want to modify the user object that is passed into this function.
+        # The following logic will iterate over each definition and delete the key associated with the definition from
+        # the input value.
+        # In the end if there are still keys on the object and 'ignore_extra_keys' is false, an error will be raised.
+        value = input_value.dup
+        result_value = {}
+        errors = []
+
+        return wrong_type_result(value) unless value.is_a?(Hash)
+
+        required_definitions.each do |key, definition|
+          if value.key?(key)
+            result = definition.conform(value.delete(key))
+            result_value[key] = result.value
+            next if result.passed?
+
+            errors.push(key_error(definition, key, result))
+          else
+            errors << missing_key_error(key)
+          end
+        end
+
+        optional_definitions.each do |key, definition|
+          if value.key?(key)
+            result = definition.conform(value.delete(key))
+            result_value[key] = result.value
+            next if result.passed?
+
+            errors.push(key_error(definition, key, result))
+          elsif defaults.key?(key)
+            result_value[key] = defaults.fetch(key)
+          end
+        end
+
+        if !ignore_extra_keys && !value.keys.empty?
+          value.keys.each do |key|
+            errors << extra_key_error(key)
+          end
+        end
+
+        ConformResult.new(result_value, errors: errors)
       end
 
       def keys
-        (required_definitions + optional_definitions).map { |hash| hash[:key] }
+        required_definitions.keys + optional_definitions.keys
       end
 
-      class Conformer
-        def initialize(definition, value)
-          self.definition = definition
-          self.value = value
-          self.errors = []
-          @conform_result_value = {} # This will be the output value after conforming
-          @not_conformed_value_keys = value.dup # Used to track which keys are left over in the end (unexpected keys)
-        end
+      private
 
-        def conform
-          return invalid_input_result unless valid_input_type?
+      def wrong_type_result(value)
+        ConformResult.new(value, errors: [
+                            ConformError.new(
+                              self,
+                              "#{name} is not a Hash",
+                              i18n_key: "keys.not_a_hash"
+                            )
+                          ])
+      end
 
-          values = conform_all_keys
-          add_extra_key_errors unless definition.ignore_extra_keys
+      def extra_key_error(key)
+        KeyConformError.new(
+          self,
+          "#{name} has extra key: #{key.inspect}",
+          key:      key,
+          i18n_key: "keys.has_extra_key"
+        )
+      end
 
-          ConformResult.new(values, errors: errors)
-        end
+      def missing_key_error(key)
+        KeyConformError.new(self,
+                            "#{name} is missing key #{key.inspect}",
+                            key:      key,
+                            i18n_key: "keys.has_missing_key")
+      end
 
-        private
-
-        attr_accessor :errors
-
-        def invalid_input_result
-          errors = [ConformError.new(definition,
-                                     "#{definition.name} is not a Hash",
-                                     i18n_key: "keys.not_a_hash")]
-          ConformResult.new(value, errors: errors)
-        end
-
-        def valid_input_type?
-          value.is_a?(Hash)
-        end
-
-        def add_extra_key_errors
-          extra_keys = @not_conformed_value_keys.keys
-          return if extra_keys.empty?
-
-          extra_keys.each do |key|
-            errors.push(KeyConformError.new(
-                          definition,
-                          "#{definition.name} has extra key: #{key.inspect}",
-                          key:      key,
-                          i18n_key: "keys.has_extra_key"
-                        ))
-          end
-        end
-
-        def conform_all_keys
-          conform_definitions(definition.required_definitions, required: true)
-          conform_definitions(definition.optional_definitions, required: false)
-
-          @conform_result_value
-        end
-
-        def conform_definitions(keys, required:)
-          keys.each do |hash|
-            key = hash[:key]
-            key_definition = hash[:definition]
-            conform_definition(key, key_definition, required: required)
-          end
-        end
-
-        # Rubcop rules are disabled for performance optimization purposes
-        def conform_definition(key, key_definition, required:) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-          @not_conformed_value_keys.delete(key) # Keys left over in that hash at the end are considered unexpected
-
-          # If the input value is missing a key:
-          # a) add a missing key error if it is a required key
-          # b) otherwise initialize the missing key in the output value if a default value is configured
-          unless value.key?(key)
-            errors.push(missing_key_error(key)) if required
-            @conform_result_value[key] = definition.defaults[key] if definition.defaults.key?(key)
-            return
-          end
-
-          # If the input value has a key then its value is conformed against the configured definition
-          result = key_definition.conform(value[key])
-          @conform_result_value[key] = result.value
-          return if result.passed?
-
-          errors.push(KeyConformError.new(key_definition,
-                                          "#{definition.name} fails validation for key #{key}",
-                                          key:        key,
-                                          sub_errors: result.error_tree))
-        end
-
-        def missing_key_error(key)
-          KeyConformError.new(definition,
-                              "#{definition.name} is missing key #{key.inspect}",
-                              key:      key,
-                              i18n_key: "keys.has_missing_key")
-        end
-
-        attr_accessor :definition, :value
+      def key_error(definition, key, result)
+        KeyConformError.new(definition,
+                            "#{name} fails validation for key #{key}",
+                            key:        key,
+                            sub_errors: result.error_tree)
       end
     end
   end

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [1.1.0] - 2023-11-22
+### Changes
+- Improved performance
+
 ## [1.0.0] - 2023-02-14
 ### Removed
 - Removed deprecated version of `GreaterThanEqual` definition that had a typo in it (GreaterThenEqual)
