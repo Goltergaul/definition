@@ -21,46 +21,22 @@ module Definition
       end
 
       def conform(value)
-        Conformer.new(self).conform(value)
+        last_result = nil
+        definitions.each do |definition|
+          last_result = definition.conform(value)
+          return last_result if last_result.passed?
+        end
+
+        ConformResult.new(value, errors: [
+                            ConformError.new(self,
+                                             "None of the definitions are valid for '#{name}'."\
+                                             " Errors for last tested definition:",
+                                             sub_errors: last_result.error_tree)
+                          ])
       end
 
       def error_renderer
         ErrorRenderers::Leaf
-      end
-
-      class Conformer
-        def initialize(definition)
-          self.definition = definition
-        end
-
-        def conform(value)
-          result = first_successful_conform_or_errors(value)
-          if result.is_a?(ConformResult)
-            result
-          else
-            error = ConformError.new(definition,
-                                     "None of the definitions are valid for '#{definition.name}'."\
-                                     " Errors for last tested definition:",
-                                     sub_errors: result)
-            ConformResult.new(value, errors: [error])
-          end
-        end
-
-        private
-
-        def first_successful_conform_or_errors(value)
-          errors = []
-          definition.definitions.each do |definition|
-            result = definition.conform(value)
-            return result if result.passed?
-
-            errors = result.error_tree
-          end
-
-          errors.flatten
-        end
-
-        attr_accessor :definition
       end
     end
   end
