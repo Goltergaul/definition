@@ -25,7 +25,10 @@ class DryStructModel < Dry::Struct
     name: Dry::Types["strict.string"],
     age:  Dry::Types["coercible.integer"]
   )
-  attribute :array, Dry::Types["strict.array"].of(Dry::Types["strict.string"].enum("a", "b", "c", "d"))
+  attribute :array, Dry::Types["strict.array"].of(
+    Dry::Types["strict.string"].enum("a", "b", "c", "d")
+  ).optional.default(nil)
+  attribute :and_attribute, Dry::Types["strict.integer"].constrained(gt: 1)
 end
 
 class DefinitionModel < Definition::Model
@@ -39,20 +42,25 @@ class DefinitionModel < Definition::Model
     required :name, Definition.Type(String)
     required :age, Definition.CoercibleType(Integer)
   end)
-  optional :array, Definition.Each(Definition.Enum("a", "b", "c", "d"))
+  optional :array, Definition.Nilable(Definition.Each(Definition.Enum("a", "b", "c", "d")))
+  optional :and_attribute, Definition.Nilable(Definition.And(
+                                                Definition.Type(Integer),
+                                                Definition.GreaterThan(1)
+                                              ))
 end
 
 puts "Benchmark with valid input data:"
 valid_data = {
-  id:          1,
-  app_key:     "com.test",
-  app_version: "1.0.0",
-  app_name:    "testapp",
-  user:        {
+  id:            1,
+  app_key:       "com.test",
+  app_version:   "1.0.0",
+  app_name:      "testapp",
+  user:          {
     name: "John Doe",
     age:  "65"
   },
-  array:       %w[a b c d a]
+  array:         %w[a b c d a],
+  and_attribute: 2
 }
 
 Benchmark.ips do |x|

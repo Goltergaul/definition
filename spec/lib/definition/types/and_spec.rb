@@ -33,7 +33,7 @@ describe Definition::Types::And do
         end
       end
 
-      context "with value that fails one definition" do
+      context "with value that fails last definition" do
         let(:definition1) do
           conforming_definition
         end
@@ -51,6 +51,28 @@ describe Definition::Types::And do
         it "produces a good translated error message" do
           expect(conform.errors.map(&:translated_error)).to eql(
             ["def2 error"]
+          )
+        end
+      end
+
+      context "with value that fails first definition" do
+        let(:definition1) do
+          failing_definition(:def1, translated_error_message: "def1 error")
+        end
+        let(:definition2) do
+          conforming_definition
+        end
+        let(:value) { 6 }
+
+        it "does not conform" do
+          expect(conform).to not_conform_with(
+            "Not all definitions are valid for 'and_test': { Did not pass test for def1 }"
+          )
+        end
+
+        it "produces a good translated error message" do
+          expect(conform.errors.map(&:translated_error)).to eql(
+            ["def1 error"]
           )
         end
       end
