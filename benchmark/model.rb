@@ -4,7 +4,7 @@ require "bundler/inline"
 
 gemfile do
   source "https://rubygems.org"
-  gem "dry-struct", "~> 1.4"
+  gem "dry-struct", "~> 1.6"
   gem "awesome_print"
   gem "benchmark-ips"
   gem "pry"
@@ -21,6 +21,10 @@ class DryStructModel < Dry::Struct
   attribute :app_name, Dry::Types["strict.string"].optional.default(nil)
   attribute :app_branch, Dry::Types["strict.string"].optional.default(nil)
   attribute :platform, Dry::Types["strict.string"].optional.default(nil)
+  attribute :user, Dry::Types["strict.hash"].schema(
+    name: Dry::Types["strict.string"],
+    age:  Dry::Types["coercible.integer"]
+  )
 end
 
 class DefinitionModel < Definition::Model
@@ -30,13 +34,26 @@ class DefinitionModel < Definition::Model
   optional :app_name, Definition.Type(String)
   optional :app_branch, Definition.Type(String)
   optional :platform, Definition.Type(String)
+  required(:user, Definition.Keys do
+    required :name, Definition.Type(String)
+    required :age, Definition.CoercibleType(Integer)
+  end)
 end
 
 puts "Benchmark with valid input data:"
-valid_data = { id: 1, app_key: "com.test", app_version: "1.0.0", app_name: "testapp" }
+valid_data = {
+  id:          1,
+  app_key:     "com.test",
+  app_version: "1.0.0",
+  app_name:    "testapp",
+  user:        {
+    name: "John Doe",
+    age:  "65"
+  }
+}
 
 Benchmark.ips do |x|
-  x.config(time: 5, warmup: 2)
+  x.config(time: 20, warmup: 5)
 
   x.report("definition") do
     DefinitionModel.new(**valid_data)
@@ -52,7 +69,7 @@ end
 puts "Benchmark with invalid input data:"
 invalid_data = { id: "abc", app_key: "com.test", app_name: "testapp" }
 Benchmark.ips do |x|
-  x.config(time: 5, warmup: 2)
+  x.config(time: 20, warmup: 5)
 
   x.report("definition") do
     DefinitionModel.new(**invalid_data)
