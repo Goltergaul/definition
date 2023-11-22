@@ -25,6 +25,7 @@ class DryStructModel < Dry::Struct
     name: Dry::Types["strict.string"],
     age:  Dry::Types["coercible.integer"]
   )
+  attribute :array, Dry::Types["strict.array"].of(Dry::Types["strict.string"].enum("a", "b", "c", "d"))
 end
 
 class DefinitionModel < Definition::Model
@@ -38,6 +39,7 @@ class DefinitionModel < Definition::Model
     required :name, Definition.Type(String)
     required :age, Definition.CoercibleType(Integer)
   end)
+  optional :array, Definition.Each(Definition.Enum("a", "b", "c", "d"))
 end
 
 puts "Benchmark with valid input data:"
@@ -49,11 +51,12 @@ valid_data = {
   user:        {
     name: "John Doe",
     age:  "65"
-  }
+  },
+  array:       %w[a b c d a]
 }
 
 Benchmark.ips do |x|
-  x.config(time: 20, warmup: 5)
+  x.config(time: 5, warmup: 2)
 
   x.report("definition") do
     DefinitionModel.new(**valid_data)

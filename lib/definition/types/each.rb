@@ -13,64 +13,50 @@ module Definition
         super(name)
       end
 
-      def conform(value)
-        Conformer.new(self).conform(value)
+      def conform(values)
+        return non_array_error(values) unless values.is_a?(Array)
+
+        errors = false
+
+        results = values.map do |value|
+          result = item_definition.conform(value)
+          errors = true unless result.passed?
+          result
+        end
+
+        return ConformResult.new(results.map(&:value)) unless errors
+
+        ConformResult.new(values, errors: [ConformError.new(self,
+                                                            "Not all items conform with '#{name}'",
+                                                            sub_errors: convert_errors(results))])
       end
 
       def error_renderer
         ErrorRenderers::Leaf
       end
 
-      class Conformer
-        def initialize(definition)
-          self.definition = definition
+      private
+
+      def convert_errors(results)
+        errors = []
+        results.each_with_index do |result, index|
+          next if result.passed?
+
+          errors << KeyConformError.new(
+            self,
+            "Item #{result.value.inspect} did not conform to #{name}",
+            key:        index,
+            sub_errors: result.error_tree
+          )
         end
+        errors
+      end
 
-        def conform(value)
-          return non_array_error(value) unless value.is_a?(Array)
-
-          results = conform_all(value)
-
-          if results.all?(&:conformed?)
-            ConformResult.new(results.map(&:value))
-          else
-            ConformResult.new(value, errors: [ConformError.new(definition,
-                                                               "Not all items conform with '#{definition.name}'",
-                                                               sub_errors: errors(results))])
-          end
-        end
-
-        private
-
-        attr_accessor :definition
-
-        def errors(results)
-          errors = []
-          results.each_with_index do |result, index|
-            next if result.passed?
-
-            errors << KeyConformError.new(
-              definition,
-              "Item #{result.value.inspect} did not conform to #{definition.name}",
-              key:        index,
-              sub_errors: result.error_tree
-            )
-          end
-          errors
-        end
-
-        def conform_all(values)
-          values.map do |value|
-            definition.item_definition.conform(value)
-          end
-        end
-
-        def non_array_error(value)
-          ConformResult.new(value, errors: [
-                              ConformError.new(definition,
-                                               "Non-Array value does not conform with #{definition.name}")
-                            ])
-        end
+      def non_array_error(value)
+        ConformResult.new(value, errors: [
+                            ConformError.new(self,
+                                             "Non-Array value does not conform with #{name}")
+                          ])
       end
     end
   end
