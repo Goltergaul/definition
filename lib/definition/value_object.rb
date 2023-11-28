@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "delegate"
+
 module Definition
   class InvalidValueObjectError < StandardError
     attr_accessor :conform_result

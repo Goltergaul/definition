@@ -23,7 +23,7 @@ module Definition
       def conform(value)
         last_result = nil
         definitions.each do |definition|
-          last_result = definition.conform(value)
+          last_result = definition.conform(last_result.nil? ? value : last_result.value)
           next if last_result.passed?
 
           return ConformResult.new(last_result.value, errors: [
