@@ -6,9 +6,7 @@ module Definition
       # Example:
       # Nil
       def Nil # rubocop:disable Naming/MethodName
-        Types::Lambda.new(:nil) do |value|
-          conform_with(value) if value.nil?
-        end
+        Types::Nil.new
       end
     end
   end
