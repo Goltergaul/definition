@@ -95,19 +95,23 @@ describe Definition::Types::And do
     describe "with coersion" do
       subject(:definition) do
         described_class.new("and_test",
-                            definition_int,
-                            definition_float).conform("1.3")
+                            definition_1,
+                            definition_2).conform(2)
       end
 
-      let(:definition_int) do
-        conforming_definition(conform_with: 1)
+      let(:definition_1) do
+        Definition.Lambda(:conforming_def) do |value|
+          conform_with(value * 2)
+        end
       end
-      let(:definition_float) do
-        conforming_definition(conform_with: 1.0)
+      let(:definition_2) do
+        Definition.Lambda(:conforming_def) do |value|
+          conform_with(value.to_s)
+        end
       end
 
-      it "conforms" do
-        expect(definition).to conform_with(1.0)
+      it "conforms by passing on the corerced value output from def1 to def2" do
+        expect(definition).to conform_with("4")
       end
     end
   end
