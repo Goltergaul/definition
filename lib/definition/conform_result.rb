@@ -5,14 +5,14 @@ require "active_support"
 module Definition
   class ConformResult
     def initialize(value, errors: [])
-      self.value = value
-      self.conform_errors = errors
+      @value = value
+      @conform_errors = errors
     end
 
-    attr_accessor :value
+    attr_reader :value
 
     def passed?
-      conform_errors.empty?
+      @conform_errors.empty?
     end
     alias conformed? passed?
 
@@ -21,7 +21,7 @@ module Definition
     end
 
     def leaf_errors
-      conform_errors.map(&:leaf_errors).flatten
+      @conform_errors.map(&:leaf_errors).flatten
     end
 
     def errors
@@ -46,7 +46,7 @@ module Definition
     end
 
     def error_tree
-      conform_errors
+      @conform_errors
     end
 
     private
@@ -71,7 +71,5 @@ module Definition
       end
       nil
     end
-
-    attr_accessor :conform_errors
   end
 end
