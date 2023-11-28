@@ -29,6 +29,8 @@ class DryStructModel < Dry::Struct
     Dry::Types["strict.string"].enum("a", "b", "c", "d")
   ).optional.default(nil)
   attribute :and_attribute, Dry::Types["strict.integer"].constrained(gt: 1)
+  attribute :or_attribute, Dry::Types["strict.integer"] | Dry::Types["strict.float"]
+  attribute :bool_attribute, Dry::Types["strict.bool"]
 end
 
 class DefinitionModel < Definition::Model
@@ -47,24 +49,31 @@ class DefinitionModel < Definition::Model
                                                 Definition.Type(Integer),
                                                 Definition.GreaterThan(1)
                                               ))
+  required :or_attribute, Definition.Nilable(Definition.Or(
+                                               Definition.Type(Integer),
+                                               Definition.Type(Float)
+                                             ))
+  required :bool_attribute, Definition.Boolean
 end
 
 puts "Benchmark with valid input data:"
 valid_data = {
-  id:            1,
-  app_key:       "com.test",
-  app_version:   "1.0.0",
-  app_name:      "testapp",
-  user:          {
+  id:             1,
+  app_key:        "com.test",
+  app_version:    "1.0.0",
+  app_name:       "testapp",
+  user:           {
     name: "John Doe",
     age:  "65"
   },
-  array:         %w[a b c d a],
-  and_attribute: 2
+  array:          %w[a b c d a],
+  and_attribute:  2,
+  or_attribute:   3.4,
+  bool_attribute: true
 }
 
 Benchmark.ips do |x|
-  x.config(time: 5, warmup: 2)
+  x.config(time: 20, warmup: 5)
 
   x.report("definition") do
     DefinitionModel.new(**valid_data)
