@@ -13,16 +13,16 @@ module Definition
       end
 
       include Dsl
-      attr_accessor :definitions
+      attr_reader :definitions
 
       def initialize(name, *args)
-        self.definitions = *args
+        @definitions = *args
         super(name)
       end
 
       def conform(value)
         last_result = nil
-        definitions.each do |definition|
+        @definitions.each do |definition|
           last_result = definition.conform(value)
           return last_result if last_result.passed?
         end

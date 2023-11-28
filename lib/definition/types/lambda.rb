@@ -28,41 +28,39 @@ module Definition
           end
 
           def fail_with(error_message)
-            self.error_message = error_message
+            @error_message = error_message
           end
         end
         include Dsl
 
         def initialize(definition)
-          self.definition = definition
+          @definition = definition
         end
 
         def conform(value)
-          lambda_result = instance_exec(value, &definition.conformity_test_lambda)
+          lambda_result = instance_exec(value, &@definition.conformity_test_lambda)
           return lambda_result if lambda_result.is_a?(ConformResult)
 
-          failure_result_with(value, error_message)
+          failure_result_with(value)
         end
 
         private
 
-        attr_accessor :definition, :error_message
-
         def standard_error_message
-          "Did not pass test for #{definition.name}"
+          "Did not pass test for #{@definition.name}"
         end
 
         def contextual_error_message
-          return standard_error_message if definition.context.empty?
+          return standard_error_message if @definition.context.empty?
 
-          "#{standard_error_message} (#{definition.context.values.join(',')})"
+          "#{standard_error_message} (#{@definition.context.values.join(',')})"
         end
 
-        def failure_result_with(value, error_message)
+        def failure_result_with(value)
           ConformResult.new(value, errors: [
-                              ConformError.new(definition,
+                              ConformError.new(@definition,
                                                contextual_error_message,
-                                               translated_message: error_message)
+                                               translated_message: @error_message)
                             ])
         end
       end
