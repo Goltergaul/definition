@@ -131,6 +131,61 @@ describe Definition::Model do
         end.to raise_error(Definition::InvalidModelError, /bar/)
       end
     end
+
+    context "with inheritance" do
+      subject(:new) { child_test_model_class.new(**kwargs) }
+
+      let(:child_test_model_class) do
+        ParentModel = test_model_class
+        Class.new(ParentModel) do
+          required :age, Definition.Type(Integer)
+          optional :phone, Definition.Type(String)
+        end
+      end
+
+      context "with required keywords only" do
+        let(:kwargs) { { name: "John", age: 24 } }
+
+        it "instantiates the model" do
+          expect(new.name).to eq("John")
+          expect(new.email).to be_nil
+          expect(new.age).to eq(24)
+          expect(new.phone).to be_nil
+        end
+      end
+
+      context "with required and optional keywords" do
+        let(:kwargs) { { name: "John", email: "test@test.com", age: 24, phone: "+4312345" } }
+
+        it "instantiates the model" do
+          expect(new.name).to eq("John")
+          expect(new.email).to eq("test@test.com")
+          expect(new.age).to eq(24)
+          expect(new.phone).to eq("+4312345")
+        end
+      end
+
+      it "throws error when parent's required attributes are missing" do
+        expect do
+          child_test_model_class.new(age: 24)
+        end.to raise_error(Definition::InvalidModelError, /name/)
+      end
+
+      it "throws error when child's required attributes are missing" do
+        expect do
+          child_test_model_class.new(name: "John")
+        end.to raise_error(Definition::InvalidModelError, /age/)
+      end
+
+      it "doesn't change parent's defintion" do
+        expect do
+          Class.new(test_model_class) do
+            required :required_child_attribute, Definition.Type(Integer)
+            optional :optional_child_attribute, Definition.Type(String)
+          end
+        end.not_to(change { test_model_class._definition.keys })
+      end
+    end
   end
 
   describe ".to_h" do
