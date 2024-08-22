@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    definition (1.1.1)
+    definition (1.1.2)
       activesupport
       i18n
 

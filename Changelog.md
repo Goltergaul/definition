@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [1.1.2] - 2024-08-22
+### Fixed
+- Fixed "TypeError: no _dump_data is defined for class Proc" error that ocurred when a definition model inherits from another model that uses lambda based definitions
+
 ## [1.1.1] - 2024-05-21
 ### Fixed
 - Fixed Definition::Model inheritance
