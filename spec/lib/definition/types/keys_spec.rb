@@ -189,4 +189,36 @@ describe Definition::Types::Keys do
       end
     end
   end
+
+  describe ".dup" do
+    it "dups definitions and defaults" do
+      original = described_class.new("person",
+                                     req:      {
+                                       name: Definition.Type(String)
+                                     },
+                                     opt:      {
+                                       age:        Definition.Type(Integer),
+                                       authorized: Definition.Boolean
+                                     },
+                                     defaults: {
+                                       authorized: false
+                                     })
+      copy = original.dup
+
+      original.required_definitions.clear
+      original.optional_definitions.clear
+      original.defaults.clear
+
+      value = {
+        name: "John",
+        age:  18
+      }
+      expected = {
+        name:       "John",
+        age:        18,
+        authorized: false
+      }
+      expect(copy.conform(value)).to conform_with(expected)
+    end
+  end
 end

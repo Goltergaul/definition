@@ -5,7 +5,7 @@ require "spec_helper"
 describe Definition::Model do
   let(:test_model_class) do
     Class.new(described_class) do
-      required :name, Definition.Type(String)
+      required :name, Definition.NonEmptyString
       optional :email, Definition.Type(String)
     end
   end
@@ -177,7 +177,7 @@ describe Definition::Model do
         end.to raise_error(Definition::InvalidModelError, /age/)
       end
 
-      it "doesn't change parent's defintion" do
+      it "doesn't change parent's definition" do
         expect do
           Class.new(test_model_class) do
             required :required_child_attribute, Definition.Type(Integer)

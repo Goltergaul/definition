@@ -40,8 +40,7 @@ module Definition
         @_definition ||= if superclass == ::Definition::Model
                            ::Definition.Keys {}
                          else
-                           # Create a deep copy of parent's definition
-                           Marshal.load(Marshal.dump(superclass._definition))
+                           superclass._definition.dup
                          end
       end
     end

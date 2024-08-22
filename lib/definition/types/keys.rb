@@ -63,6 +63,13 @@ module Definition
         self.ignore_extra_keys = options.fetch(:ignore_extra_keys, false)
       end
 
+      def initialize_dup(_other)
+        super
+        self.required_definitions = required_definitions.dup
+        self.optional_definitions = optional_definitions.dup
+        self.defaults = defaults.dup
+      end
+
       def conform(input_value) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
         # input_value is duplicated because we don't want to modify the user object that is passed into this function.
         # The following logic will iterate over each definition and delete the key associated with the definition from
