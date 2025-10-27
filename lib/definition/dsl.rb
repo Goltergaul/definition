@@ -42,7 +42,7 @@ module Definition
       end
       Types::Type.new(:type, klass) do |value|
         method(klass.name).call(value)
-      rescue ArgumentError
+      rescue ArgumentError, TypeError
         value
       end
     end
