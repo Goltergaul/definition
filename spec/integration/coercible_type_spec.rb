@@ -21,4 +21,10 @@ describe "Definition.CoercibleType" do
 
     it_behaves_like "it does not conform"
   end
+
+  context "with incoercible error class instance" do
+    let(:value) { StandardError.new("oops") }
+
+    it_behaves_like "it does not conform"
+  end
 end
